@@ -360,6 +360,7 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 "Assets/GridInventory/Scripts/Inventory/GridInventorySystem.cs"
 "Assets/GridInventory/Scripts/Inventory/GridXY_v2.cs"
+"Assets/GridInventory/Scripts/Inventory/InventoryUtilities.cs"
 -langversion:9.0
 
 /deterministic

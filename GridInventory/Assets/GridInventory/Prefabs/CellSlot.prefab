@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 2424384288278186573}
   - component: {fileID: 1214948202661001159}
   m_Layer: 5
-  m_Name: SlotBackGround
+  m_Name: SlotBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
