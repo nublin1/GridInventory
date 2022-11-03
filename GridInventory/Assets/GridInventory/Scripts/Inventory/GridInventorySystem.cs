@@ -35,21 +35,24 @@ public class GridInventorySystem : MonoBehaviour
     private void Awake()
     {
         slots = transform.Find("Scroll/Viewport/Slots").gameObject;
+        rectSlots = transform.Find("Scroll/Viewport/Slots").GetComponent<RectTransform>();
     }
 
     private void Start()
     {
-        grid = new GridXY_v2();
+        grid = new GridXY_v2(gridWidth, gridHeight, cellSize);
+
     }
 
     private void Update()
     {
-        Vector2 rrr = slots.transform.GetChild(0).GetComponent<RectTransform>().rect.center;
-        grid.OriginalPosition = slots.transform.GetChild(0).GetComponent<RectTransform>().TransformPoint(rrr);       
+        //Vector2 rrr = slots.transform.GetChild(0).GetComponent<RectTransform>().rect.center;
+        //grid.OriginalPosition = slots.transform.GetChild(0).GetComponent<RectTransform>().TransformPoint(rrr);
+        grid.OriginalPosition = slots.transform.GetChild(0).GetComponent<RectTransform>().position;
 
         Vector2 posit = Vector2.zero;
-        posit = InventoryUtilities.CalculateInventorySlotCoordinate(Input.mousePosition, grid);
-        //Debug.Log(posit);
+        posit = InventoryUtilities.CalculateInventorySlotCoordinate(rectSlots, Input.mousePosition, grid);
+        Debug.Log(posit);
     }
 
     [Button("Generate inventory")]
@@ -201,7 +204,7 @@ public class GridInventorySystem : MonoBehaviour
             gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
             gridLayoutGroup.startCorner = GridLayoutGroup.Corner.UpperLeft;
             gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Horizontal;
-            gridLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+            gridLayoutGroup.childAlignment = TextAnchor.UpperLeft;
             gridLayoutGroup.constraint = GridLayoutGroup.Constraint.Flexible;
 
             // Scrollbar Vertical
@@ -265,7 +268,7 @@ public class GridInventorySystem : MonoBehaviour
     {
         if (grid == null)
         {
-            grid = new GridXY_v2();
+            grid = new GridXY_v2(gridWidth, gridHeight, cellSize);
         }
         grid.GenerateCells(gridWidth, gridHeight, cellSize, cellPrefab, slots.transform);
     }

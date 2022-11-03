@@ -8,8 +8,17 @@ public class GridXY_v2
     private float _cellSize = 1;
     private Vector3 _originalPosition = Vector3.zero;
 
+    public GridXY_v2(int gridWidth, int gridHeight, float cellSize)
+    {
+        _gridWidth = gridWidth;
+        _gridHeight = gridHeight;
+        _cellSize = cellSize;
+    }
+
     #region getters
     public Vector3 OriginalPosition { get => _originalPosition; set => _originalPosition = value; }
+    public int GridWidth            { get => _gridWidth; set => _gridWidth = value; }
+    public int GridHeight           { get => _gridHeight; set => _gridHeight = value; }
     #endregion
 
     public void GenerateCells(int width, int height, float cellSize,
@@ -47,15 +56,22 @@ public class GridXY_v2
         return new Vector3(x, y) * _cellSize + _originalPosition;
     }
 
-    public void GetXY(Vector2 mousePoistion, out int x, out int y)
+    public void GetCellXY(RectTransform rectTransform, Vector2 mousePoistion, out int x, out int y)
     {
-        Vector2 localPosition = Vector2.zero;
-        localPosition.x =  mousePoistion.x - _originalPosition.x;
-        localPosition.y = mousePoistion.y - _originalPosition.y;
-
-        Debug.Log(_originalPosition);
+        Vector2 localPosition = Vector2.zero;      
+        
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePoistion, null, out localPosition);
 
         x = Mathf.FloorToInt(localPosition.x / _cellSize);
-        y = Mathf.FloorToInt(localPosition.y / _cellSize );
+        y = Mathf.FloorToInt(localPosition.y / _cellSize);
+    }
+
+    // Return true if cell is OutOfBounds
+    private bool OutOfBoundsCheck(Vector2Int cellPosXY)
+    {
+        if (cellPosXY.x >= _gridWidth || cellPosXY.y >= _gridHeight || cellPosXY.x < 0 || cellPosXY.y < 0)
+            return false;
+
+        return true;
     }
 }
