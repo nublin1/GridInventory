@@ -68,6 +68,9 @@ namespace GridInventory
         {
             DefineTargetCollection();
 
+            Vector2Int pos_OnGrid = targetItemCollection.GetCellXY(Input.mousePosition);
+            //Debug.Log(pos_OnGrid);
+
             if (Input.GetMouseButtonDown(0))
             {
                 InventoryItem item = null;

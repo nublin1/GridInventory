@@ -32,12 +32,12 @@ public class InventoryItem : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.deltaTime * 15.0f);
 
     }
-    public static InventoryItem CreateItem(Transform parentForItems, InventoryItemData _itemData, Dir dir, List<Vector2Int> gridPositions, Vector3 worldPosition, float _cellSize)
+    public static InventoryItem CreateItem(Transform parentForItems, InventoryItemData _itemData, Dir dir, List<Vector2Int> gridPositions, Vector3 worldPosition, Vector2 _cellSize)
     {
         GameObject gameObject = new GameObject(_itemData.ItemName);
         gameObject.transform.parent = parentForItems;
         var rectCell = gameObject.AddComponent<RectTransform>();
-        rectCell.sizeDelta = new Vector2(_cellSize * _itemData.Width, _cellSize * _itemData.Height);
+        rectCell.sizeDelta = new Vector2(_cellSize.x * _itemData.Width, _cellSize.y * _itemData.Height);
         rectCell.anchorMin = new Vector2(0f, 1f);
         rectCell.anchorMax = new Vector2(0f, 1f);
         rectCell.pivot = new Vector2(0f, 1f);

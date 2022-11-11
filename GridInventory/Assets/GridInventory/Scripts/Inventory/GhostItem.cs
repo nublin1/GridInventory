@@ -31,10 +31,12 @@ public class GhostItem : MonoBehaviour
             GetComponent<Image>().enabled = true;
 
             Vector2Int pos_OnGrid = itemsCollection.GetCellXY(Input.mousePosition);
+            //Debug.Log(pos_OnGrid);
 
             Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
-            Vector3 pos = itemsCollection.GetWorldPosition(pos_OnGrid.x, pos_OnGrid.y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) *
-                (itemsCollection.CellSize);
+            var worldPos = itemsCollection.GetWorldPosition(pos_OnGrid.x, pos_OnGrid.y);
+            var pos = worldPos + new Vector3(rotationOffset.x * itemsCollection.GetScaledCell().x,
+                rotationOffset.y * itemsCollection.GetScaledCell().y, 0);
             transform.position = pos;
             transform.rotation = ghost_InventoryItem.transform.rotation;
         }
