@@ -131,7 +131,7 @@ namespace GridInventory
                 }
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (iteract_InventoryItem == null)
                     return;

@@ -7,9 +7,10 @@ using UnityEngine;
 
 public class ItemsCollection : MonoBehaviour
 {
-    [SerializeField] private int gridWidth;
-    [SerializeField] private int gridHeight;
+    [SerializeField]private int gridWidth;
+    [SerializeField]private int gridHeight;
     [SerializeField] private Vector2 cellSize = new Vector2(25, 25);
+
     [SerializeField] private Transform parentForItems;
     [SerializeField] List<InventoryItemData> items = new List<InventoryItemData>();
 
@@ -21,7 +22,7 @@ public class ItemsCollection : MonoBehaviour
     public Vector3 OriginalPosition { get => _originalPosition; }
     public int GridWidth { get => gridWidth; set => gridWidth = value; }
     public int GridHeight { get => gridHeight; set => gridHeight = value; }
-    public Vector2 CellSize { get => cellSize; }
+    public Vector2 CellSize { get => cellSize; set => cellSize = value; }
     public Vector3 ScaleFactor { get => scaleFactor; }
     #endregion
 
@@ -89,7 +90,7 @@ public class ItemsCollection : MonoBehaviour
             var localPos = GetLocalPosition(positions[0].x, positions[0].y);
             var position = localPos + new Vector3(rotationOffset.x * GetScaledCell().x, rotationOffset.y * GetScaledCell().y, 0);
 
-            var item = InventoryItem.CreateItem(parentForItems, itemData, dir, positions, position, CellSize);
+            var item = InventoryItem.CreateItem(parentForItems, itemData, dir, positions, position, GetScaledCell());
             PutItemToCells(item);
 
             OnAddItem?.Invoke();
