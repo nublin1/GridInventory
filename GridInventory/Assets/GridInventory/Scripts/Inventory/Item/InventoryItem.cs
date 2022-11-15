@@ -8,22 +8,17 @@ public class InventoryItem : MonoBehaviour
 {
     private InventoryItemData itemData;
     private Dir dir = Dir.Up;
-    private List<Vector2Int> gridPositionList;
-
-
-    //
-
-    private RectTransform panelRectTransform;
+    private List<Vector2Int> gridPositionList;  
 
     #region getters
     public InventoryItemData ItemData { get => itemData; }
     public Dir Dir { get => dir; set => dir = value; }
-    public List<Vector2Int> GridPostionList { get => gridPositionList; set => gridPositionList = value; }
+    public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     #endregion
 
     private void Start()
     {
-        panelRectTransform = transform as RectTransform;
+       
     }
 
     private void LateUpdate()

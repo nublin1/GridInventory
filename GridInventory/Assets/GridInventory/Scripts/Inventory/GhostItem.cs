@@ -25,24 +25,24 @@ public class GhostItem : MonoBehaviour
 
     void Update()
     {
-        var isValidPosition = itemsCollection.IsValidPosition(Input.mousePosition, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, ghost_InventoryItem.Dir);
-        if (isValidPosition)
-        {
-            GetComponent<Image>().enabled = true;
-
-            Vector2Int pos_OnGrid = itemsCollection.GetCellXY(Input.mousePosition);
-            //Debug.Log(pos_OnGrid);
-
-            Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
-            var worldPos = itemsCollection.GetWorldPosition(pos_OnGrid.x, pos_OnGrid.y);
-            var pos = worldPos + new Vector3(rotationOffset.x * itemsCollection.GetScaledCell().x,
-                rotationOffset.y * itemsCollection.GetScaledCell().y, 0);
-            transform.position = pos;
-            transform.rotation = ghost_InventoryItem.transform.rotation;
-        }
-        else
-        {
-            GetComponent<Image>().enabled = false;
-        }
+        //var isValidPosition = itemsCollection.IsValidPosition(Input.mousePosition, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, ghost_InventoryItem.Dir);
+        //if (isValidPosition)
+        //{
+        //    GetComponent<Image>().enabled = true;
+        //
+        //    Vector2Int pos_OnGrid = itemsCollection.GetCellXY(Input.mousePosition);
+        //    //Debug.Log(pos_OnGrid);
+        //
+        //    Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
+        //    var worldPos = itemsCollection.GetWorldPosition(pos_OnGrid.x, pos_OnGrid.y);
+        //    var pos = worldPos + new Vector3(rotationOffset.x * itemsCollection.GetScaledCell().x,
+        //        rotationOffset.y * itemsCollection.GetScaledCell().y, 0);
+        //    transform.position = pos;
+        //    transform.rotation = ghost_InventoryItem.transform.rotation;
+        //}
+        //else
+        //{
+        //    GetComponent<Image>().enabled = false;
+        //}
     }
 }

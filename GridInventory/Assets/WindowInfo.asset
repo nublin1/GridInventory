@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: WindowInfo
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::WindowInfo
+  sizeX: 6
+  sizeY: 4
+  cellSize: {x: 25, y: 25}
+  second: 0
+  cellColor: {r: 0, g: 0, b: 0, a: 1}
+  cellImage: {fileID: 2800000, guid: 69f7c0da7b8f5984fa8b67609e363ae6, type: 3}

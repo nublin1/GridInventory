@@ -5,16 +5,28 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public class WindowInfo : ScriptableObject
+{
+    public int sizeX, sizeY;
+    public Vector2Int cellSize = new Vector2Int(50, 50);
+    public float second;
+
+    public Color cellColor = Color.black;
+    public Texture cellImage;
+}
+
 public class CreateItemCollection : EditorWindow
 {
-    private static CreateItemCollection info;
+    private static WindowInfo info;
+    private SerializedObject windowInfoSO;
 
     //Inventory
-    private int SizeX = 5, SizeY = 5;
+    private SerializedProperty sizeX, sizeY;
 
-    private Vector2Int CellSize = new Vector2Int(50, 50);
-    private Color cellColor = Color.black;
-    private Texture cellImage;
+    private SerializedProperty cellSize;
+    private SerializedProperty cellColor;
+    private SerializedProperty cellImage;
 
     private Color inventoryBackgroundColor = Color.white;
     private Sprite inventoryBackground;
@@ -33,16 +45,15 @@ public class CreateItemCollection : EditorWindow
     private Sprite viewportSprite;
 
     //
-    public int tabIndex = 0;
-    //public string[] tabHeaders = new string[] { "Inventory", "Loot window", "Equipment panels" };
+    public int tabIndex = 0;    
     public string[] tabHeaders = new string[] { "Inventory" };
 
-    [MenuItem("Tools/My Custom Editor")]
+    [MenuItem("Tools/Create new inventory")]
     static void Init()
     {
         CreateItemCollection window = (CreateItemCollection)EditorWindow.GetWindow(typeof(CreateItemCollection));
         window.Show();
-        window.titleContent = new GUIContent("My Custom Editor");
+        window.titleContent = new GUIContent("Inventory Editor");
 
 
         // Limit size of the window
@@ -53,17 +64,25 @@ public class CreateItemCollection : EditorWindow
     [InitializeOnLoadMethod]
     private static void OnLoad()
     {
-        info = AssetDatabase.LoadAssetAtPath<CreateItemCollection>("Assets/SO.asset");
+        info = AssetDatabase.LoadAssetAtPath<WindowInfo>("Assets/WindowInfo.asset");
         if (!info)
         {
-            info = CreateInstance<CreateItemCollection>();
-            AssetDatabase.CreateAsset(info, "Assets/SO.asset");
+            info = CreateInstance<WindowInfo>();
+            AssetDatabase.CreateAsset(info, "Assets/WindowInfo.asset");
             AssetDatabase.Refresh();
         }
     }
 
     private void CreateGUI()
     {
+        windowInfoSO = new SerializedObject(info);
+        sizeX = windowInfoSO.FindProperty("sizeX");
+        sizeY = windowInfoSO.FindProperty("sizeY");
+        cellSize = windowInfoSO.FindProperty("cellSize");
+
+        cellColor = windowInfoSO.FindProperty("cellColor");
+        cellImage = windowInfoSO.FindProperty("cellImage");
+
         //inventoryBackground = EditorGUIUtility.Load("Assets/GridInventory/GUI/Square.png") as Sprite;
         inventoryBackground = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square.png", typeof(Sprite));
         containerBackgroundOutline = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
@@ -73,16 +92,18 @@ public class CreateItemCollection : EditorWindow
 
     void OnGUI()
     {
+        windowInfoSO.Update();
+
         tabIndex = GUILayout.Toolbar(tabIndex, tabHeaders);
 
         if (tabIndex == 0)
-        {
-            SizeX = EditorGUILayout.IntField("Container Horizontal size", SizeX, GUILayout.ExpandWidth(false));
-            SizeY = EditorGUILayout.IntField("Container Vertical size", SizeY, GUILayout.ExpandWidth(false));
+        {      
+            EditorGUILayout.PropertyField(sizeX, GUILayout.ExpandWidth(false));
+            EditorGUILayout.PropertyField(sizeY, GUILayout.ExpandWidth(false));
 
-            CellSize = EditorGUILayout.Vector2IntField("Container Cell Size", CellSize, GUILayout.MaxWidth(200));
-            cellColor = EditorGUILayout.ColorField("Cell color", cellColor);
-            cellImage = (Texture)EditorGUILayout.ObjectField("CellImage ", cellImage, typeof(Texture), false);
+            EditorGUILayout.PropertyField(cellSize, GUILayout.MaxWidth(200));
+            EditorGUILayout.PropertyField(cellColor);
+            EditorGUILayout.PropertyField(cellImage, false);
 
             EditorGUILayout.Space();
 
@@ -109,6 +130,8 @@ public class CreateItemCollection : EditorWindow
             {
                 BuildInventory();
             }
+
+            windowInfoSO.ApplyModifiedProperties();
         }
     }
 
@@ -127,7 +150,7 @@ public class CreateItemCollection : EditorWindow
         container.transform.localPosition = Vector3.zero;
 
         var containerRect = container.AddComponent<RectTransform>();
-        containerRect.sizeDelta = new Vector2(CellSize.x * SizeX, CellSize.y * SizeY);
+        containerRect.sizeDelta = new Vector2(info.cellSize.x * info.sizeX, info.cellSize.y * info.sizeY);
 
         // Background
         var background = new GameObject("background");
@@ -245,12 +268,12 @@ public class CreateItemCollection : EditorWindow
         gridImageRect.anchorMax = new Vector2(0, 1);
         gridImageRect.pivot = new Vector2(0, 1);
         gridImageRect.transform.localPosition = Vector3.zero;
-        gridImageRect.sizeDelta = new Vector2(SizeX * CellSize.x, SizeY * CellSize.y);
+        gridImageRect.sizeDelta = new Vector2(info.sizeX * info.cellSize.x, info.sizeY * info.cellSize.y);
 
         var gridTexture = gridImage.AddComponent<RawImage>();
-        gridTexture.color = cellColor;
-        gridTexture.texture = cellImage;
-        gridTexture.uvRect = new Rect(0, 0, SizeX, SizeY);
+        gridTexture.color = info.cellColor;
+        gridTexture.texture = info.cellImage;
+        gridTexture.uvRect = new Rect(0, 0, info.sizeX, info.sizeY);
 
         // ItemsContainer
         var ItemsContainer = new GameObject("ItemsContainer");
@@ -266,27 +289,28 @@ public class CreateItemCollection : EditorWindow
 
         // ItemCollection
         var itemCollection = container.AddComponent<ItemsCollection>();
-        itemCollection.GridWidth = SizeX;
-        itemCollection.GridHeight = SizeY;
-        itemCollection.CellSize = CellSize;
+        itemCollection.GridWidth = info.sizeX;
+        itemCollection.GridHeight = info.sizeY;
+        itemCollection.CellSize = info.cellSize;
+        itemCollection.ContainerTransform = ItemsContainer.transform;
 
     }
 
     private bool CheckCompleteness()
     {
-        if (SizeX < 1 || SizeY < 1)
+        if (info.sizeX < 1 || info.sizeY < 1)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please check container size, value can't be less 1", "Continue");
             return false;
         }
 
-        if (CellSize.x < 1 || CellSize.y < 1)
+        if (info.cellSize.x < 1 || info.cellSize.y < 1)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please check cell size, value can't be less 1", "Continue");
             return false;
         }
 
-        if (cellImage == null)
+        if (info.cellImage == null)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please attach sprite to cell image field. Otherwise, inventory cells will be invisible", "Continue");
             return false;
