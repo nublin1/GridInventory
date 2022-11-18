@@ -1,0 +1,917 @@
+Using pre-set license
+Built from '2021.3/release' branch; Version is '2021.3.12f1 (8af3c3e441b1) revision 9106371'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19043) 64bit Professional' Language: 'ru' Physical Memory: 16334 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+F:\Unity\Unity Installs\2021.3.12f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+F:/GitHub/Unity/TPS/GridInventory/GridInventory
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+54237
+Successfully changed project path to: F:/GitHub/Unity/TPS/GridInventory/GridInventory
+F:/GitHub/Unity/TPS/GridInventory/GridInventory
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 67.26 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.12f1 (8af3c3e441b1)
+[Subsystems] Discovering subsystems at path F:/Unity/Unity Installs/2021.3.12f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path F:/GitHub/Unity/TPS/GridInventory/GridInventory/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 3060 Ti (ID=0x2489)
+    Vendor:   NVIDIA
+    VRAM:     8050 MB
+    Driver:   31.0.15.1659
+Initialize mono
+Mono path[0] = 'F:/Unity/Unity Installs/2021.3.12f1/Editor/Data/Managed'
+Mono path[1] = 'F:/Unity/Unity Installs/2021.3.12f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'F:/Unity/Unity Installs/2021.3.12f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56408
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: F:/Unity/Unity Installs/2021.3.12f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.002717 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 69.46 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.538 seconds
+Domain Reload Profiling:
+	ReloadAssembly (538ms)
+		BeginReloadAssembly (75ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (378ms)
+			LoadAssemblies (74ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (86ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (28ms)
+			SetupLoadedEditorAssemblies (223ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (6ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (70ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (108ms)
+				ProcessInitializeOnLoadMethodAttributes (38ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.005184 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.63 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.903 seconds
+Domain Reload Profiling:
+	ReloadAssembly (904ms)
+		BeginReloadAssembly (110ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (18ms)
+		EndReloadAssembly (698ms)
+			LoadAssemblies (93ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (222ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (49ms)
+			SetupLoadedEditorAssemblies (321ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (74ms)
+				ProcessInitializeOnLoadAttributes (209ms)
+				ProcessInitializeOnLoadMethodAttributes (30ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 0.61 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3552 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 26 unused Assets / (56.1 KB). Loaded Objects now: 4013.
+Memory consumption went from 122.9 MB to 122.8 MB.
+Total: 2.821600 ms (FindLiveObjects: 0.303000 ms CreateObjectMapping: 0.090200 ms MarkObjects: 2.336700 ms  DeleteObjects: 0.090700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 33364.732991 seconds.
+  path: Assets/DragPanel.cs
+  artifactKey: Guid(add1c7019cd79e74e97d127d5921b2ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DragPanel.cs using Guid(add1c7019cd79e74e97d127d5921b2ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd987d25823020b5a7eeedd74f36d2154') in 0.033969 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004637 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.69 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.904 seconds
+Domain Reload Profiling:
+	ReloadAssembly (905ms)
+		BeginReloadAssembly (134ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (6ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (34ms)
+		EndReloadAssembly (691ms)
+			LoadAssemblies (95ms)
+			RebuildTransferFunctionScriptingTraits (1ms)
+			SetupTypeCache (255ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (39ms)
+			SetupLoadedEditorAssemblies (282ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (178ms)
+				ProcessInitializeOnLoadMethodAttributes (33ms)
+				AfterProcessingInitializeOnLoad (5ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (9ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.69 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3532 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.7 KB). Loaded Objects now: 4017.
+Memory consumption went from 121.2 MB to 121.2 MB.
+Total: 2.578000 ms (FindLiveObjects: 0.256100 ms CreateObjectMapping: 0.082500 ms MarkObjects: 2.207500 ms  DeleteObjects: 0.031200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013380 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.64 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.894 seconds
+Domain Reload Profiling:
+	ReloadAssembly (895ms)
+		BeginReloadAssembly (131ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (34ms)
+		EndReloadAssembly (682ms)
+			LoadAssemblies (89ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (240ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (41ms)
+			SetupLoadedEditorAssemblies (290ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (189ms)
+				ProcessInitializeOnLoadMethodAttributes (32ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.58 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3532 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.6 KB). Loaded Objects now: 4021.
+Memory consumption went from 121.3 MB to 121.2 MB.
+Total: 2.651000 ms (FindLiveObjects: 0.287400 ms CreateObjectMapping: 0.081500 ms MarkObjects: 2.254000 ms  DeleteObjects: 0.027300 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 96.188019 seconds.
+  path: Assets/GridInventory/Scripts/Inventory/Item/IIsContainer.cs
+  artifactKey: Guid(2f46d6b460e148944a3747115248b837) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/GridInventory/Scripts/Inventory/Item/IIsContainer.cs using Guid(2f46d6b460e148944a3747115248b837) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aad7e59e5f64c75dcd9636916cc3e8cc') in 0.011218 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004584 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.64 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.872 seconds
+Domain Reload Profiling:
+	ReloadAssembly (873ms)
+		BeginReloadAssembly (131ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (6ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (33ms)
+		EndReloadAssembly (657ms)
+			LoadAssemblies (93ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (230ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (38ms)
+			SetupLoadedEditorAssemblies (279ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (179ms)
+				ProcessInitializeOnLoadMethodAttributes (30ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.67 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3533 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.6 KB). Loaded Objects now: 4026.
+Memory consumption went from 121.3 MB to 121.3 MB.
+Total: 2.567200 ms (FindLiveObjects: 0.257300 ms CreateObjectMapping: 0.080300 ms MarkObjects: 2.196300 ms  DeleteObjects: 0.032200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004884 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.64 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.893 seconds
+Domain Reload Profiling:
+	ReloadAssembly (894ms)
+		BeginReloadAssembly (139ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (40ms)
+		EndReloadAssembly (674ms)
+			LoadAssemblies (91ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (248ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (40ms)
+			SetupLoadedEditorAssemblies (280ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (179ms)
+				ProcessInitializeOnLoadMethodAttributes (31ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.56 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3533 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.6 KB). Loaded Objects now: 4030.
+Memory consumption went from 121.3 MB to 121.3 MB.
+Total: 2.657800 ms (FindLiveObjects: 0.260200 ms CreateObjectMapping: 0.087700 ms MarkObjects: 2.279900 ms  DeleteObjects: 0.029200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004851 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.67 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.893 seconds
+Domain Reload Profiling:
+	ReloadAssembly (893ms)
+		BeginReloadAssembly (140ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (34ms)
+		EndReloadAssembly (670ms)
+			LoadAssemblies (103ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (219ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (40ms)
+			SetupLoadedEditorAssemblies (297ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (62ms)
+				ProcessInitializeOnLoadAttributes (191ms)
+				ProcessInitializeOnLoadMethodAttributes (30ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.83 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3533 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.6 KB). Loaded Objects now: 4034.
+Memory consumption went from 121.3 MB to 121.3 MB.
+Total: 2.731500 ms (FindLiveObjects: 0.270800 ms CreateObjectMapping: 0.081900 ms MarkObjects: 2.348800 ms  DeleteObjects: 0.028900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 1875.248387 seconds.
+  path: Assets/DANKIE
+  artifactKey: Guid(c26fc3dec08a4884eb95b697ed5e4e0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE using Guid(c26fc3dec08a4884eb95b697ed5e4e0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1f10eb45c5416d49aa7fbc71ab596b83') in 0.010336 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 58.112386 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks
+  artifactKey: Guid(2fbd59addeeb06942b3c807bc6f8883a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks using Guid(2fbd59addeeb06942b3c807bc6f8883a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e8028930d64d03af0f0995524e62458b') in 0.005807 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.821299 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons
+  artifactKey: Guid(262c1755d39f77847b82da837c1d1e9f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons using Guid(262c1755d39f77847b82da837c1d1e9f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a52670d60ab6504047ba2fb36fbe9ac5') in 0.005264 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.945836 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons
+  artifactKey: Guid(b5c992d7b27a2db4aa15b7868389beff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons using Guid(b5c992d7b27a2db4aa15b7868389beff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e38686e2d7c99725d59b0d5d4830b015') in 0.005389 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 4.267550 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites
+  artifactKey: Guid(68e21040fc2377548a3df506d90a15fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites using Guid(68e21040fc2377548a3df506d90a15fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e2d3a1f197bdaf6bd3af0a030d05e27') in 0.005196 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.879069 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled
+  artifactKey: Guid(d4aee8073358ca348be200e7052b9867) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled using Guid(d4aee8073358ca348be200e7052b9867) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3949a00c74743c5613ff8e73e331bad8') in 0.005573 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.054432 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-AssaultRifle.png
+  artifactKey: Guid(f59aa6b06242a4e4e90f8c5ed9560ff6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-AssaultRifle.png using Guid(f59aa6b06242a4e4e90f8c5ed9560ff6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b89b027961fcd9044c14d5de9c2f5a08') in 0.115157 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Rifle.png
+  artifactKey: Guid(9411272ddaed09a48bc25ddac0a6c56d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Rifle.png using Guid(9411272ddaed09a48bc25ddac0a6c56d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd3df06f43d633c208cc7a485430c76bc') in 0.033752 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-SMG.png
+  artifactKey: Guid(5331d3ef704e31f4991c2db49a49390a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-SMG.png using Guid(5331d3ef704e31f4991c2db49a49390a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42ad865435f5566ef2cf7ca8137d4562') in 0.032789 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000195 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Grenade.png
+  artifactKey: Guid(1f3e56584a9357248b105d4aa53e12a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Grenade.png using Guid(1f3e56584a9357248b105d4aa53e12a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b793a896b669872f28fa82f11e25f59a') in 0.028976 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-FlameThrower.png
+  artifactKey: Guid(388aa7717c774d342bf37ade8abca280) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-FlameThrower.png using Guid(388aa7717c774d342bf37ade8abca280) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '615e0d2bfbaaeecfc770ac54a115a11e') in 0.061201 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Magnum.png
+  artifactKey: Guid(d2084b8ece52fe646bd3afca8d8fac42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Magnum.png using Guid(d2084b8ece52fe646bd3afca8d8fac42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acca7d672425ecd0e8bcf57ac34ecdbc') in 0.032617 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Pistol.png
+  artifactKey: Guid(1f8934c21d0cb18419f788a463d77b5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Styled/Styled-Pistol.png using Guid(1f8934c21d0cb18419f788a463d77b5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b114c3bc3578d5c2690a2c9de1009bdb') in 0.032826 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 16.328593 seconds.
+  path: Assets/GridInventory/InventoryItems/New InventoryItem.asset
+  artifactKey: Guid(ca82d1b908b87e247b77d954af681dee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/GridInventory/InventoryItems/New InventoryItem.asset using Guid(ca82d1b908b87e247b77d954af681dee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '44f6bf07b8232ceb35665e73db842834') in 0.008174 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 8.844748 seconds.
+  path: Assets/GridInventory/InventoryItems/Pistol.asset
+  artifactKey: Guid(e7b1fd30009b5584e91f13e9750657e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/GridInventory/InventoryItems/Pistol.asset using Guid(e7b1fd30009b5584e91f13e9750657e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b5a554a22a67ad5dd72e2eac29a8f35a') in 0.006071 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 7.143400 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Pixel-Dark.png
+  artifactKey: Guid(af0ac6a4a4e6080438fb870018eb6f85) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Pixel-Dark.png using Guid(af0ac6a4a4e6080438fb870018eb6f85) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '25df2699ca0a0a666bb8f4e97dbd7d45') in 0.055437 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Style-Light.png
+  artifactKey: Guid(b98185657e1198743ba54d2a60e8212d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Style-Light.png using Guid(b98185657e1198743ba54d2a60e8212d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b725b81faff541fb4ad927d7f1239bb1') in 0.017295 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-WarFare.png
+  artifactKey: Guid(ad2a8122c46268a4fb14ae9e735c02d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-WarFare.png using Guid(ad2a8122c46268a4fb14ae9e735c02d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '219766611f30d0295d3ab16f108e7678') in 0.021458 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Style-Dark.png
+  artifactKey: Guid(52799d5dbbca29c48ae91145e01c7a68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Style-Dark.png using Guid(52799d5dbbca29c48ae91145e01c7a68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb4fcc6234e606ffe9f428f1ca575ba3') in 0.016856 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-AssaultRifle.png
+  artifactKey: Guid(53ef668badc38d24dae5733fb696f6d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-AssaultRifle.png using Guid(53ef668badc38d24dae5733fb696f6d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a0159666aa629e4defb697b5294e01a9') in 0.030493 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Grenade.png
+  artifactKey: Guid(530b907458f419240b90d8c6e3855e5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Grenade.png using Guid(530b907458f419240b90d8c6e3855e5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c5652624dfb75576ac2b4b02a088be1') in 0.021262 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Rifle.png
+  artifactKey: Guid(fa0abfdb66fc16e4da2799735607de16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Rifle.png using Guid(fa0abfdb66fc16e4da2799735607de16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6b8239363d22c77c98937c36a9d3d99a') in 0.029965 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Magnum.png
+  artifactKey: Guid(8082b919a33b6f44e9bd57f56f765ef2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Magnum.png using Guid(8082b919a33b6f44e9bd57f56f765ef2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea6c746bc4398f0a70c24df6759a453c') in 0.030170 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Pistol.png
+  artifactKey: Guid(99b63c4a223085843a45df31a94dc215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-Pistol.png using Guid(99b63c4a223085843a45df31a94dc215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e74c7ee99217ec0f3926f106245be20') in 0.029420 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Pixel-Light.png
+  artifactKey: Guid(0ca3f805648d3744294ceb57f9012304) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/_Shared/Logos/Logo-Pixel-Light.png using Guid(0ca3f805648d3744294ceb57f9012304) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13f661e2d92ac524fe2cbcf38d6132c2') in 0.019473 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-SMG.png
+  artifactKey: Guid(58c00ff8ac5fbbd4fa9b067f29ee42fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-SMG.png using Guid(58c00ff8ac5fbbd4fa9b067f29ee42fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e1678b8d65f23fd08228e538f59382d') in 0.030320 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-FlameThrower.png
+  artifactKey: Guid(12acc10a4d4953d43a01206f7cf84ae4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/DANKIE/Ultimate2DWeaponPacks/Ultimate2DModernWeapons/Volume1 - Warfare Weapons/Sprites/Pixel/Pixel-FlameThrower.png using Guid(12acc10a4d4953d43a01206f7cf84ae4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb5623c0e32eb94caede0b32b4ef7f6e') in 0.044402 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004700 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.77 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.902 seconds
+Domain Reload Profiling:
+	ReloadAssembly (903ms)
+		BeginReloadAssembly (131ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (35ms)
+		EndReloadAssembly (693ms)
+			LoadAssemblies (88ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (220ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (44ms)
+			SetupLoadedEditorAssemblies (314ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (62ms)
+				ProcessInitializeOnLoadAttributes (204ms)
+				ProcessInitializeOnLoadMethodAttributes (34ms)
+				AfterProcessingInitializeOnLoad (3ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.74 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3533 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 19 unused Assets / (25.6 KB). Loaded Objects now: 4057.
+Memory consumption went from 125.7 MB to 125.7 MB.
+Total: 2.940000 ms (FindLiveObjects: 0.324900 ms CreateObjectMapping: 0.092400 ms MarkObjects: 2.487900 ms  DeleteObjects: 0.033900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004993 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image F:\GitHub\Unity\TPS\GridInventory\GridInventory\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.66 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+CreateSerializedAsset is not supported while importing out-of-process
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+CreateItemCollection:OnLoad () (at Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs:87)
+System.Reflection.RuntimeMethodInfo:Invoke (object,System.Reflection.BindingFlags,System.Reflection.Binder,object[],System.Globalization.CultureInfo)
+System.Reflection.MethodBase:Invoke (object,object[])
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+[Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs line 87]
+
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> UnityEngine.UnityException: Creating asset at path Assets/WindowInfo.asset failed.
+  at (wrapper managed-to-native) UnityEditor.AssetDatabase.CreateAsset(UnityEngine.Object,string)
+  at CreateItemCollection.OnLoad () [0x0003b] in F:\GitHub\Unity\TPS\GridInventory\GridInventory\Assets\GridInventory\Scripts\Editor\Tools\CreateItemCollection.cs:87 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <c9d3ffd4b98649ee9989e1908eaca019>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x000a5] in <5e26277f966d4f80afa5d51573eba699>:0 
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+- Completed reload, in  0.907 seconds
+Domain Reload Profiling:
+	ReloadAssembly (908ms)
+		BeginReloadAssembly (127ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (33ms)
+		EndReloadAssembly (701ms)
+			LoadAssemblies (90ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (231ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (43ms)
+			SetupLoadedEditorAssemblies (306ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (59ms)
+				ProcessInitializeOnLoadAttributes (193ms)
+				ProcessInitializeOnLoadMethodAttributes (38ms)
+				AfterProcessingInitializeOnLoad (4ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (9ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 1.73 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3533 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 18 unused Assets / (24.7 KB). Loaded Objects now: 4061.
+Memory consumption went from 125.8 MB to 125.7 MB.
+Total: 2.731300 ms (FindLiveObjects: 0.333300 ms CreateObjectMapping: 0.084300 ms MarkObjects: 2.288200 ms  DeleteObjects: 0.024500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 

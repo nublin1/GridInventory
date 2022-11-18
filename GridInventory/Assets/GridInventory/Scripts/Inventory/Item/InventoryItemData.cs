@@ -1,4 +1,5 @@
 using UnityEngine;
+using NaughtyAttributes;
 
 /*
 * IileName: имя по умолчанию при создании ассета.
@@ -11,8 +12,6 @@ namespace GridInventory
     [CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
     public class InventoryItemData : ScriptableObject
     {
-       
-
         [SerializeField]
         private string itemName;
         [SerializeField]
@@ -21,6 +20,13 @@ namespace GridInventory
         private int width;
         [SerializeField]
         private int height;
+
+        [SerializeField]
+        private bool isContainer;
+
+        [ShowIf("isContainer")]
+        [SerializeField]
+        private Transform itemContainer;
 
         public string ItemName { get => itemName; }
         public Sprite Icon { get => icon; }

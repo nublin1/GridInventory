@@ -5,44 +5,42 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GhostItem : MonoBehaviour
-{
-    RectTransform rectSlots;
+{    
     ItemsCollection itemsCollection;
+    [SerializeField] private Vector2Int stareCell;
 
-    InventoryItem ghost_InventoryItem;
+    [SerializeField] private InventoryItem ghost_InventoryItem;
 
-    public ItemsCollection Collection { get => itemsCollection; set => itemsCollection = value; }
-    public RectTransform RectSlots { set => rectSlots = value; }
-    public InventoryItem Ghost_InventoryItem { get => ghost_InventoryItem; set => ghost_InventoryItem = value; }
-
-    CanvasScaler canvasScaler;
-
-    private void Awake()
-    {
-        canvasScaler = GetComponentInParent<CanvasScaler>();
-    }
+    public ItemsCollection Collection { get => itemsCollection; set => itemsCollection = value; }   
+    public InventoryItem Ghost_InventoryItem { set => ghost_InventoryItem = value; }
+    public Vector2Int StareCell {set => stareCell = value; }     
 
 
     void Update()
     {
-        //var isValidPosition = itemsCollection.IsValidPosition(Input.mousePosition, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, ghost_InventoryItem.Dir);
-        //if (isValidPosition)
-        //{
-        //    GetComponent<Image>().enabled = true;
-        //
-        //    Vector2Int pos_OnGrid = itemsCollection.GetCellXY(Input.mousePosition);
-        //    //Debug.Log(pos_OnGrid);
-        //
-        //    Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
-        //    var worldPos = itemsCollection.GetWorldPosition(pos_OnGrid.x, pos_OnGrid.y);
-        //    var pos = worldPos + new Vector3(rotationOffset.x * itemsCollection.GetScaledCell().x,
-        //        rotationOffset.y * itemsCollection.GetScaledCell().y, 0);
-        //    transform.position = pos;
-        //    transform.rotation = ghost_InventoryItem.transform.rotation;
-        //}
-        //else
-        //{
-        //    GetComponent<Image>().enabled = false;
-        //}
+        if (!stareCell.Equals(new Vector2Int(-1, -1)) && ghost_InventoryItem != null)
+        {
+            GetComponent<Image>().enabled = true;
+
+            var positions = InventoryItem.CalculatePositionList(ghost_InventoryItem.Dir, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, stareCell);
+            var placeble = itemsCollection.IsCanPlace(positions);
+            if (placeble)
+            {
+                GetComponent<Image>().sprite = ghost_InventoryItem.GetComponent<Image>().sprite;
+
+                Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
+                var worldPos = itemsCollection.GetWorldPosition(positions[0].x, positions[0].y);
+                var pos = worldPos + new Vector3(rotationOffset.x * itemsCollection.GetScaledCell().x,
+                    rotationOffset.y * itemsCollection.GetScaledCell().y, 0);
+                transform.position = pos;
+                transform.rotation = ghost_InventoryItem.transform.rotation;
+            }
+            //Debug.Log(pos_OnGrid);            
+        }
+        else
+        {
+            GetComponent<Image>().enabled = false;
+            GetComponent<Image>().sprite = null;
+        }
     }
 }

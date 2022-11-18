@@ -43,6 +43,12 @@ public class InventoryItem : MonoBehaviour
 
         var image = gameObject.AddComponent<Image>();
         image.sprite = _itemData.Icon;
+        image.raycastTarget = false;
+
+        var collider2d = gameObject.AddComponent<BoxCollider2D>();
+        collider2d.offset = new Vector2(_cellSize.x * _itemData.Width / 2, -_cellSize.y * _itemData.Height / 2);
+        collider2d.size = new Vector2 (_cellSize.x * _itemData.Width, _cellSize.y * _itemData.Height);
+        collider2d.isTrigger = true;
 
         InventoryItem item = gameObject.AddComponent<InventoryItem>();
         item.itemData = _itemData;
@@ -52,13 +58,6 @@ public class InventoryItem : MonoBehaviour
 
         return item;
     }
-
-
-
-    //private void OnMouseDown()
-    //{
-    //    Debug.Log(itemData.name);
-    //}
 
     public static List<Vector2Int> CalculatePositionList(Dir dir, int width, int height, Vector2Int pivotPosition)
     {
@@ -93,14 +92,13 @@ public class InventoryItem : MonoBehaviour
 
     public Vector2Int GetRotationOffset()
     {
-        switch (dir)
+        return dir switch
         {
-            default:
-            case Dir.Up: return new Vector2Int(0, 0);
-            case Dir.Left: return new Vector2Int(0, itemData.Width);
-            case Dir.Down: return new Vector2Int(itemData.Width, itemData.Height);
-            case Dir.Right: return new Vector2Int(itemData.Height, 0);
-        }
+            Dir.Left => new Vector2Int(0, itemData.Width),
+            Dir.Down => new Vector2Int(itemData.Width, itemData.Height),
+            Dir.Right => new Vector2Int(itemData.Height, 0),
+            _ => new Vector2Int(0, 0),
+        };
     }
 
     public static Vector2Int GetRotationOffset(Dir dir, int width, int height)

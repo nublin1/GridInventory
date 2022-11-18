@@ -16,3 +16,5 @@ MonoBehaviour:
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   width: 2
   height: 1
+  isContainer: 0
+  itemContainer: {fileID: 0}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -8,32 +6,43 @@ using UnityEngine.UI;
 
 public class WindowInfo : ScriptableObject
 {
+    public GameObject rootTransform;
+
     public int sizeX, sizeY;
     public Vector2Int cellSize = new Vector2Int(50, 50);
     public float second;
 
     public Color cellColor = Color.black;
     public Texture cellImage;
+
+    public Color inventoryBackgroundColor = Color.white;
+    public Sprite inventoryBackground;
+
+    public bool enableBackgroundOutline;
+    public Color backgroundOutlineColor = Color.black;
+    public Sprite backgroundOutlineSprite;    
 }
 
 public class CreateItemCollection : EditorWindow
 {
-    private static WindowInfo info;
+    private static WindowInfo windowInfo;
     private SerializedObject windowInfoSO;
 
     //Inventory
+    private SerializedProperty rootTranform;
+
     private SerializedProperty sizeX, sizeY;
 
     private SerializedProperty cellSize;
     private SerializedProperty cellColor;
     private SerializedProperty cellImage;
 
-    private Color inventoryBackgroundColor = Color.white;
-    private Sprite inventoryBackground;
+    private SerializedProperty inventoryBackgroundColor;
+    private SerializedProperty inventoryBackground;
 
-    private bool enableBackgroundOutline;
-    private Color BackgroundOutlineColor = Color.black;
-    private Sprite containerBackgroundOutline;
+    private SerializedProperty enableBackgroundOutline;
+    private SerializedProperty backgroundOutlineColor;
+    private SerializedProperty backgroundOutlineSprite;
 
     private bool enableHeader;
     private Vector2Int HeaderSize = new Vector2Int(0, 12);
@@ -44,8 +53,15 @@ public class CreateItemCollection : EditorWindow
 
     private Sprite viewportSprite;
 
+    private bool enabledVerticalScrollbar;
+    private Vector2Int sizeOfViewport;
+    private Sprite scrollBackground;
+    private Sprite handleSprite;
+
+    private float slidebarWidth = 10;
+
     //
-    public int tabIndex = 0;    
+    public int tabIndex = 0;
     public string[] tabHeaders = new string[] { "Inventory" };
 
     [MenuItem("Tools/Create new inventory")]
@@ -63,19 +79,27 @@ public class CreateItemCollection : EditorWindow
 
     [InitializeOnLoadMethod]
     private static void OnLoad()
-    {
-        info = AssetDatabase.LoadAssetAtPath<WindowInfo>("Assets/WindowInfo.asset");
-        if (!info)
+    {        
+        windowInfo = (WindowInfo)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(WindowInfo));
+        if (!windowInfo)
         {
-            info = CreateInstance<WindowInfo>();
-            AssetDatabase.CreateAsset(info, "Assets/WindowInfo.asset");
+            windowInfo = CreateInstance<WindowInfo>();
+            AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
             AssetDatabase.Refresh();
+            Debug.Log("Cr");
         }
     }
 
+    private void OnDestroy()
+    {
+        AssetDatabase.SaveAssets();
+    } 
+
     private void CreateGUI()
     {
-        windowInfoSO = new SerializedObject(info);
+        windowInfoSO = new SerializedObject(windowInfo);
+        rootTranform = windowInfoSO.FindProperty("rootTransform");
+
         sizeX = windowInfoSO.FindProperty("sizeX");
         sizeY = windowInfoSO.FindProperty("sizeY");
         cellSize = windowInfoSO.FindProperty("cellSize");
@@ -83,11 +107,19 @@ public class CreateItemCollection : EditorWindow
         cellColor = windowInfoSO.FindProperty("cellColor");
         cellImage = windowInfoSO.FindProperty("cellImage");
 
-        //inventoryBackground = EditorGUIUtility.Load("Assets/GridInventory/GUI/Square.png") as Sprite;
-        inventoryBackground = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square.png", typeof(Sprite));
-        containerBackgroundOutline = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
+        inventoryBackgroundColor = windowInfoSO.FindProperty("inventoryBackgroundColor");
+        inventoryBackground = windowInfoSO.FindProperty("inventoryBackground");
+
+        enableBackgroundOutline = windowInfoSO.FindProperty("enableBackgroundOutline");
+        backgroundOutlineColor = windowInfoSO.FindProperty("backgroundOutlineColor");
+        backgroundOutlineSprite = windowInfoSO.FindProperty("backgroundOutlineSprite");
+
+        windowInfo.inventoryBackground = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square.png", typeof(Sprite));
+        windowInfo.backgroundOutlineSprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
         headerBackGroundSprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Header.png", typeof(Sprite));
-        viewportSprite = (Sprite)AssetDatabase.LoadAssetAtPath("Resources/unity_builtin_extra/UIMask.png", typeof(Sprite));
+        viewportSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
+        scrollBackground = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
+        handleSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
     }
 
     void OnGUI()
@@ -97,7 +129,10 @@ public class CreateItemCollection : EditorWindow
         tabIndex = GUILayout.Toolbar(tabIndex, tabHeaders);
 
         if (tabIndex == 0)
-        {      
+        {
+            var rootTextInfo = "The object to which the inventory will be attached after creation. If empty, a new object will be created";
+            EditorGUILayout.PropertyField(rootTranform, new GUIContent("RootTranform (Optional)", rootTextInfo));
+
             EditorGUILayout.PropertyField(sizeX, GUILayout.ExpandWidth(false));
             EditorGUILayout.PropertyField(sizeY, GUILayout.ExpandWidth(false));
 
@@ -107,14 +142,14 @@ public class CreateItemCollection : EditorWindow
 
             EditorGUILayout.Space();
 
-            inventoryBackgroundColor = EditorGUILayout.ColorField("Background color", inventoryBackgroundColor);
-            inventoryBackground = (Sprite)EditorGUILayout.ObjectField("Container background", inventoryBackground, typeof(Sprite), false);
+            EditorGUILayout.PropertyField(inventoryBackgroundColor);
+            EditorGUILayout.PropertyField(inventoryBackground, false);
 
-            enableBackgroundOutline = EditorGUILayout.Toggle("Container background outline", enableBackgroundOutline);
-            if (enableBackgroundOutline)
+            EditorGUILayout.PropertyField(enableBackgroundOutline);
+            if (enableBackgroundOutline.boolValue)
             {
-                BackgroundOutlineColor = EditorGUILayout.ColorField("Background outline color", BackgroundOutlineColor);
-                containerBackgroundOutline = (Sprite)EditorGUILayout.ObjectField("Container background outline", containerBackgroundOutline, typeof(Sprite), false);
+                EditorGUILayout.PropertyField(backgroundOutlineColor, false);
+                EditorGUILayout.PropertyField(backgroundOutlineSprite, false);
             }
 
             enableHeader = EditorGUILayout.Toggle("Container header", enableHeader);
@@ -126,10 +161,17 @@ public class CreateItemCollection : EditorWindow
 
             }
 
-            if (GUILayout.Button("Build inventory") && CheckCompleteness())
+            enabledVerticalScrollbar = EditorGUILayout.Toggle("verticalScrollbar", enabledVerticalScrollbar);
+            if (enabledVerticalScrollbar)
             {
-                BuildInventory();
+                sizeOfViewport = EditorGUILayout.Vector2IntField("sizeOfViewport", sizeOfViewport, GUILayout.ExpandWidth(false));
             }
+
+
+
+            if (GUILayout.Button("Build inventory") && CheckCompleteness())
+                BuildInventory();
+
 
             windowInfoSO.ApplyModifiedProperties();
         }
@@ -137,12 +179,21 @@ public class CreateItemCollection : EditorWindow
 
     private void BuildInventory()
     {
-        // Drawing Canvas
-        var obj = new GameObject();
-        obj.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-        obj.AddComponent<CanvasScaler>();
-        obj.AddComponent<GraphicRaycaster>();
-        obj.name = "Container Canvas";
+        GameObject obj;
+
+        if (windowInfo.rootTransform == null)
+        {
+            // Drawing Canvas
+            obj = new GameObject();
+            obj.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            obj.AddComponent<CanvasScaler>();
+            obj.AddComponent<GraphicRaycaster>();
+            obj.name = "Container Canvas";
+        }
+        else
+        {
+            obj = windowInfo.rootTransform;
+        }
 
         //
         var container = new GameObject("container");
@@ -150,7 +201,9 @@ public class CreateItemCollection : EditorWindow
         container.transform.localPosition = Vector3.zero;
 
         var containerRect = container.AddComponent<RectTransform>();
-        containerRect.sizeDelta = new Vector2(info.cellSize.x * info.sizeX, info.cellSize.y * info.sizeY);
+        containerRect.sizeDelta = new Vector2(windowInfo.cellSize.x * windowInfo.sizeX, windowInfo.cellSize.y * windowInfo.sizeY);
+        if (enabledVerticalScrollbar == true)
+            containerRect.sizeDelta = new Vector2(windowInfo.cellSize.x * sizeOfViewport.x + slidebarWidth, windowInfo.cellSize.y * sizeOfViewport.y);
 
         // Background
         var background = new GameObject("background");
@@ -164,12 +217,12 @@ public class CreateItemCollection : EditorWindow
         backgroundRect.sizeDelta = Vector2.zero;
 
         Image backgroundImage = background.AddComponent<Image>();
-        backgroundImage.sprite = inventoryBackground;
-        backgroundImage.color = inventoryBackgroundColor;
+        backgroundImage.sprite = windowInfo.inventoryBackground;
+        backgroundImage.color = windowInfo.inventoryBackgroundColor;
         backgroundImage.type = Image.Type.Sliced;
 
         // Background Outline
-        if (enableBackgroundOutline)
+        if (windowInfo.enableBackgroundOutline)
         {
             var backgroundOutline = new GameObject("backgroundOutline");
             backgroundOutline.transform.parent = container.transform;
@@ -182,8 +235,8 @@ public class CreateItemCollection : EditorWindow
             backgroundOutlineRect.sizeDelta = Vector2.zero;
 
             Image backgroundOutlineImage = backgroundOutline.AddComponent<Image>();
-            backgroundOutlineImage.sprite = containerBackgroundOutline;
-            backgroundOutlineImage.color = inventoryBackgroundColor;
+            backgroundOutlineImage.sprite = windowInfo.backgroundOutlineSprite;
+            backgroundOutlineImage.color = windowInfo.inventoryBackgroundColor;
             backgroundOutlineImage.type = Image.Type.Sliced;
         }
 
@@ -243,74 +296,164 @@ public class CreateItemCollection : EditorWindow
 
         // Viewport
         var viewport = new GameObject("Viewport");
-        viewport.transform.parent = container.transform;
-        viewport.transform.localPosition = Vector3.zero;
+        viewport.transform.parent = container.transform;        
 
         RectTransform rectViewport = viewport.AddComponent<RectTransform>();
-        rectViewport.anchorMin = new Vector2(0, 0);
-        rectViewport.anchorMax = new Vector2(1, 1);
+        rectViewport.anchorMin = new Vector2(0, 1);
+        rectViewport.anchorMax = new Vector2(0, 1);
         rectViewport.pivot = new Vector2(0, 1);
-        rectViewport.sizeDelta = new Vector2(0, 0);
+        rectViewport.sizeDelta = new Vector2(windowInfo.sizeX * windowInfo.cellSize.x, windowInfo.sizeY * windowInfo.cellSize.y);
+        if (enabledVerticalScrollbar)
+            rectViewport.sizeDelta = new Vector2(sizeOfViewport.x * windowInfo.cellSize.x, sizeOfViewport.y * windowInfo.cellSize.y);
+        rectViewport.anchoredPosition = new Vector2(0, 0);
 
         viewport.AddComponent<Mask>();
 
         Image ViewportImage = viewport.AddComponent<Image>();
         ViewportImage.sprite = viewportSprite;
-        ViewportImage.color = Color.white;
+        ViewportImage.color = new Color(0, 0, 0, 0.15f);
         ViewportImage.type = Image.Type.Sliced;
 
         // GridImage
-        var gridImage = new GameObject("GridImage");
-        gridImage.transform.parent = viewport.transform;
+        var gridImage = new GameObject("GridImage");        
 
         var gridImageRect = gridImage.AddComponent<RectTransform>();
         gridImageRect.anchorMin = new Vector2(0, 1);
         gridImageRect.anchorMax = new Vector2(0, 1);
         gridImageRect.pivot = new Vector2(0, 1);
         gridImageRect.transform.localPosition = Vector3.zero;
-        gridImageRect.sizeDelta = new Vector2(info.sizeX * info.cellSize.x, info.sizeY * info.cellSize.y);
+        gridImageRect.sizeDelta = new Vector2(windowInfo.sizeX * windowInfo.cellSize.x, windowInfo.sizeY * windowInfo.cellSize.y);        
+        
 
         var gridTexture = gridImage.AddComponent<RawImage>();
-        gridTexture.color = info.cellColor;
-        gridTexture.texture = info.cellImage;
-        gridTexture.uvRect = new Rect(0, 0, info.sizeX, info.sizeY);
+        gridTexture.color = windowInfo.cellColor;
+        gridTexture.texture = windowInfo.cellImage;
+        gridTexture.uvRect = new Rect(0, 0, windowInfo.sizeX, windowInfo.sizeY);
 
         // ItemsContainer
         var ItemsContainer = new GameObject("ItemsContainer");
         ItemsContainer.transform.parent = viewport.transform;
+
+        gridImage.transform.SetParent(ItemsContainer.transform, false);
 
         var ItemsContainerRect = ItemsContainer.AddComponent<RectTransform>();
         ItemsContainerRect.anchorMin = new Vector2(0, 1);
         ItemsContainerRect.anchorMax = new Vector2(0, 1);
         ItemsContainerRect.pivot = new Vector2(0, 1);
         ItemsContainerRect.transform.localPosition = Vector3.zero;
-        ItemsContainerRect.sizeDelta = Vector2.zero;
+        ItemsContainerRect.sizeDelta = new Vector2(windowInfo.sizeX * windowInfo.cellSize.x, windowInfo.sizeY * windowInfo.cellSize.y); ;
+
+        // Scrollbar if enabled
+        if (enabledVerticalScrollbar)
+        {
+            var scroll = new GameObject("Scroll");
+            scroll.transform.parent = container.transform;
+            viewport.transform.SetParent(scroll.transform, false);
+
+            var scrollRect = scroll.AddComponent<RectTransform>();
+            scrollRect.anchorMin = new Vector2(0, 0);
+            scrollRect.anchorMax = new Vector2(1, 1);
+            scrollRect.pivot = new Vector2(0.5f, 0.5f);
+            scrollRect.transform.localPosition = Vector3.zero;
+            scrollRect.sizeDelta = Vector2.zero;
+
+            var scrollbar = scroll.AddComponent<ScrollRect>();
+            scrollbar.content = ItemsContainerRect;
+            scrollbar.horizontal = false;
+            if (enabledVerticalScrollbar) scrollbar.vertical = true;
+            scrollbar.movementType = ScrollRect.MovementType.Clamped;
+            scrollbar.scrollSensitivity = 20f;
+            scrollbar.viewport = rectViewport;
+
+            //verticalScrollbar
+            var scrollbarVerticalObj = new GameObject("Scrollbar Vertical");
+            scrollbarVerticalObj.transform.SetParent(scroll.transform, false);
+            scrollbarVerticalObj.transform.localPosition = Vector3.zero;
+
+            var scrollbarVerticalRect = scrollbarVerticalObj.AddComponent<RectTransform>();
+            scrollbarVerticalRect.anchorMin = new Vector2(1, 0);
+            scrollbarVerticalRect.anchorMax = new Vector2(1, 1);
+            scrollbarVerticalRect.pivot = new Vector2(0.5f, 0.5f);
+            scrollbarVerticalRect.sizeDelta = new Vector2(slidebarWidth, 0);
+            scrollbarVerticalRect.anchoredPosition = new Vector2(-slidebarWidth / 2, 0);
+
+            var scrollbarVertical = scrollbarVerticalObj.AddComponent<Scrollbar>();
+
+            //
+            var scrollbarVerticalBackgroundObj = new GameObject("Background");
+            scrollbarVerticalBackgroundObj.transform.parent = scrollbarVerticalObj.transform;
+
+            var scrollbarVerticalBackgroundRect = scrollbarVerticalBackgroundObj.AddComponent<RectTransform>();
+            scrollbarVerticalBackgroundRect.anchorMin = new Vector2(0, 0);
+            scrollbarVerticalBackgroundRect.anchorMax = new Vector2(1, 1);
+            scrollbarVerticalBackgroundRect.pivot = new Vector2(0.5f, 0.5f);
+            scrollbarVerticalBackgroundRect.sizeDelta = Vector2.zero;
+            scrollbarVerticalBackgroundRect.localPosition = Vector3.zero;
+
+            var scrollbarVerticalBackgroundImage = scrollbarVerticalBackgroundObj.AddComponent<Image>();
+            scrollbarVerticalBackgroundImage.sprite = scrollBackground;
+            scrollbarVerticalBackgroundImage.color = Color.black;
+            scrollbarVerticalBackgroundImage.type = Image.Type.Sliced;
+
+            //
+            var slidingAreaObj = new GameObject("slidingArea");
+            slidingAreaObj.transform.parent = scrollbarVerticalObj.transform;
+
+            var slidingAreaRect = slidingAreaObj.AddComponent<RectTransform>();
+            slidingAreaRect.anchorMin = new Vector2(0, 0);
+            slidingAreaRect.anchorMax = new Vector2(1, 1);
+            slidingAreaRect.pivot = new Vector2(0.5f, 0.5f);
+            slidingAreaRect.sizeDelta = Vector2.zero;
+            slidingAreaRect.localPosition = Vector3.zero;
+
+            //
+            var handleObj = new GameObject("Handle");
+            handleObj.transform.parent = slidingAreaObj.transform;
+
+            var handleRect = handleObj.AddComponent<RectTransform>();
+            handleRect.pivot = new Vector2(0.5f, 0.5f);
+            handleRect.sizeDelta = Vector2.zero;
+            handleRect.localPosition = Vector3.zero;
+
+            var handleImage = handleObj.AddComponent<Image>();
+            handleImage.sprite = handleSprite as Sprite;
+            handleImage.color = Color.blue;
+            handleImage.type = Image.Type.Sliced;
 
 
+            scrollbarVertical.targetGraphic = handleImage;
+            scrollbarVertical.handleRect = handleRect;
+            scrollbarVertical.direction = Scrollbar.Direction.BottomToTop;
+
+            scrollbar.verticalScrollbar = scrollbarVertical;
+
+        }
+
+        //
         // ItemCollection
         var itemCollection = container.AddComponent<ItemsCollection>();
-        itemCollection.GridWidth = info.sizeX;
-        itemCollection.GridHeight = info.sizeY;
-        itemCollection.CellSize = info.cellSize;
+        itemCollection.GridWidth = windowInfo.sizeX;
+        itemCollection.GridHeight = windowInfo.sizeY;
+        itemCollection.CellSize = windowInfo.cellSize;
         itemCollection.ContainerTransform = ItemsContainer.transform;
 
     }
 
     private bool CheckCompleteness()
     {
-        if (info.sizeX < 1 || info.sizeY < 1)
+        if (windowInfo.sizeX < 1 || windowInfo.sizeY < 1)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please check container size, value can't be less 1", "Continue");
             return false;
         }
 
-        if (info.cellSize.x < 1 || info.cellSize.y < 1)
+        if (windowInfo.cellSize.x < 1 || windowInfo.cellSize.y < 1)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please check cell size, value can't be less 1", "Continue");
             return false;
         }
 
-        if (info.cellImage == null)
+        if (windowInfo.cellImage == null)
         {
             EditorUtility.DisplayDialog("Setup uncompleted", " Please attach sprite to cell image field. Otherwise, inventory cells will be invisible", "Continue");
             return false;
@@ -318,4 +461,6 @@ public class CreateItemCollection : EditorWindow
 
         return true;
     }
+
+
 }

@@ -1,9 +1,8 @@
-
 using GridInventory;
-using System;
+using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class ItemsCollection : MonoBehaviour
 {
@@ -11,11 +10,13 @@ public class ItemsCollection : MonoBehaviour
     [SerializeField] private int gridHeight;
     [SerializeField] private Vector2 cellSize = new Vector2(25, 25);
 
+    [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private Transform containerTransform;
     [SerializeField] List<InventoryItemData> items = new List<InventoryItemData>();
 
-    [SerializeField] private Vector3 _originalPosition = Vector3.zero;
-    [SerializeField] private Vector3 scaleFactor;
+    //
+    private Vector3 _originalPosition = Vector3.zero;
+    private Vector3 scaleFactor;
     private GridCell[,] inventoryCells;
 
     #region getters
@@ -24,6 +25,7 @@ public class ItemsCollection : MonoBehaviour
     public int GridHeight { get => gridHeight; set => gridHeight = value; }
     public Vector2 CellSize { get => cellSize; set => cellSize = value; }
     public Vector3 ScaleFactor { get => scaleFactor; }
+    public Scrollbar Scrollbar { get => scrollbar; }
     public Transform ContainerTransform { get => containerTransform; set => containerTransform = value; }
     #endregion
 
@@ -38,11 +40,12 @@ public class ItemsCollection : MonoBehaviour
 
     private void Awake()
     {
-        
+        if (scrollbar == null)
+            scrollbar = GetComponentInChildren<Scrollbar>();
     }
 
     private void Start()
-    {
+    {   
         scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
         Init();
         InitStartItems();
@@ -50,7 +53,19 @@ public class ItemsCollection : MonoBehaviour
 
     private void Update()
     {
-        _originalPosition = containerTransform.position + new Vector3(0f, 0f, 0);
+        _originalPosition = containerTransform.position + new Vector3(0f, 0f, 0);       
+    }
+
+    [Button]
+    private void UpdateGridImageSize()
+    {
+        var gridImage = containerTransform.GetComponentInChildren<RawImage>();
+        var gridImageRect = containerTransform.GetChild(0).GetComponent<RectTransform>();
+        if (gridImage != null)
+        {
+            gridImageRect.sizeDelta = new Vector2(gridWidth * cellSize.x, gridHeight * cellSize.y);
+            gridImage.uvRect = new Rect(0, 0, gridWidth, gridHeight);
+        }
     }
 
     public void Init()
@@ -192,7 +207,7 @@ public class ItemsCollection : MonoBehaviour
             return true;
 
         return false;
-    }  
+    }
 
     public bool TryPlaceItem(Vector2Int cellPosXY, InventoryItem item)
     {
@@ -213,4 +228,48 @@ public class ItemsCollection : MonoBehaviour
     {
         return cellSize * scaleFactor;
     }
+
+    public bool IsIntersectWithTheItem(Bounds itemBounds)
+    {
+        var boundCollection = GetComponent<BoxCollider2D>().bounds;
+        if (boundCollection.Intersects(itemBounds))
+            return true;
+
+        return false;
+    }
+
+    public void Scroll (Bounds itemBounds)
+    {
+        var boundCollection = GetComponent<BoxCollider2D>().bounds;
+        var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;
+
+        if (distanceNormal.y > 0)
+        {
+            var centerCorner = boundCollection.center;
+            centerCorner.y = centerCorner.y + boundCollection.size.y / 2;
+
+            var dist = centerCorner.y - itemBounds.center.y;
+
+            if (dist < itemBounds.size.y)
+            {
+                scrollbar.value += 1 * Time.deltaTime;
+            }
+
+        }
+        else if (distanceNormal.y < 0)
+        {
+            var centerCorner = boundCollection.center;
+            centerCorner.y = centerCorner.y - boundCollection.size.y / 2;
+
+            var dist = itemBounds.center.y - centerCorner.y;
+
+            if (dist < itemBounds.size.y)
+            {
+                scrollbar.value -= 1 * Time.deltaTime;
+            }
+
+        }
+    }
+
+    
 }

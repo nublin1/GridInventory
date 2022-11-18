@@ -1,23 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using NaughtyAttributes;
-using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine.EventSystems;
 using System.Linq;
 
 namespace GridInventory
 {
-    public class GridInventorySystem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler
+    public class GridInventorySystem : MonoBehaviour
     {
         [SerializeField] private List<ItemsCollection> availableCollections;
+        [SerializeField] PointerEventData m_PointerEventData;
 
-        // Prefabs
-        [Header("Inventory Prefabs")]
-        [SerializeField] private bool setupPrefabs;     
-        
 
         // Internal variables        
         [SerializeField] private ItemsCollection activeItemCollection;
@@ -29,13 +22,12 @@ namespace GridInventory
         [SerializeField] ItemsCollection lastItemCollection;
         InventoryItem iteract_InventoryItem;
         Dir oldDir;
-       
+
 
         #region Events
         public delegate void AChangeCollection();
         public static event AChangeCollection OnChangeCollection;
         #endregion
-
 
         private void Awake()
         {
@@ -54,14 +46,12 @@ namespace GridInventory
         {
             ghostItem = GetComponentInChildren<GhostItem>();
             ghostItem.Collection = activeItemCollection;
-            //ghostItem.RectSlots = rectSlots;
-            ghostItem.gameObject.SetActive(false);
+            //ghostItem.gameObject.SetActive(false);
         }
 
         private void Update()
         {
-            DefineTargetCollection();
-
+            DefineTargetCollection();            
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -73,13 +63,16 @@ namespace GridInventory
                 if (iteract_InventoryItem == null)
                     return;
 
+                lastItemCollection = activeItemCollection;
                 iteract_InventoryItem.transform.SetParent(transform, false);
-                oldCell = stareCell;
+                oldCell = iteract_InventoryItem.GridPositionList[0];
                 oldDir = iteract_InventoryItem.Dir;
             }
 
             if (Input.GetMouseButton(0))
             {
+                ScrollActiveItemCollection();
+
                 if (iteract_InventoryItem == null)
                     return;
 
@@ -96,16 +89,14 @@ namespace GridInventory
                     bool isPlaced = activeItemCollection.TryPlaceItem(stareCell, iteract_InventoryItem);
 
                     if (isPlaced)
-                    {
-                        clearIteract_InventoryItem();
-                    }
+                        ClearIteract_InventoryItem();
+
+                    else
+                        ReturnItemToInitialPosition();
                 }
                 else
                 {
-                    lastItemCollection.GenerateInventoryItem(oldCell, iteract_InventoryItem.ItemData, oldDir);
-                    GameObject.Destroy(iteract_InventoryItem.gameObject);
-
-                    clearIteract_InventoryItem();
+                    ReturnItemToInitialPosition();
                 }
             }
 
@@ -113,51 +104,65 @@ namespace GridInventory
             {
                 if (iteract_InventoryItem == null)
                     return;
-
-                iteract_InventoryItem.Dir = InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir);
+                RotateIteractItem();
             }
-        }       
-        
+        }
+
+
+
+        private void ReturnItemToInitialPosition()
+        {
+            lastItemCollection.GenerateInventoryItem(oldCell, iteract_InventoryItem.ItemData, oldDir);
+            GameObject.Destroy(iteract_InventoryItem.gameObject);
+
+            ClearIteract_InventoryItem();
+        }
 
         private void DefineTargetCollection()
         {
             foreach (var collection in availableCollections)
             {
-                var potencialCell = collection.GetCellXY(Input.mousePosition);
-                bool isValidPosition = !collection.OutOfBoundsCheck(potencialCell);
-                if (isValidPosition)
+                var bounds = collection.transform.GetComponent<Collider2D>().bounds;
+                if (bounds.Contains(Input.mousePosition))
                 {
-                    activeItemCollection = collection;
+                    activeItemCollection = collection;                    
+                    stareCell = collection.GetCellXY(Input.mousePosition);
                     ghostItem.Collection = collection;
-                    stareCell = potencialCell;
+                    ghostItem.StareCell = stareCell;
+                    ghostItem.Ghost_InventoryItem = iteract_InventoryItem;
                     return;
                 }
             }
 
             activeItemCollection = null;
+            stareCell = new Vector2Int(-1, -1);
         }
 
-        private void clearIteract_InventoryItem()
+        void ScrollActiveItemCollection()
+        {
+            if (iteract_InventoryItem == null || activeItemCollection == null || activeItemCollection.Scrollbar == null)
+                return;
+
+            var itemBounds = iteract_InventoryItem.transform.GetComponent<BoxCollider2D>().bounds;
+            var isIntersect = activeItemCollection.IsIntersectWithTheItem(itemBounds);
+
+            if (isIntersect)
+                activeItemCollection.Scroll(itemBounds);
+        }
+
+        private void ClearIteract_InventoryItem()
         {
             iteract_InventoryItem = null;
             lastItemCollection = null;
             ghostItem.Ghost_InventoryItem = null;
-            ghostItem.gameObject.SetActive(false);
+            ghostItem.StareCell = new Vector2Int(-1,-1);
+            //ghostItem.gameObject.SetActive(false);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        private void RotateIteractItem()
         {
-
+            iteract_InventoryItem.Dir = InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir);
         }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-
-        }
-
-        public void OnBeginDrag(PointerEventData eventData)
-        {
-            Debug.Log("Test");
-        }
     }
 }
