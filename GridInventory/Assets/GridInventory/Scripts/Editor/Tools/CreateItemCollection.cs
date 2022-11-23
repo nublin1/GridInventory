@@ -114,6 +114,11 @@ public class CreateItemCollection : EditorWindow
         backgroundOutlineColor = windowInfoSO.FindProperty("backgroundOutlineColor");
         backgroundOutlineSprite = windowInfoSO.FindProperty("backgroundOutlineSprite");
 
+        LoadDefaultResources();
+    }
+
+    private void LoadDefaultResources()
+    {
         windowInfo.inventoryBackground = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square.png", typeof(Sprite));
         windowInfo.backgroundOutlineSprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
         headerBackGroundSprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Header.png", typeof(Sprite));
@@ -436,6 +441,11 @@ public class CreateItemCollection : EditorWindow
         itemCollection.GridHeight = windowInfo.sizeY;
         itemCollection.CellSize = windowInfo.cellSize;
         itemCollection.ContainerTransform = ItemsContainer.transform;
+
+        // BoxCollider
+        var boxCollider = container.AddComponent<BoxCollider2D>();
+        boxCollider.isTrigger = true;
+        boxCollider.size = ItemsContainerRect.sizeDelta;
 
     }
 

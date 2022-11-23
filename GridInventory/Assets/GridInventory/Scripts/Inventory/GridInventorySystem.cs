@@ -9,24 +9,25 @@ namespace GridInventory
     public class GridInventorySystem : MonoBehaviour
     {
         [SerializeField] private List<ItemsCollection> availableCollections;
-        [SerializeField] PointerEventData m_PointerEventData;
+        [SerializeField] private PointerEventData m_PointerEventData;
 
 
         // Internal variables        
         [SerializeField] private ItemsCollection activeItemCollection;
         private GhostItem ghostItem;
         [SerializeField] private Vector2Int stareCell;
-        private Vector2Int oldCell;
+
 
         // prev Item Data
         [SerializeField] ItemsCollection lastItemCollection;
+        private Vector2Int oldCell;
         InventoryItem iteract_InventoryItem;
         Dir oldDir;
 
 
         #region Events
-        public delegate void AChangeCollection();
-        public static event AChangeCollection OnChangeCollection;
+        public delegate void AAddCollection(ItemsCollection itemsCollection);
+        public static event AAddCollection OnAddCollection;
         #endregion
 
         private void Awake()
@@ -37,6 +38,9 @@ namespace GridInventory
                 var isExist = availableCollections.Any(x => collection == x);
                 if (!isExist)
                     availableCollections.Add(collection);
+                if (collection.InventorySystem == null)
+                    availableCollections[^1].InventorySystem = this;
+
             }
 
             activeItemCollection = availableCollections[0];
@@ -51,7 +55,7 @@ namespace GridInventory
 
         private void Update()
         {
-            DefineTargetCollection();            
+            DefineTargetCollection();
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -100,6 +104,16 @@ namespace GridInventory
                 }
             }
 
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (stareCell.Equals(new Vector2Int(-1, -1)))
+                    return;
+
+                activeItemCollection.TryUsingItem(stareCell);                
+            }
+
+
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (iteract_InventoryItem == null)
@@ -108,7 +122,10 @@ namespace GridInventory
             }
         }
 
-
+        public void AddItemContainer(ItemsCollection itemsCollection)
+        {
+            availableCollections.Add(itemsCollection);
+        }
 
         private void ReturnItemToInitialPosition()
         {
@@ -125,7 +142,7 @@ namespace GridInventory
                 var bounds = collection.transform.GetComponent<Collider2D>().bounds;
                 if (bounds.Contains(Input.mousePosition))
                 {
-                    activeItemCollection = collection;                    
+                    activeItemCollection = collection;
                     stareCell = collection.GetCellXY(Input.mousePosition);
                     ghostItem.Collection = collection;
                     ghostItem.StareCell = stareCell;
@@ -155,7 +172,7 @@ namespace GridInventory
             iteract_InventoryItem = null;
             lastItemCollection = null;
             ghostItem.Ghost_InventoryItem = null;
-            ghostItem.StareCell = new Vector2Int(-1,-1);
+            ghostItem.StareCell = new Vector2Int(-1, -1);
             //ghostItem.gameObject.SetActive(false);
         }
 

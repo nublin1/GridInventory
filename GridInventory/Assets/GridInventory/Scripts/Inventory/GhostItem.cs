@@ -8,7 +8,6 @@ public class GhostItem : MonoBehaviour
 {    
     ItemsCollection itemsCollection;
     [SerializeField] private Vector2Int stareCell;
-
     [SerializeField] private InventoryItem ghost_InventoryItem;
 
     public ItemsCollection Collection { get => itemsCollection; set => itemsCollection = value; }   
@@ -20,13 +19,17 @@ public class GhostItem : MonoBehaviour
     {
         if (!stareCell.Equals(new Vector2Int(-1, -1)) && ghost_InventoryItem != null)
         {
-            GetComponent<Image>().enabled = true;
+            var ghostImage = GetComponent<Image>();
+            ghostImage.enabled = true;
 
+          
             var positions = InventoryItem.CalculatePositionList(ghost_InventoryItem.Dir, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, stareCell);
             var placeble = itemsCollection.IsCanPlace(positions);
             if (placeble)
             {
-                GetComponent<Image>().sprite = ghost_InventoryItem.GetComponent<Image>().sprite;
+                var newSize = new Vector2(ghost_InventoryItem.ItemData.Width * itemsCollection.CellSize.x, ghost_InventoryItem.ItemData.Height * itemsCollection.CellSize.y);
+                GetComponent<RectTransform>().sizeDelta = newSize;
+                ghostImage.sprite = ghost_InventoryItem.GetComponent<Image>().sprite;
 
                 Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
                 var worldPos = itemsCollection.GetWorldPosition(positions[0].x, positions[0].y);

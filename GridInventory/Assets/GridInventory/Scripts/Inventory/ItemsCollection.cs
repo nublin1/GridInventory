@@ -10,6 +10,7 @@ public class ItemsCollection : MonoBehaviour
     [SerializeField] private int gridHeight;
     [SerializeField] private Vector2 cellSize = new Vector2(25, 25);
 
+    [SerializeField] private GridInventorySystem inventorySystem;
     [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private Transform containerTransform;
     [SerializeField] List<InventoryItemData> items = new List<InventoryItemData>();
@@ -27,6 +28,7 @@ public class ItemsCollection : MonoBehaviour
     public Vector3 ScaleFactor { get => scaleFactor; }
     public Scrollbar Scrollbar { get => scrollbar; }
     public Transform ContainerTransform { get => containerTransform; set => containerTransform = value; }
+    public GridInventorySystem InventorySystem { get => inventorySystem; set => inventorySystem = value; }
     #endregion
 
     #region Events
@@ -41,7 +43,10 @@ public class ItemsCollection : MonoBehaviour
     private void Awake()
     {
         if (scrollbar == null)
-            scrollbar = GetComponentInChildren<Scrollbar>();
+        {
+            if (TryGetComponent(out Scrollbar _scrollbar))
+                scrollbar = _scrollbar;
+        }
     }
 
     private void Start()
@@ -271,5 +276,13 @@ public class ItemsCollection : MonoBehaviour
         }
     }
 
-    
+    public void TryUsingItem (Vector2Int cell)
+    {
+        var usingItem = TryGetInventoryItem(cell);
+        if (usingItem == null || usingItem.ItemData.ItemContainer == null)
+            return;
+
+        var itemInventory = Instantiate(usingItem.ItemData.ItemContainer, inventorySystem.transform);
+        inventorySystem.AddItemContainer(itemInventory.GetComponent<ItemsCollection>());
+    }
 }

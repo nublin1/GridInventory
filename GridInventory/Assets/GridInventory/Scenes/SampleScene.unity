@@ -2550,6 +2550,7 @@ MonoBehaviour:
   containerTransform: {fileID: 1869060817}
   items:
   - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
+  - {fileID: 11400000, guid: df644d1eca1aa4340a2dc53d8f4c72b4, type: 2}
 --- !u!61 &2130852422
 BoxCollider2D:
   m_ObjectHideFlags: 0
