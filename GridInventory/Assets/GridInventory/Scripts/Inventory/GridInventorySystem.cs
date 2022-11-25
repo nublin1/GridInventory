@@ -21,7 +21,7 @@ namespace GridInventory
         // prev Item Data
         [SerializeField] ItemsCollection lastItemCollection;
         private Vector2Int oldCell;
-        InventoryItem iteract_InventoryItem;
+        [SerializeField] InventoryItem iteract_InventoryItem;
         Dir oldDir;
 
 
@@ -109,7 +109,7 @@ namespace GridInventory
                 if (stareCell.Equals(new Vector2Int(-1, -1)))
                     return;
 
-                activeItemCollection.TryUsingItem(stareCell);                
+                activeItemCollection.TryUsingItem(stareCell);
             }
 
 
@@ -121,10 +121,24 @@ namespace GridInventory
                 RotateIteractItem();
             }
         }
+         
 
         public void AddItemContainer(ItemsCollection itemsCollection)
         {
+            if (availableCollections.Contains(itemsCollection))
+            {
+                return;
+            }
+
+            itemsCollection.InventorySystem = this;
             availableCollections.Add(itemsCollection);
+            OnAddCollection?.Invoke(itemsCollection);
+        }
+
+        public void RemoveItemContainer(ItemsCollection itemsCollection)
+        {
+            if (availableCollections.Contains(itemsCollection))
+                availableCollections.Remove(itemsCollection);
         }
 
         private void ReturnItemToInitialPosition()

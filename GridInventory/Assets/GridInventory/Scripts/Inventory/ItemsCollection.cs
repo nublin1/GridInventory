@@ -15,6 +15,8 @@ public class ItemsCollection : MonoBehaviour
     [SerializeField] private Transform containerTransform;
     [SerializeField] List<InventoryItemData> items = new List<InventoryItemData>();
 
+    [SerializeField] private Button closeButton;
+
     //
     private Vector3 _originalPosition = Vector3.zero;
     private Vector3 scaleFactor;
@@ -54,11 +56,21 @@ public class ItemsCollection : MonoBehaviour
         scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
         Init();
         InitStartItems();
+
+        if (closeButton != null)
+            closeButton.onClick.AddListener(CloseButtonAction);
     }
 
     private void Update()
     {
-        _originalPosition = containerTransform.position + new Vector3(0f, 0f, 0);       
+        _originalPosition = containerTransform.position + new Vector3(0f, 0f, 0);
+       
+    }
+
+    private void CloseButtonAction()
+    {
+        inventorySystem.RemoveItemContainer(this);
+        Destroy(transform.gameObject);
     }
 
     [Button]
@@ -107,13 +119,10 @@ public class ItemsCollection : MonoBehaviour
         var positions = InventoryItem.CalculatePositionList(dir, itemData.Width, itemData.Height, pivotPosition);
         bool isCanPlace = IsCanPlace(positions);
         if (isCanPlace)
-        {
-            Vector2Int rotationOffset = InventoryItem.GetRotationOffset(dir, itemData.Width, itemData.Height);
-            var localPos = GetLocalPosition(positions[0].x, positions[0].y);
-            var position = localPos + new Vector3(rotationOffset.x * GetScaledCell().x, rotationOffset.y * GetScaledCell().y, 0);
-
-            var item = InventoryItem.CreateItem(containerTransform, itemData, dir, positions, position, GetScaledCell());
-            PutItemToCells(item);
+        {    
+            var item = InventoryItem.CreateItem(itemData, dir, GetScaledCell());            
+            item.GridPositionList = positions;
+            AddInventoryItem(item);         
 
             OnAddItem?.Invoke();
             return true;
@@ -125,11 +134,11 @@ public class ItemsCollection : MonoBehaviour
     private void AddInventoryItem(InventoryItem _inventoryItem)
     {
         Vector2Int rotationOffset = _inventoryItem.GetRotationOffset();
-        var worldPos = GetWorldPosition(_inventoryItem.GridPositionList[0].x, _inventoryItem.GridPositionList[0].y);
-        var position = worldPos + new Vector3(rotationOffset.x * GetScaledCell().x, rotationOffset.y * GetScaledCell().y, 0);
+        var localPos = GetLocalPosition(_inventoryItem.GridPositionList[0].x, _inventoryItem.GridPositionList[0].y);
+        var position = localPos + new Vector3(rotationOffset.x * GetScaledCell().x, rotationOffset.y * GetScaledCell().y, 0);
 
-        _inventoryItem.transform.position = position;
-        _inventoryItem.transform.SetParent(containerTransform.transform, true);
+        _inventoryItem.GetComponent<RectTransform>().anchoredPosition = position;
+        _inventoryItem.transform.SetParent(containerTransform.transform, false);
 
         PutItemToCells(_inventoryItem);
         OnAddItem?.Invoke();
@@ -166,7 +175,7 @@ public class ItemsCollection : MonoBehaviour
         }
 
         return item;
-    }
+    }    
 
     public Vector3 GetWorldPosition(int x, int y)
     {
@@ -276,13 +285,16 @@ public class ItemsCollection : MonoBehaviour
         }
     }
 
-    public void TryUsingItem (Vector2Int cell)
+    public void TryUsingItem(Vector2Int cell)
     {
-        var usingItem = TryGetInventoryItem(cell);
-        if (usingItem == null || usingItem.ItemData.ItemContainer == null)
+        var ObservedItem = (inventoryCells[cell.x, cell.y].InventoryItem);
+        if (ObservedItem == null)
             return;
 
-        var itemInventory = Instantiate(usingItem.ItemData.ItemContainer, inventorySystem.transform);
-        inventorySystem.AddItemContainer(itemInventory.GetComponent<ItemsCollection>());
+        if (ObservedItem.ItemData.ItemContainer != null)
+        {
+            var itemInventory = Instantiate(ObservedItem.ItemData.ItemContainer, inventorySystem.transform);
+            inventorySystem.AddItemContainer(itemInventory.GetComponent<ItemsCollection>());
+        }        
     }
 }

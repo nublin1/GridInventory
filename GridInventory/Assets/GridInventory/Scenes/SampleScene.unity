@@ -1391,11 +1391,13 @@ MonoBehaviour:
   gridWidth: 6
   gridHeight: 6
   cellSize: {x: 25, y: 25}
+  inventorySystem: {fileID: 0}
   scrollbar: {fileID: 0}
   containerTransform: {fileID: 14168508}
   items:
   - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
+  closeButton: {fileID: 0}
 --- !u!61 &1064470241
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1631,6 +1633,7 @@ MonoBehaviour:
   activeItemCollection: {fileID: 0}
   stareCell: {x: 0, y: 0}
   lastItemCollection: {fileID: 0}
+  iteract_InventoryItem: {fileID: 0}
 --- !u!1 &1378608019
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,11 +2549,13 @@ MonoBehaviour:
   gridWidth: 6
   gridHeight: 4
   cellSize: {x: 25, y: 25}
+  inventorySystem: {fileID: 0}
   scrollbar: {fileID: 0}
   containerTransform: {fileID: 1869060817}
   items:
   - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   - {fileID: 11400000, guid: df644d1eca1aa4340a2dc53d8f4c72b4, type: 2}
+  closeButton: {fileID: 0}
 --- !u!61 &2130852422
 BoxCollider2D:
   m_ObjectHideFlags: 0

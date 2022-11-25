@@ -1,4 +1,6 @@
 interface IIsContainer 
 {
-    static bool isContainer;
+    public bool IsContainer { get; set; }
+
+    
 }
