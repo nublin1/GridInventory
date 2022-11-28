@@ -210,9 +210,20 @@ public class CreateItemCollection : EditorWindow
         if (enabledVerticalScrollbar == true)
             containerRect.sizeDelta = new Vector2(windowInfo.cellSize.x * sizeOfViewport.x + slidebarWidth, windowInfo.cellSize.y * sizeOfViewport.y);
 
+        // Visual
+        var visual = new GameObject("Visual");
+        visual.transform.parent = container.transform;
+        visual.transform.localPosition = Vector3.zero;
+
+        var visualRect = visual.AddComponent<RectTransform>();
+        visualRect.anchorMin = new Vector2(0, 0);
+        visualRect.anchorMax = new Vector2(1, 1);
+        visualRect.pivot = new Vector2(0.5f, .5f);
+        visualRect.sizeDelta = Vector2.zero;
+
         // Background
         var background = new GameObject("background");
-        background.transform.parent = container.transform;
+        background.transform.parent = visual.transform;
         background.transform.localPosition = Vector3.zero;
 
         var backgroundRect = background.AddComponent<RectTransform>();
@@ -230,7 +241,7 @@ public class CreateItemCollection : EditorWindow
         if (windowInfo.enableBackgroundOutline)
         {
             var backgroundOutline = new GameObject("backgroundOutline");
-            backgroundOutline.transform.parent = container.transform;
+            backgroundOutline.transform.parent = visual.transform;
             backgroundOutline.transform.localPosition = Vector3.zero;
 
             var backgroundOutlineRect = backgroundOutline.AddComponent<RectTransform>();
@@ -249,7 +260,7 @@ public class CreateItemCollection : EditorWindow
         if (enableHeader)
         {
             var header = new GameObject("Header");
-            header.transform.parent = container.transform;
+            header.transform.parent = visual.transform;
             header.transform.localPosition = Vector3.zero;
 
             RectTransform rectHeader = header.AddComponent<RectTransform>();
@@ -301,7 +312,7 @@ public class CreateItemCollection : EditorWindow
 
         // Viewport
         var viewport = new GameObject("Viewport");
-        viewport.transform.parent = container.transform;        
+        viewport.transform.parent = visual.transform;        
 
         RectTransform rectViewport = viewport.AddComponent<RectTransform>();
         rectViewport.anchorMin = new Vector2(0, 1);
@@ -352,7 +363,7 @@ public class CreateItemCollection : EditorWindow
         if (enabledVerticalScrollbar)
         {
             var scroll = new GameObject("Scroll");
-            scroll.transform.parent = container.transform;
+            scroll.transform.parent = visual.transform;
             viewport.transform.SetParent(scroll.transform, false);
 
             var scrollRect = scroll.AddComponent<RectTransform>();
@@ -433,6 +444,7 @@ public class CreateItemCollection : EditorWindow
             scrollbar.verticalScrollbar = scrollbarVertical;
 
         }
+  
 
         //
         // ItemCollection
@@ -443,7 +455,7 @@ public class CreateItemCollection : EditorWindow
         itemCollection.ContainerTransform = ItemsContainer.transform;
 
         // BoxCollider
-        var boxCollider = container.AddComponent<BoxCollider2D>();
+        var boxCollider = visual.AddComponent<BoxCollider2D>();
         boxCollider.isTrigger = true;
         boxCollider.size = ItemsContainerRect.sizeDelta;
 

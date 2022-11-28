@@ -15,6 +15,8 @@ public class DragPanel : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         {
             canvasRectTransform = canvas.transform as RectTransform;
             panelRectTransform = transform.parent as RectTransform;
+
+            Debug.Log(panelRectTransform.name);
         }
     }
 

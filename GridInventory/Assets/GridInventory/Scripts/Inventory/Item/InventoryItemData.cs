@@ -26,13 +26,15 @@ namespace GridInventory
 
         [ShowIf("isContainer")]
         [SerializeField]
-        private GameObject itemContainer;
+        private GameObject pf_ItemContainer;
+        private Transform itemContainer;
 
         public string ItemName { get => itemName; }
         public Sprite Icon { get => icon; }
         public int Width { get => width; }
         public int Height { get => height; }       
         public bool IsContainer { get => isContainer;}
-        public GameObject ItemContainer { get => itemContainer; }
+        public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
+        public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
     }   
 }

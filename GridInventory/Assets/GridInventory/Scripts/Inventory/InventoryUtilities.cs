@@ -5,13 +5,7 @@ using UnityEngine;
 namespace GridInventory
 {
     public class InventoryUtilities
-    {
-        public static Vector2Int CalculateInventorySlotCoordinate(RectTransform rectTransform, Vector2 mousePosition, ItemsCollection grid)
-        {
-            grid.GetCellXY(rectTransform, mousePosition, out int x, out int y);
-            return new Vector2Int(x, y);
-        }
-
+    {        
         public static Dir GetNextDir(Dir dir)
         {
             switch (dir)

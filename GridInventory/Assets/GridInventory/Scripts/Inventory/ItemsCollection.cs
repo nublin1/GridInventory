@@ -52,10 +52,12 @@ public class ItemsCollection : MonoBehaviour
     }
 
     private void Start()
-    {   
+    {
         scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
+
+        UpdateGridImageSize();
+
         Init();
-        InitStartItems();
 
         if (closeButton != null)
             closeButton.onClick.AddListener(CloseButtonAction);
@@ -63,14 +65,13 @@ public class ItemsCollection : MonoBehaviour
 
     private void Update()
     {
-        _originalPosition = containerTransform.position + new Vector3(0f, 0f, 0);
-       
+
+        _originalPosition = containerTransform.position + transform.Find("Visual").localPosition;
     }
 
     private void CloseButtonAction()
     {
-        inventorySystem.RemoveItemContainer(this);
-        Destroy(transform.gameObject);
+        transform.Find("Visual").gameObject.SetActive(false);
     }
 
     [Button]
@@ -80,12 +81,12 @@ public class ItemsCollection : MonoBehaviour
         var gridImageRect = containerTransform.GetChild(0).GetComponent<RectTransform>();
         if (gridImage != null)
         {
-            gridImageRect.sizeDelta = new Vector2(gridWidth * cellSize.x, gridHeight * cellSize.y);
+            gridImageRect.sizeDelta = new Vector2(gridWidth * GetScaledCell().x, gridHeight * GetScaledCell().y);
             gridImage.uvRect = new Rect(0, 0, gridWidth, gridHeight);
         }
     }
 
-    public void Init()
+    private void Init()
     {
         inventoryCells = new GridCell[gridWidth, gridHeight];
 
@@ -96,42 +97,87 @@ public class ItemsCollection : MonoBehaviour
                 inventoryCells[i, j] = new GridCell(this, i, j);
             }
         }
-    }
 
-    private void InitStartItems()
-    {
-        foreach (var item in items)
+        foreach (var data in items)
         {
-            bool isPlaced = false;
-            for (int x = 0; x < gridWidth; x++)
+            List<Vector2Int> positions;
+            if(IsCanBePlaced(data, out positions))
             {
-                for (int y = 0; y < gridHeight; y++)
-                {
-                    if (isPlaced == false)
-                        isPlaced = GenerateInventoryItem(new Vector2Int(x, y), item);
-                }
+                GenerateInventoryItem(positions, data);
             }
         }
     }
 
-    public bool GenerateInventoryItem(Vector2Int pivotPosition, InventoryItemData itemData, Dir dir = Dir.Up)
+    public bool IsCanBePlaced(InventoryItemData _itemData, out List<Vector2Int> _positions, Dir dir = Dir.Up)
     {
-        var positions = InventoryItem.CalculatePositionList(dir, itemData.Width, itemData.Height, pivotPosition);
-        bool isCanPlace = IsCanPlace(positions);
-        if (isCanPlace)
-        {    
-            var item = InventoryItem.CreateItem(itemData, dir, GetScaledCell());            
-            item.GridPositionList = positions;
-            AddInventoryItem(item);         
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                var positions = InventoryItem.CalculatePositionList(dir, _itemData.Width, _itemData.Height, new Vector2Int(x, y));
+                if (IsPositionsEmpty(positions))
+                {
+                    _positions = positions;    
+                    return true;
+                }
+            }
+        }
 
+        _positions = null;
+        return false;
+    }
+
+    private void GenerateInventoryItem(List<Vector2Int> positions, InventoryItemData _itemData, Dir dir = Dir.Up)
+    {
+        var item = InventoryItem.CreateItem(_itemData, dir, GetScaledCell());
+        item.GridPositionList = positions;
+        PlaceItemToCells(item);
+
+        if (item.ItemData.Pf_ItemContainer != null)
+        {
+            var itemInventory = Instantiate(item.ItemData.Pf_ItemContainer, inventorySystem.transform);
+            itemInventory.transform.Find("Visual").gameObject.SetActive(false);
+            
+
+            item.ItemData.ItemContainer = itemInventory.transform;
+            inventorySystem.AddItemContainer(itemInventory.GetComponent<ItemsCollection>());
+        }
+
+    }
+
+    public bool TryPlaceItem(Vector2Int cellPosXY, InventoryItem item)
+    {
+        if (transform.Equals(item.ItemData.ItemContainer))
+            return false;
+
+        if (inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem != null && inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem.ItemData.IsContainer)
+        {
+            var invContainer = inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem.ItemData.ItemContainer.GetComponent<ItemsCollection>();
+            List<Vector2Int> posit;
+            if(invContainer.IsCanBePlaced(item.ItemData, out posit, item.Dir))
+            {
+                item.GridPositionList = posit;
+                invContainer.PlaceItemToCells(item);
+
+                OnAddItem?.Invoke();
+                return true;
+            }
+        }
+
+        var positions = InventoryItem.CalculatePositionList(item.Dir, item.ItemData.Width, item.ItemData.Height, cellPosXY);
+        if (IsPositionsEmpty(positions))
+        {
+            item.GridPositionList = positions;
+            PlaceItemToCells(item);
             OnAddItem?.Invoke();
             return true;
         }
+
         OnFailedAddItem?.Invoke();
         return false;
     }
 
-    private void AddInventoryItem(InventoryItem _inventoryItem)
+    public void PlaceItemToCells(InventoryItem _inventoryItem)
     {
         Vector2Int rotationOffset = _inventoryItem.GetRotationOffset();
         var localPos = GetLocalPosition(_inventoryItem.GridPositionList[0].x, _inventoryItem.GridPositionList[0].y);
@@ -140,32 +186,29 @@ public class ItemsCollection : MonoBehaviour
         _inventoryItem.GetComponent<RectTransform>().anchoredPosition = position;
         _inventoryItem.transform.SetParent(containerTransform.transform, false);
 
-        PutItemToCells(_inventoryItem);
-        OnAddItem?.Invoke();
-    }
-
-    private void PutItemToCells(InventoryItem _inventoryItem)
-    {
-        foreach (var position in _inventoryItem.GridPositionList)
+        foreach (var pos in _inventoryItem.GridPositionList)
         {
-            inventoryCells[position.x, position.y].SetCellData(_inventoryItem);
-            //Debug.Log(position.x + "  " + position.y);
+            inventoryCells[pos.x, pos.y].SetCellData(_inventoryItem);
         }
     }
 
-    public bool IsCanPlace(List<Vector2Int> gridPostionList)
+    public bool IsPositionsEmpty(List<Vector2Int> gridPositionList)
     {
-        foreach (var position in gridPostionList)
+        foreach (var position in gridPositionList)
         {
-            if (OutOfBoundsCheck(position) == true || !inventoryCells[position.x, position.y].IsCellEmpty())
+            if (OutOfBoundsCheck(position) == true)
                 return false;
+
+            if (inventoryCells[position.x, position.y].IsCellEmpty() == false)
+                return false;
+
         }
         return true;
     }
 
     public InventoryItem TryGetInventoryItem(Vector2Int activeCell)
     {
-        if (inventoryCells[activeCell.x, activeCell.y].IsCellEmpty() == true)
+        if (OutOfBoundsCheck(activeCell) == false && inventoryCells[activeCell.x, activeCell.y].IsCellEmpty() == true)
             return null;
 
         var item = inventoryCells[activeCell.x, activeCell.y].InventoryItem;
@@ -175,7 +218,15 @@ public class ItemsCollection : MonoBehaviour
         }
 
         return item;
-    }    
+    }
+
+    public InventoryItemData GetInventoryItemData(Vector2Int activeCell)
+    {
+        if (OutOfBoundsCheck(activeCell) == false && inventoryCells[activeCell.x, activeCell.y].IsCellEmpty() == true)
+            return null;
+
+        return inventoryCells[activeCell.x, activeCell.y].InventoryItem.ItemData;
+    }
 
     public Vector3 GetWorldPosition(int x, int y)
     {
@@ -186,27 +237,13 @@ public class ItemsCollection : MonoBehaviour
 
     public Vector3 GetLocalPosition(int x, int y)
     {
-        var scaledCell = GetScaledCell();
-        var pos = new Vector3(cellSize.x * x, cellSize.y * y * -1, 0);
+        var pos = new Vector3(GetScaledCell().x * x, GetScaledCell().y * y * -1, 0);
         return pos;
-    }
-
-    public void GetCellXY(RectTransform rectTransform, Vector2 mousePosition, out int x, out int y)
-    {
-        Vector2 localPosition;
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        localPosition = worldPosition - OriginalPosition;
-        //RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, null, out localPosition);
-
-        x = 0; y = 0;
-        //x = Mathf.FloorToInt(localPosition.x / GetScaledCell().x);
-        //y = Mathf.FloorToInt(localPosition.y / GetScaledCell().y * -1);
     }
 
     public Vector2Int GetCellXY(Vector2 mousePosition)
     {
-        Vector2 localPosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(containerTransform.GetComponent<RectTransform>(), mousePosition, null, out localPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(containerTransform.GetComponent<RectTransform>(), mousePosition, null, out Vector2 localPosition);
 
         var x = Mathf.FloorToInt(localPosition.x / cellSize.x);
         var y = Mathf.FloorToInt(localPosition.y / cellSize.y * -1);
@@ -223,21 +260,6 @@ public class ItemsCollection : MonoBehaviour
         return false;
     }
 
-    public bool TryPlaceItem(Vector2Int cellPosXY, InventoryItem item)
-    {
-        var positions = InventoryItem.CalculatePositionList(item.Dir, item.ItemData.Width, item.ItemData.Height, cellPosXY);
-
-        if (IsCanPlace(positions))
-        {
-            item.GridPositionList = positions;
-            AddInventoryItem(item);
-            return true;
-        }
-
-        OnFailedAddItem?.Invoke();
-        return false;
-    }
-
     public Vector2 GetScaledCell()
     {
         return cellSize * scaleFactor;
@@ -245,16 +267,16 @@ public class ItemsCollection : MonoBehaviour
 
     public bool IsIntersectWithTheItem(Bounds itemBounds)
     {
-        var boundCollection = GetComponent<BoxCollider2D>().bounds;
+        var boundCollection = GetComponentInChildren<BoxCollider2D>().bounds;
         if (boundCollection.Intersects(itemBounds))
             return true;
 
         return false;
     }
 
-    public void Scroll (Bounds itemBounds)
+    public void Scroll(Bounds itemBounds)
     {
-        var boundCollection = GetComponent<BoxCollider2D>().bounds;
+        var boundCollection = GetComponentInChildren<BoxCollider2D>().bounds;
         var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;
 
         if (distanceNormal.y > 0)
@@ -277,7 +299,7 @@ public class ItemsCollection : MonoBehaviour
 
             var dist = itemBounds.center.y - centerCorner.y;
 
-            if (dist < itemBounds.size.y)
+            if (dist < itemBounds.size.y / 2)
             {
                 scrollbar.value -= 1 * Time.deltaTime;
             }
@@ -291,10 +313,9 @@ public class ItemsCollection : MonoBehaviour
         if (ObservedItem == null)
             return;
 
-        if (ObservedItem.ItemData.ItemContainer != null)
+        if (ObservedItem.ItemData.IsContainer)
         {
-            var itemInventory = Instantiate(ObservedItem.ItemData.ItemContainer, inventorySystem.transform);
-            inventorySystem.AddItemContainer(itemInventory.GetComponent<ItemsCollection>());
-        }        
+            ObservedItem.ItemData.ItemContainer.transform.Find("Visual").gameObject.SetActive(true);
+        }
     }
 }

@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WindowInfo
   m_EditorClassIdentifier: Assembly-CSharp-Editor::WindowInfo
   rootTransform: {fileID: 0}
-  sizeX: 0
-  sizeY: 0
-  cellSize: {x: 50, y: 50}
+  sizeX: 6
+  sizeY: 7
+  cellSize: {x: 25, y: 25}
   second: 0
   cellColor: {r: 0, g: 0, b: 0, a: 1}
-  cellImage: {fileID: 0}
+  cellImage: {fileID: 2800000, guid: 69f7c0da7b8f5984fa8b67609e363ae6, type: 3}
   inventoryBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
-  inventoryBackground: {fileID: 0}
-  enableBackgroundOutline: 0
+  inventoryBackground: {fileID: 21300000, guid: 3c8cb42eb765c144ab75db70ae5a7eca, type: 3}
+  enableBackgroundOutline: 1
   backgroundOutlineColor: {r: 0, g: 0, b: 0, a: 1}
-  backgroundOutlineSprite: {fileID: 0}
+  backgroundOutlineSprite: {fileID: 21300000, guid: d74b707e92c4b2b4eb4023982e975d04, type: 3}

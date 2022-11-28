@@ -143,8 +143,8 @@ namespace GridInventory
 
         private void ReturnItemToInitialPosition()
         {
-            lastItemCollection.GenerateInventoryItem(oldCell, iteract_InventoryItem.ItemData, oldDir);
-            GameObject.Destroy(iteract_InventoryItem.gameObject);
+            iteract_InventoryItem.Dir = oldDir; 
+            lastItemCollection.TryPlaceItem(oldCell, iteract_InventoryItem);           
 
             ClearIteract_InventoryItem();
         }
@@ -153,20 +153,25 @@ namespace GridInventory
         {
             foreach (var collection in availableCollections)
             {
-                var bounds = collection.transform.GetComponent<Collider2D>().bounds;
-                if (bounds.Contains(Input.mousePosition))
+                if (transform.GetChild(0).gameObject.activeSelf == true)
                 {
-                    activeItemCollection = collection;
-                    stareCell = collection.GetCellXY(Input.mousePosition);
-                    ghostItem.Collection = collection;
-                    ghostItem.StareCell = stareCell;
-                    ghostItem.Ghost_InventoryItem = iteract_InventoryItem;
-                    return;
-                }
+                    var boundsCollection = collection.transform.GetChild(0).transform.GetComponentInChildren<Collider2D>().bounds;
+                    if (boundsCollection.Contains(Input.mousePosition))
+                    {
+                        activeItemCollection = collection;
+                        stareCell = collection.GetCellXY(Input.mousePosition);
+                        ghostItem.Collection = collection;
+                        ghostItem.StareCell = stareCell;
+                        ghostItem.Ghost_InventoryItem = iteract_InventoryItem;
+                        return;
+                    }
+                }                
             }
 
             activeItemCollection = null;
+            ghostItem.Collection = null;
             stareCell = new Vector2Int(-1, -1);
+            ghostItem.StareCell = stareCell;
         }
 
         void ScrollActiveItemCollection()
@@ -177,7 +182,7 @@ namespace GridInventory
             var itemBounds = iteract_InventoryItem.transform.GetComponent<BoxCollider2D>().bounds;
             var isIntersect = activeItemCollection.IsIntersectWithTheItem(itemBounds);
 
-            if (isIntersect)
+            if (isIntersect && activeItemCollection.Scrollbar != null)
                 activeItemCollection.Scroll(itemBounds);
         }
 
