@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: WindowInfo
   m_EditorClassIdentifier: Assembly-CSharp-Editor::WindowInfo
-  rootTransform: {fileID: 0}
   sizeX: 6
-  sizeY: 7
+  sizeY: 4
   cellSize: {x: 25, y: 25}
   second: 0
   cellColor: {r: 0, g: 0, b: 0, a: 1}

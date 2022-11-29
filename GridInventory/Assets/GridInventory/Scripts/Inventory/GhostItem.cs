@@ -1,16 +1,13 @@
-using GridInventory;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GhostItem : MonoBehaviour
 {
-    ItemsCollection itemsCollection;
+    GridInventory itemsCollection;
     [SerializeField] private Vector2Int stareCell;
     [SerializeField] private InventoryItem ghost_InventoryItem;
 
-    public ItemsCollection Collection { get => itemsCollection; set => itemsCollection = value; }
+    public GridInventory Collection { get => itemsCollection; set => itemsCollection = value; }
     public InventoryItem Ghost_InventoryItem { set => ghost_InventoryItem = value; }
     public Vector2Int StareCell { set => stareCell = value; }
 
@@ -19,9 +16,9 @@ public class GhostItem : MonoBehaviour
     {
         if (!stareCell.Equals(new Vector2Int(-1, -1)) && ghost_InventoryItem != null)
         {
+            transform.SetSiblingIndex(transform.childCount - 1);
 
-
-            var newSize = new Vector2(ghost_InventoryItem.ItemData.Width * itemsCollection.GetScaledCell().x, ghost_InventoryItem.ItemData.Height * itemsCollection.GetScaledCell().y);
+            var newSize = new Vector2(ghost_InventoryItem.ItemData.Width * itemsCollection.CellSize.x, ghost_InventoryItem.ItemData.Height * itemsCollection.CellSize.y);
             GetComponent<RectTransform>().sizeDelta = newSize;
 
             var positions = InventoryItem.CalculatePositionList(ghost_InventoryItem.Dir, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, stareCell);
@@ -44,14 +41,17 @@ public class GhostItem : MonoBehaviour
             var observedItem = itemsCollection.GetInventoryItemData(stareCell);
             if (observedItem != null && observedItem.IsContainer)
             {
-                var canPutToContainer = observedItem.ItemContainer.GetComponent<ItemsCollection>().IsCanBePlaced(ghost_InventoryItem.ItemData, out positions, ghost_InventoryItem.Dir);
+                var canPutToContainer = observedItem.ItemContainer.GetComponent<GridInventory>().IsCanBePlaced(ghost_InventoryItem.ItemData, out positions, ghost_InventoryItem.Dir);
                 if (canPutToContainer)
                     GetComponent<Image>().color = Color.green;
                 else
                     GetComponent<Image>().color = Color.red;
             }
 
-            
+            if (itemsCollection.IsContainer == true && ghost_InventoryItem.ItemData.IsContainer == true)
+                GetComponent<Image>().color = Color.red;
+
+
 
             GetComponent<Image>().enabled = true;
 

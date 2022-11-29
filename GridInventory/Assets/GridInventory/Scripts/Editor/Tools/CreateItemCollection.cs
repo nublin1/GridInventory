@@ -1,12 +1,14 @@
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
 public class WindowInfo : ScriptableObject
 {
-    public GameObject rootTransform;
+   
+    //public Object rootTransform;
 
     public int sizeX, sizeY;
     public Vector2Int cellSize = new Vector2Int(50, 50);
@@ -20,7 +22,7 @@ public class WindowInfo : ScriptableObject
 
     public bool enableBackgroundOutline;
     public Color backgroundOutlineColor = Color.black;
-    public Sprite backgroundOutlineSprite;    
+    public Sprite backgroundOutlineSprite;
 }
 
 public class CreateItemCollection : EditorWindow
@@ -28,8 +30,10 @@ public class CreateItemCollection : EditorWindow
     private static WindowInfo windowInfo;
     private SerializedObject windowInfoSO;
 
+    private GameObject rootObj;
+
     //Inventory
-    private SerializedProperty rootTranform;
+    //private SerializedProperty rootTranform;
 
     private SerializedProperty sizeX, sizeY;
 
@@ -79,7 +83,7 @@ public class CreateItemCollection : EditorWindow
 
     [InitializeOnLoadMethod]
     private static void OnLoad()
-    {        
+    {
         windowInfo = (WindowInfo)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(WindowInfo));
         if (!windowInfo)
         {
@@ -93,12 +97,13 @@ public class CreateItemCollection : EditorWindow
     private void OnDestroy()
     {
         AssetDatabase.SaveAssets();
-    } 
+    }
 
     private void CreateGUI()
     {
-        windowInfoSO = new SerializedObject(windowInfo);
-        rootTranform = windowInfoSO.FindProperty("rootTransform");
+        windowInfoSO = new SerializedObject(windowInfo);        
+        
+        //rootTranform = windowInfoSO.FindProperty("rootTransform");
 
         sizeX = windowInfoSO.FindProperty("sizeX");
         sizeY = windowInfoSO.FindProperty("sizeY");
@@ -136,7 +141,8 @@ public class CreateItemCollection : EditorWindow
         if (tabIndex == 0)
         {
             var rootTextInfo = "The object to which the inventory will be attached after creation. If empty, a new object will be created";
-            EditorGUILayout.PropertyField(rootTranform, new GUIContent("RootTranform (Optional)", rootTextInfo));
+            //EditorGUILayout.PropertyField(rootTranform, new GUIContent("RootTranform (Optional)", rootTextInfo), true);
+            rootObj = (GameObject)EditorGUILayout.ObjectField(new GUIContent("RootTranform (Optional)", rootTextInfo), rootObj, typeof(GameObject), true);
 
             EditorGUILayout.PropertyField(sizeX, GUILayout.ExpandWidth(false));
             EditorGUILayout.PropertyField(sizeY, GUILayout.ExpandWidth(false));
@@ -157,6 +163,7 @@ public class CreateItemCollection : EditorWindow
                 EditorGUILayout.PropertyField(backgroundOutlineSprite, false);
             }
 
+            
             enableHeader = EditorGUILayout.Toggle("Container header", enableHeader);
             if (enableHeader)
             {
@@ -171,10 +178,8 @@ public class CreateItemCollection : EditorWindow
             {
                 sizeOfViewport = EditorGUILayout.Vector2IntField("sizeOfViewport", sizeOfViewport, GUILayout.ExpandWidth(false));
             }
-
-
-
-            if (GUILayout.Button("Build inventory") && CheckCompleteness())
+           
+            if (GUILayout.Button("Build inventory") && CheckReadyToBuildInventory())
                 BuildInventory();
 
 
@@ -186,7 +191,7 @@ public class CreateItemCollection : EditorWindow
     {
         GameObject obj;
 
-        if (windowInfo.rootTransform == null)
+        if (rootObj == null)
         {
             // Drawing Canvas
             obj = new GameObject();
@@ -197,13 +202,14 @@ public class CreateItemCollection : EditorWindow
         }
         else
         {
-            obj = windowInfo.rootTransform;
+            obj = rootObj;
         }
 
         //
         var container = new GameObject("container");
         container.transform.parent = obj.transform;
         container.transform.localPosition = Vector3.zero;
+       
 
         var containerRect = container.AddComponent<RectTransform>();
         containerRect.sizeDelta = new Vector2(windowInfo.cellSize.x * windowInfo.sizeX, windowInfo.cellSize.y * windowInfo.sizeY);
@@ -312,7 +318,7 @@ public class CreateItemCollection : EditorWindow
 
         // Viewport
         var viewport = new GameObject("Viewport");
-        viewport.transform.parent = visual.transform;        
+        viewport.transform.parent = visual.transform;
 
         RectTransform rectViewport = viewport.AddComponent<RectTransform>();
         rectViewport.anchorMin = new Vector2(0, 1);
@@ -331,15 +337,15 @@ public class CreateItemCollection : EditorWindow
         ViewportImage.type = Image.Type.Sliced;
 
         // GridImage
-        var gridImage = new GameObject("GridImage");        
+        var gridImage = new GameObject("GridImage");
 
         var gridImageRect = gridImage.AddComponent<RectTransform>();
         gridImageRect.anchorMin = new Vector2(0, 1);
         gridImageRect.anchorMax = new Vector2(0, 1);
         gridImageRect.pivot = new Vector2(0, 1);
         gridImageRect.transform.localPosition = Vector3.zero;
-        gridImageRect.sizeDelta = new Vector2(windowInfo.sizeX * windowInfo.cellSize.x, windowInfo.sizeY * windowInfo.cellSize.y);        
-        
+        gridImageRect.sizeDelta = new Vector2(windowInfo.sizeX * windowInfo.cellSize.x, windowInfo.sizeY * windowInfo.cellSize.y);
+
 
         var gridTexture = gridImage.AddComponent<RawImage>();
         gridTexture.color = windowInfo.cellColor;
@@ -444,11 +450,12 @@ public class CreateItemCollection : EditorWindow
             scrollbar.verticalScrollbar = scrollbarVertical;
 
         }
-  
+
+        container.transform.localScale = Vector3.one;
 
         //
         // ItemCollection
-        var itemCollection = container.AddComponent<ItemsCollection>();
+        var itemCollection = container.AddComponent<GridInventory>();
         itemCollection.GridWidth = windowInfo.sizeX;
         itemCollection.GridHeight = windowInfo.sizeY;
         itemCollection.CellSize = windowInfo.cellSize;
@@ -461,7 +468,7 @@ public class CreateItemCollection : EditorWindow
 
     }
 
-    private bool CheckCompleteness()
+    private bool CheckReadyToBuildInventory()
     {
         if (windowInfo.sizeX < 1 || windowInfo.sizeY < 1)
         {

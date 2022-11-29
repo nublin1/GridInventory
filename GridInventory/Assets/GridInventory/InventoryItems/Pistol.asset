@@ -17,4 +17,6 @@ MonoBehaviour:
   width: 2
   height: 1
   isContainer: 0
-  itemContainer: {fileID: 0}
+  pf_ItemContainer: {fileID: 0}
+  m_Stack: 1
+  m_maxStack: 1

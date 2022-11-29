@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GridInventory
+namespace GridInventorySystem
 {
     public class GridCell
     {
-        private ItemsCollection gridXY;
+        private GridInventory gridXY;
         private int x;
         private int y;
 
         private InventoryItem inventoryItem;        
 
-        public GridCell(ItemsCollection grid, int x, int y)
+        public GridCell(GridInventory grid, int x, int y)
         {
             this.gridXY = grid;
             this.x = x;

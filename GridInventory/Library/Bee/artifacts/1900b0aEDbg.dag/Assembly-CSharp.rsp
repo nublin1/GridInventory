@@ -361,12 +361,13 @@
 "Assets/GridInventory/Scripts/DragPanel.cs"
 "Assets/GridInventory/Scripts/Inventory/GhostItem.cs"
 "Assets/GridInventory/Scripts/Inventory/GridCell.cs"
-"Assets/GridInventory/Scripts/Inventory/GridInventorySystem.cs"
+"Assets/GridInventory/Scripts/Inventory/GridInventory.cs"
+"Assets/GridInventory/Scripts/Inventory/GridInventoryManager.cs"
 "Assets/GridInventory/Scripts/Inventory/InventoryUtilities.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/IIsContainer.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/InventoryItem.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/InventoryItemData.cs"
-"Assets/GridInventory/Scripts/Inventory/ItemsCollection.cs"
+"Assets/GridInventory/Scripts/Inventory/Runtime/ItemCollection.cs"
 -langversion:9.0
 
 /deterministic
