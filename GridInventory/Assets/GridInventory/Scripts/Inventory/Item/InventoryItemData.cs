@@ -24,6 +24,8 @@ namespace GridInventorySystem
         [SerializeField]
         private int height;
 
+        
+
         #region containerOptions
         [SerializeField]
         private bool isContainer;
@@ -52,6 +54,7 @@ namespace GridInventorySystem
         public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
         public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
         public int Stack { get => m_Stack; set => m_Stack = value; }
+        
         #endregion
 
         protected virtual void OnEnable()

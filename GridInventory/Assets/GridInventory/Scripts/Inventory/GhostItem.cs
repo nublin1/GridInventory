@@ -5,15 +5,16 @@ public class GhostItem : MonoBehaviour
 {
     GridInventory itemsCollection;
     [SerializeField] private Vector2Int stareCell;
-    [SerializeField] private InventoryItem ghost_InventoryItem;
+    [SerializeField] private BaseItem ghost_InventoryItem;
 
     public GridInventory Collection { get => itemsCollection; set => itemsCollection = value; }
-    public InventoryItem Ghost_InventoryItem { set => ghost_InventoryItem = value; }
+    public BaseItem Ghost_InventoryItem { set => ghost_InventoryItem = value; }
     public Vector2Int StareCell { set => stareCell = value; }
 
 
     void Update()
     {
+        /*
         if (!stareCell.Equals(new Vector2Int(-1, -1)) && ghost_InventoryItem != null)
         {
             transform.SetSiblingIndex(transform.childCount - 1);
@@ -21,7 +22,7 @@ public class GhostItem : MonoBehaviour
             var newSize = new Vector2(ghost_InventoryItem.ItemData.Width * itemsCollection.CellSize.x, ghost_InventoryItem.ItemData.Height * itemsCollection.CellSize.y);
             GetComponent<RectTransform>().sizeDelta = newSize;
 
-            var positions = InventoryItem.CalculatePositionList(ghost_InventoryItem.Dir, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, stareCell);
+            var positions = BaseItem.CalculatePositionList(ghost_InventoryItem.Dir, ghost_InventoryItem.ItemData.Width, ghost_InventoryItem.ItemData.Height, stareCell);
 
             Vector2Int rotationOffset = ghost_InventoryItem.GetRotationOffset();
             var worldPos = itemsCollection.GetWorldPosition(positions[0].x, positions[0].y);
@@ -61,5 +62,6 @@ public class GhostItem : MonoBehaviour
             GetComponent<Image>().enabled = false;
             //GetComponent<Image>().sprite = null;
         }
+        */
     }
 }

@@ -2,8 +2,10 @@ using GridInventorySystem;
 using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ItemCollection))]
 public class GridInventory : MonoBehaviour
 {
     [SerializeField] private int gridWidth;
@@ -12,7 +14,7 @@ public class GridInventory : MonoBehaviour
 
     [SerializeField] private GridInventoryManager inventorySystem;
     [SerializeField] private Scrollbar scrollbar;
-    [SerializeField] private Transform containerTransform;    
+    [SerializeField] private Transform containerTransform;
 
     [SerializeField] private Button closeButton;
 
@@ -22,7 +24,7 @@ public class GridInventory : MonoBehaviour
     private Vector3 scaleFactor;
     private GridCell[,] inventoryCells;
 
-    private ItemCollection m_Collection;
+    private ItemCollection m_Collection;   
 
     #region Properties
     public bool IsContainer { get => isContainer; set => isContainer = value; }
@@ -34,7 +36,7 @@ public class GridInventory : MonoBehaviour
     public Scrollbar Scrollbar { get => scrollbar; }
     public Transform ContainerTransform { get => containerTransform; set => containerTransform = value; }
     public GridInventoryManager InventorySystem { get => inventorySystem; set => inventorySystem = value; }
-   
+
     #endregion
 
     #region Events
@@ -54,12 +56,13 @@ public class GridInventory : MonoBehaviour
                 scrollbar = _scrollbar;
         }
 
-        m_Collection = GetComponent<ItemCollection>();
+        if (TryGetComponent(out ItemCollection _itemCollection))
+            m_Collection = _itemCollection;
     }
 
     private void Start()
     {
-        scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;        
+        scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
 
         Init();
 
@@ -76,7 +79,7 @@ public class GridInventory : MonoBehaviour
     private void CloseButtonAction()
     {
         transform.Find("Visual").gameObject.SetActive(false);
-    }   
+    }
 
     private void Init()
     {
@@ -90,74 +93,69 @@ public class GridInventory : MonoBehaviour
             }
         }
 
-        foreach (var item in m_Collection.Items)
+        foreach (var itemData in m_Collection.Items)
         {
-            List<Vector2Int> positions;
-            if (IsCanBePlaced(item, out positions))
+            var item = BaseItem.CreateItem(Dir.Up, itemData);
+            if (IsCanBePlacedInInventory(item))
             {
-                GenerateInventoryItem(positions, item);
+                GenerateItem(item);
             }
         }
     }
 
-    public bool IsCanBePlaced(InventoryItemData _itemData, out List<Vector2Int> _positions, Dir dir = Dir.Up)
+    public bool IsCanBePlacedInInventory(BaseItem _item)
     {
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                var positions = InventoryItem.CalculatePositionList(dir, _itemData.Width, _itemData.Height, new Vector2Int(x, y));
-                if (IsPositionsEmpty(positions))
-                {
-                    _positions = positions;
+                if (IsPositionsEmpty(_item.GridPositionList))
                     return true;
-                }
+
+                else
+                    _item.ReculculatePositionList(new Vector2Int(x, y));
             }
         }
-
-        _positions = null;
         return false;
     }
 
-    private void GenerateInventoryItem(List<Vector2Int> positions, InventoryItemData _itemData, Dir dir = Dir.Up)
+    private void GenerateItem(BaseItem baseItem)
     {
-        var item = InventoryItem.CreateItem(_itemData, dir, CellSize);
-        item.GridPositionList = positions;
-        PlaceItemToCells(item);
+        baseItem.CreateItemTransform(CellSize);
+        PlaceItemToCells(baseItem);
 
-        if (item.ItemData.Pf_ItemContainer != null)
+        if (baseItem.ItemData.Pf_ItemContainer != null)
         {
-            var itemInventory = Instantiate(item.ItemData.Pf_ItemContainer, inventorySystem.transform);
+            var itemInventory = Instantiate(baseItem.ItemData.Pf_ItemContainer, inventorySystem.transform);
             itemInventory.transform.Find("Visual").gameObject.SetActive(false);
 
-
-            item.ItemData.ItemContainer = itemInventory.transform;
+            baseItem.ItemData.ItemContainer = itemInventory.transform;
             var itemCollection = itemInventory.GetComponent<GridInventory>();
             itemCollection.isContainer = true;
             inventorySystem.AddItemContainer(itemInventory.GetComponent<GridInventory>());
         }
-
     }
 
-    public bool TryPlaceItem(Vector2Int cellPosXY, InventoryItem placeableItem)
+
+    public bool PlaceItem(BaseItem placeableItem)
     {
+        var cellXY = GetCellXY(Input.mousePosition);
+        if (OutOfBoundsCheck(cellXY))
+            return false;
+
         if (this.isContainer == true && placeableItem.ItemData.IsContainer == true)
             return false;
 
-        var positions = InventoryItem.CalculatePositionList(placeableItem.Dir, placeableItem.ItemData.Width, placeableItem.ItemData.Height, cellPosXY);
-        if (IsPositionsEmpty(positions))
-        {
-            placeableItem.GridPositionList = positions;
+        placeableItem.ReculculatePositionList(cellXY);
+        if (IsPositionsEmpty(placeableItem.GridPositionList))
+        {            
             PlaceItemToCells(placeableItem);
+            m_Collection.Add(placeableItem.ItemData);
             OnAddItem?.Invoke();
             return true;
         }
 
-
-        InventoryItem observedItemInCell = null;
-        if (inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem != null)
-            observedItemInCell = inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem;
-
+        BaseItem observedItemInCell = inventoryCells[cellXY.x, cellXY.y].InventoryItem; 
         if (observedItemInCell != null)
         {
             var stack = CanStack(placeableItem, observedItemInCell);
@@ -166,27 +164,23 @@ public class GridInventory : MonoBehaviour
                 PlaceItemToCells(placeableItem);
             }
 
-
             if (observedItemInCell.ItemData.IsContainer)
             {
-                var invContainer = inventoryCells[cellPosXY.x, cellPosXY.y].InventoryItem.ItemData.ItemContainer.GetComponent<GridInventory>();
-                List<Vector2Int> posit;
-                if (invContainer.IsCanBePlaced(placeableItem.ItemData, out posit, placeableItem.Dir))
-                {
-                    placeableItem.GridPositionList = posit;
-                    invContainer.PlaceItemToCells(placeableItem);
-
+                var invContainer = inventoryCells[cellXY.x, cellXY.y].InventoryItem.ItemData.ItemContainer.GetComponent<GridInventory>();                
+                if (invContainer.IsCanBePlacedInInventory(placeableItem))
+                {                    
+                    invContainer.PlaceItemToCells(placeableItem);                    
                     OnAddItem?.Invoke();
                     return true;
                 }
             }
-        }  
+        }
 
         OnFailedAddItem?.Invoke();
         return false;
     }
 
-    private bool CanStack(InventoryItem item, InventoryItem comparedItem)
+    private bool CanStack(BaseItem item, BaseItem comparedItem)
     {
         //Check if max stack is reached
         if ((item.ItemData.Stack + comparedItem.ItemData.Stack) <= comparedItem.ItemData.Stack)
@@ -197,14 +191,14 @@ public class GridInventory : MonoBehaviour
         return false;
     }
 
-    public void PlaceItemToCells(InventoryItem _inventoryItem)
+    public void PlaceItemToCells(BaseItem _inventoryItem)
     {
         Vector2Int rotationOffset = _inventoryItem.GetRotationOffset();
         var localPos = GetLocalPosition(_inventoryItem.GridPositionList[0].x, _inventoryItem.GridPositionList[0].y);
         var position = localPos + new Vector3(rotationOffset.x * cellSize.x, rotationOffset.y * cellSize.y, 0);
 
-        _inventoryItem.GetComponent<RectTransform>().anchoredPosition = position;
-        _inventoryItem.transform.SetParent(containerTransform.transform, false);
+        _inventoryItem.ItemTransform.GetComponent<RectTransform>().anchoredPosition = position;
+        _inventoryItem.ItemTransform.transform.SetParent(containerTransform.transform, false);
 
         foreach (var pos in _inventoryItem.GridPositionList)
         {
@@ -212,7 +206,7 @@ public class GridInventory : MonoBehaviour
         }
     }
 
-    public bool IsPositionsEmpty(List<Vector2Int> gridPositionList)
+    private bool IsPositionsEmpty(List<Vector2Int> gridPositionList)
     {
         foreach (var position in gridPositionList)
         {
@@ -224,29 +218,22 @@ public class GridInventory : MonoBehaviour
 
         }
         return true;
-    }
+    }    
 
-    public InventoryItem TryGetInventoryItem(Vector2Int activeCell)
+    public BaseItem GetInventoryItem()
     {
-        if (OutOfBoundsCheck(activeCell) == false && inventoryCells[activeCell.x, activeCell.y].IsCellEmpty() == true)
+        var cellXY = GetCellXY(Input.mousePosition);
+
+        if (OutOfBoundsCheck(cellXY) == false && inventoryCells[cellXY.x, cellXY.y].IsCellEmpty() == true)
             return null;
 
-        var item = inventoryCells[activeCell.x, activeCell.y].InventoryItem;
-        foreach (var cell in item.GridPositionList)
-        {
+        var item = inventoryCells[cellXY.x, cellXY.y].InventoryItem;
+        foreach (var cell in item.GridPositionList)        
             inventoryCells[cell.x, cell.y].ClearCellData();
-        }
 
+        m_Collection.Remove(item.ItemData);
         return item;
-    }
-
-    public InventoryItemData GetInventoryItemData(Vector2Int activeCell)
-    {
-        if (OutOfBoundsCheck(activeCell) == true || inventoryCells[activeCell.x, activeCell.y].IsCellEmpty() == true)
-            return null;
-
-        return inventoryCells[activeCell.x, activeCell.y].InventoryItem.ItemData;
-    }
+    }   
 
     public Vector3 GetWorldPosition(int x, int y)
     {
@@ -261,7 +248,7 @@ public class GridInventory : MonoBehaviour
         return pos;
     }
 
-    public Vector2Int GetCellXY(Vector2 mousePosition)
+    private Vector2Int GetCellXY(Vector2 mousePosition)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(containerTransform.GetComponent<RectTransform>(), mousePosition, null, out Vector2 localPosition);
 
@@ -338,4 +325,7 @@ public class GridInventory : MonoBehaviour
             ObservedItem.ItemData.ItemContainer.transform.Find("Visual").gameObject.SetActive(true);
         }
     }
+
+    
+
 }
