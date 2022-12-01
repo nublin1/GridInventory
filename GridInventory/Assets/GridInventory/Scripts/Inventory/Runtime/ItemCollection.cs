@@ -1,10 +1,13 @@
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GridInventorySystem
 {
-    public class ItemCollection : MonoBehaviour
+    public class ItemCollection : MonoBehaviour, IEnumerable<InventoryItemData>
     {
         [SerializeField]
         List<InventoryItemData> m_items = new();
@@ -14,6 +17,22 @@ namespace GridInventorySystem
 
 
         public List<InventoryItemData> Items { get => m_items; }
+
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            if (this.m_Amounts.Count < this.m_items.Count)
+            {
+                for (int i = this.m_Amounts.Count; i < this.m_items.Count; i++)
+                {
+                    this.m_Amounts.Add(1);
+                }
+            }
+        }
 
 
         public void Add(InventoryItemData item)
@@ -33,11 +52,21 @@ namespace GridInventorySystem
             bool result = m_items.Remove(item);
             if (result)
             {
-                //this.m_Amounts.RemoveAt(index);                
+                this.m_Amounts.RemoveAt(index);                
                 //if (onChange != null)
                 //    onChange.Invoke();
             }
             return result;
+        }
+
+        public IEnumerator<InventoryItemData> GetEnumerator()
+        {
+            return this.m_items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

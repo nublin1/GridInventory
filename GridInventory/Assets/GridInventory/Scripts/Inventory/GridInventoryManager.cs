@@ -17,7 +17,7 @@ namespace GridInventorySystem
 
 
         // prev Item Data
-        [SerializeField] GridInventory lastItemCollection;
+        [SerializeField] GridInventory savedItemCollection;
         private Vector2Int oldCell;
         [SerializeField] BaseItem iteract_InventoryItem;
         Dir oldDir;
@@ -64,7 +64,7 @@ namespace GridInventorySystem
                 if (iteract_InventoryItem == null)
                     return;
 
-                lastItemCollection = activeItemCollection;
+                savedItemCollection = activeItemCollection;
                 iteract_InventoryItem.ItemTransform.SetParent(transform, false);
                 oldCell = iteract_InventoryItem.GridPositionList[0];
                 oldDir = iteract_InventoryItem.Dir;
@@ -76,7 +76,6 @@ namespace GridInventorySystem
                     return;
 
                 iteract_InventoryItem.ItemTransform.position = Input.mousePosition;
-
                 ScrollActiveItemCollection();
             }
 
@@ -87,11 +86,13 @@ namespace GridInventorySystem
 
                 if (activeItemCollection != null)
                 {
-                    bool isPlaced = activeItemCollection.PlaceItem(iteract_InventoryItem);
-
-                    if (isPlaced)
+                    var cellXY = activeItemCollection.GetCellXY(Input.mousePosition);
+                    bool canPlace = activeItemCollection.CanPlaceItem(iteract_InventoryItem, cellXY);
+                    if (canPlace)
+                    {
+                        activeItemCollection.AddItem(iteract_InventoryItem, cellXY);
                         ClearIteract_InventoryItem();
-
+                    }
                     else
                         ReturnItemToInitialPosition();
                 }
@@ -141,8 +142,7 @@ namespace GridInventorySystem
         private void ReturnItemToInitialPosition()
         {
             iteract_InventoryItem.Dir = oldDir;            
-            lastItemCollection.PlaceItemToCells(iteract_InventoryItem);           
-
+            savedItemCollection.AddItem(iteract_InventoryItem, oldCell);     
             ClearIteract_InventoryItem();
         }
 
@@ -183,7 +183,7 @@ namespace GridInventorySystem
         private void ClearIteract_InventoryItem()
         {
             iteract_InventoryItem = null;
-            lastItemCollection = null;
+            savedItemCollection = null;
             ghostItem.Ghost_InventoryItem = null;
             ghostItem.StareCell = new Vector2Int(-1, -1);
             //ghostItem.gameObject.SetActive(false);

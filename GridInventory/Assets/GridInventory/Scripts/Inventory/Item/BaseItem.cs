@@ -34,6 +34,7 @@ public class BaseItem
     public void CreateItemTransform (Vector2 cellSize)
     {
         GameObject gameObject = new GameObject();
+        gameObject.name = ItemData.name;
         var rectCell = gameObject.AddComponent<RectTransform>();
         rectCell.sizeDelta = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
         rectCell.anchorMin = new Vector2(0f, 1f);
