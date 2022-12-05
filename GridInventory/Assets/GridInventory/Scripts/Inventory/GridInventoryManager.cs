@@ -13,13 +13,14 @@ namespace GridInventorySystem
 
         // Internal variables        
         [SerializeField] private GridInventory activeItemCollection;
-        private GhostItem ghostItem;        
+        BaseItem iteract_InventoryItem;
+        private Condition ghostItem;        
 
 
         // prev Item Data
         [SerializeField] GridInventory savedItemCollection;
-        private Vector2Int oldCell;
-        [SerializeField] BaseItem iteract_InventoryItem;
+        private BaseItem savedItem;
+        private Vector2Int oldCell;        
         Dir oldDir;
 
 
@@ -46,7 +47,7 @@ namespace GridInventorySystem
 
         private void Start()
         {
-            ghostItem = GetComponentInChildren<GhostItem>();
+            ghostItem = GetComponentInChildren<Condition>();
             ghostItem.Collection = activeItemCollection;
             //ghostItem.gameObject.SetActive(false);
         }
@@ -60,13 +61,17 @@ namespace GridInventorySystem
                 if (activeItemCollection == null)
                     return;
 
-                iteract_InventoryItem = activeItemCollection.GetInventoryItem();
+                var activeCell = activeItemCollection.GetCellXY(Input.mousePosition);
+                iteract_InventoryItem = activeItemCollection.GetInventoryItem(activeCell);
                 if (iteract_InventoryItem == null)
                     return;
 
+                activeItemCollection.RemoveItem(iteract_InventoryItem);
+
                 savedItemCollection = activeItemCollection;
+                savedItem = iteract_InventoryItem;
                 iteract_InventoryItem.ItemTransform.SetParent(transform, false);
-                oldCell = iteract_InventoryItem.GridPositionList[0];
+                oldCell = savedItem.GridPositionList[0];
                 oldDir = iteract_InventoryItem.Dir;
             }
 
@@ -87,7 +92,7 @@ namespace GridInventorySystem
                 if (activeItemCollection != null)
                 {
                     var cellXY = activeItemCollection.GetCellXY(Input.mousePosition);
-                    bool canPlace = activeItemCollection.CanPlaceItem(iteract_InventoryItem, cellXY);
+                    bool canPlace = activeItemCollection.CanAddItem(iteract_InventoryItem, cellXY);
                     if (canPlace)
                     {
                         activeItemCollection.AddItem(iteract_InventoryItem, cellXY);
@@ -104,10 +109,10 @@ namespace GridInventorySystem
 
             if (Input.GetMouseButtonDown(1))
             {
-                //if (stareItem.Equals(new Vector2Int(-1, -1)))
-                //    return;
-                //
-                //activeItemCollection.TryUsingItem(stareItem);
+                if (activeItemCollection == null)
+                    return;
+                
+                activeItemCollection.TryUsingItem(activeItemCollection.GetCellXY(Input.mousePosition));
             }
 
 
@@ -119,7 +124,14 @@ namespace GridInventorySystem
                 RotateIteractItem();
             }
         }
-         
+
+        private void ReturnItemToInitialPosition()
+        {
+            savedItem.SetRotation(oldDir);
+            savedItemCollection.AddItem(savedItem, oldCell);
+            ClearIteract_InventoryItem();
+        }
+
 
         public void AddItemContainer(GridInventory itemsCollection)
         {
@@ -139,11 +151,13 @@ namespace GridInventorySystem
                 availableCollections.Remove(itemsCollection);
         }
 
-        private void ReturnItemToInitialPosition()
+        private void ClearIteract_InventoryItem()
         {
-            iteract_InventoryItem.Dir = oldDir;            
-            savedItemCollection.AddItem(iteract_InventoryItem, oldCell);     
-            ClearIteract_InventoryItem();
+            iteract_InventoryItem = null;
+            savedItemCollection = null;
+            savedItem = null;
+            ghostItem.Ghost_InventoryItem = null;
+
         }
 
         private void DefineTargetCollection()
@@ -178,20 +192,11 @@ namespace GridInventorySystem
 
             if (isIntersect && activeItemCollection.Scrollbar != null)
                 activeItemCollection.Scroll(itemBounds);
-        }
-
-        private void ClearIteract_InventoryItem()
-        {
-            iteract_InventoryItem = null;
-            savedItemCollection = null;
-            ghostItem.Ghost_InventoryItem = null;
-            ghostItem.StareCell = new Vector2Int(-1, -1);
-            //ghostItem.gameObject.SetActive(false);
-        }
+        }        
 
         private void RotateIteractItem()
         {
-            iteract_InventoryItem.Dir = InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir);
+            iteract_InventoryItem.SetRotation(InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir));
         }
 
     }

@@ -13,22 +13,28 @@ public class BaseItem
 
     #region getters
     public InventoryItemData ItemData { get => m_itemData; }
-    public Dir Dir { get => m_dir; set => m_dir = value; }
+    public Dir Dir { get => m_dir; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
 
-    #endregion
+    #endregion    
 
-    private void Start()
+    public void SetRotation(Dir dir)
     {
+        m_dir = dir;
+        var newRot = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
+        m_itemTransform.rotation = newRot;
 
     }
 
-    private void LateUpdate()
+    public static BaseItem CreateItem(Dir dir, InventoryItemData data)
     {
-        var newRot = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
-        m_itemTransform.rotation = Quaternion.Lerp(m_itemTransform.rotation, newRot, Time.deltaTime * 15.0f);
+        BaseItem item = new BaseItem();
+        item.m_itemData = data;
+        item.gridPositionList = CalculatePositionList(dir, data.Width, data.Height, Vector2Int.zero);
+        item.m_dir = dir;
 
+        return item;
     }
 
     public void CreateItemTransform (Vector2 cellSize)
@@ -61,15 +67,7 @@ public class BaseItem
         gridPositionList = CalculatePositionList(m_dir, m_itemData.Width, m_itemData.Height, pivotPosition);
     }
 
-    public static BaseItem CreateItem(Dir dir, InventoryItemData data)
-    {
-        BaseItem item = new BaseItem();
-        item.m_itemData = data;
-        item.gridPositionList = CalculatePositionList(dir, data.Width, data.Height, Vector2Int.zero);
-        item.m_dir = dir;
-
-        return item;
-    }
+   
 
     public static List<Vector2Int> CalculatePositionList(Dir dir, int width, int height, Vector2Int pivotPosition)
     {
