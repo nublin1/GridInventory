@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
-public class BaseItem 
+public class BaseItem
 {
     private InventoryItemData m_itemData;
     private List<Vector2Int> gridPositionList;
     private Dir m_dir;
     private Transform m_itemTransform;
 
+    private Image backgroundImage;
+    private Image backgroundOutlineImage;
+    private Image itemIconImage;
+
     #region getters
     public InventoryItemData ItemData { get => m_itemData; }
     public Dir Dir { get => m_dir; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
+    public Image BackgroundImage { get => backgroundImage; }
+    public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
+    public Image ItemIconImage { get => itemIconImage; }
 
-    #endregion    
+    #endregion
 
     public void SetRotation(Dir dir)
     {
@@ -37,37 +45,70 @@ public class BaseItem
         return item;
     }
 
-    public void CreateItemTransform (Vector2 cellSize)
+    public void CreateItemTransform(Vector2 cellSize)
     {
-        GameObject gameObject = new GameObject();
-        gameObject.name = ItemData.name;
-        var rectCell = gameObject.AddComponent<RectTransform>();
-        rectCell.sizeDelta = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
-        rectCell.anchorMin = new Vector2(0f, 1f);
-        rectCell.anchorMax = new Vector2(0f, 1f);
-        rectCell.pivot = new Vector2(0f, 1f);
-        rectCell.anchoredPosition = new Vector2(0f, 0f);
+        GameObject itemObject = new();
+        itemObject.name = ItemData.name;
+        var itemRect = itemObject.AddComponent<RectTransform>();
+        itemRect.sizeDelta = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
+        itemRect.anchorMin = new Vector2(0f, 1f);
+        itemRect.anchorMax = new Vector2(0f, 1f);
+        itemRect.pivot = new Vector2(0f, 1f);
+        itemRect.anchoredPosition = new Vector2(0f, 0f);
 
-        gameObject.transform.rotation = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
+        itemObject.transform.rotation = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
 
-        var image = gameObject.AddComponent<Image>();
-        image.sprite = m_itemData.Icon;
-        image.raycastTarget = false;
-
-        var collider2d = gameObject.AddComponent<BoxCollider2D>();
+        // Collider
+        var collider2d = itemObject.AddComponent<BoxCollider2D>();
         collider2d.offset = new Vector2(cellSize.x * m_itemData.Width / 2, -cellSize.y * m_itemData.Height / 2);
         collider2d.size = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
         collider2d.isTrigger = true;
 
-        m_itemTransform = gameObject.transform;
-    }    
+        m_itemTransform = itemObject.transform;
+
+        // background
+        GameObject background = new("background");
+        background.transform.parent = itemObject.transform;
+        var itemBackgroundRect = background.AddComponent<RectTransform>();
+        itemBackgroundRect.sizeDelta = itemRect.sizeDelta;
+        itemBackgroundRect.anchoredPosition = new Vector2(0f, 0f);
+
+        backgroundImage = background.AddComponent<Image>();
+        backgroundImage.color = new Color(0, 0, 0, 0.15f);
+        backgroundImage.raycastTarget = false;
+
+        // background Outline
+        GameObject backgroundOutline = new("backgroundOutline");
+        backgroundOutline.transform.parent = itemObject.transform;
+        var itemBackgroundOutlineRect = backgroundOutline.AddComponent<RectTransform>();
+        itemBackgroundOutlineRect.sizeDelta = itemRect.sizeDelta;
+        itemBackgroundOutlineRect.anchoredPosition = new Vector2(0f, 0f);
+
+        backgroundOutlineImage = backgroundOutline.AddComponent<Image>();
+        backgroundOutlineImage.sprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
+        backgroundOutlineImage.color = new Color(0, 0, 0, 0.6f);
+        backgroundOutlineImage.raycastTarget = false;
+
+        //itemIcon
+        GameObject itemIcon = new("itemIcon");
+        itemIcon.transform.parent = itemObject.transform;
+        var itemIconRect = itemIcon.AddComponent<RectTransform>();
+        itemIconRect.sizeDelta = itemRect.sizeDelta;
+        itemIconRect.anchoredPosition = new Vector2(0f, 0f);
+
+        itemIconImage = itemIcon.AddComponent<Image>();
+        itemIconImage.sprite = m_itemData.Icon;
+        itemIconImage.raycastTarget = false;
+
+
+    }
 
     public void ReculculatePositionList(Vector2Int pivotPosition)
     {
         gridPositionList = CalculatePositionList(m_dir, m_itemData.Width, m_itemData.Height, pivotPosition);
     }
 
-   
+
 
     public static List<Vector2Int> CalculatePositionList(Dir dir, int width, int height, Vector2Int pivotPosition)
     {

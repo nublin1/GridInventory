@@ -159,7 +159,7 @@ public class GridInventory : MonoBehaviour
                 _item.ReculculatePositionList(new Vector2Int(x, y));
 
                 if (IsPositionsEmpty(_item.GridPositionList))
-                    return true;                
+                    return true;
             }
         }
         return false;
@@ -249,7 +249,7 @@ public class GridInventory : MonoBehaviour
         if (item == null || m_Collection.Contains(item.ItemData) == false) { return false; }
 
         foreach (var cell in item.GridPositionList)
-            inventoryCells[cell.x, cell.y].ClearCellData();       
+            inventoryCells[cell.x, cell.y].ClearCellData();
 
         //Remove item from the collection
         this.m_Collection.Remove(item.ItemData);
@@ -284,7 +284,8 @@ public class GridInventory : MonoBehaviour
 
             if (dist < itemBounds.size.y)
             {
-                scrollbar.value += 1 * Time.deltaTime;
+                if (scrollbar.value <= 1f)
+                    scrollbar.value += 1 * Time.deltaTime;
             }
 
         }
@@ -297,7 +298,8 @@ public class GridInventory : MonoBehaviour
 
             if (dist < itemBounds.size.y / 2)
             {
-                scrollbar.value -= 1 * Time.deltaTime;
+                if (scrollbar.value >= 0)
+                    scrollbar.value -= 1 * Time.deltaTime;
             }
 
         }

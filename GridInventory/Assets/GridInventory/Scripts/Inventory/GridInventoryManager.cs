@@ -73,6 +73,9 @@ namespace GridInventorySystem
                 iteract_InventoryItem.ItemTransform.SetParent(transform, false);
                 oldCell = savedItem.GridPositionList[0];
                 oldDir = iteract_InventoryItem.Dir;
+
+                iteract_InventoryItem.BackgroundImage.enabled = false;
+                iteract_InventoryItem.BackgroundOutlineImage.enabled = false;                
             }
 
             if (Input.GetMouseButton(0))
@@ -95,6 +98,8 @@ namespace GridInventorySystem
                     bool canPlace = activeItemCollection.CanAddItem(iteract_InventoryItem, cellXY);
                     if (canPlace)
                     {
+                        iteract_InventoryItem.BackgroundImage.enabled = true;
+                        iteract_InventoryItem.BackgroundOutlineImage.enabled = true;
                         activeItemCollection.AddItem(iteract_InventoryItem, cellXY);
                         ClearIteract_InventoryItem();
                     }
