@@ -14,6 +14,7 @@ public class BaseItem
 
     private Image backgroundImage;
     private Image backgroundOutlineImage;
+    private Image highlightImage;
     private Image itemIconImage;
 
     #region getters
@@ -23,9 +24,20 @@ public class BaseItem
     public Transform ItemTransform { get => m_itemTransform; }
     public Image BackgroundImage { get => backgroundImage; }
     public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
-    public Image ItemIconImage { get => itemIconImage; }
+    public Image HighlightImage { get => highlightImage; }
+    public Image ItemIconImage { get => itemIconImage; }   
 
     #endregion
+
+    public void Update ()
+    {
+        var bounds = m_itemTransform.GetComponent<BoxCollider2D>().bounds;
+        if (bounds != null && bounds.Contains(Input.mousePosition))        
+            highlightImage.enabled = true;
+        else 
+            highlightImage.enabled = false;
+        
+    }
 
     public void SetRotation(Dir dir)
     {
@@ -88,6 +100,17 @@ public class BaseItem
         backgroundOutlineImage.sprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
         backgroundOutlineImage.color = new Color(0, 0, 0, 0.6f);
         backgroundOutlineImage.raycastTarget = false;
+
+        //highlight
+        GameObject highlight = new("highlight");
+        highlight.transform.parent = itemObject.transform;
+        var highlightRect = highlight.AddComponent<RectTransform>();
+        highlightRect.sizeDelta = itemRect.sizeDelta;
+        highlightRect.anchoredPosition = new Vector2(0f, 0f);
+
+        highlightImage = highlight.AddComponent<Image>();
+        highlightImage.color = new Color(1, 1, 1, .09f);
+        highlightImage.raycastTarget = false;
 
         //itemIcon
         GameObject itemIcon = new("itemIcon");

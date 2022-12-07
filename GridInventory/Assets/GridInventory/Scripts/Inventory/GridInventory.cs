@@ -74,6 +74,8 @@ public class GridInventory : MonoBehaviour
     private void Update()
     {
         _originalPosition = containerTransform.position;
+
+        //foreach(item)
     }
 
     private void CloseButtonAction()
