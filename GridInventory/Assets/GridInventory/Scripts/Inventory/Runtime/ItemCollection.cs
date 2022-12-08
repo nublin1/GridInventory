@@ -10,13 +10,13 @@ namespace GridInventorySystem
     public class ItemCollection : MonoBehaviour, IEnumerable<InventoryItemData>
     {
         [SerializeField]
-        List<InventoryItemData> m_items = new();
+        List<BaseItem> m_items = new();
 
         [SerializeField]
         protected List<int> m_Amounts = new();
 
 
-        public List<InventoryItemData> Items { get => m_items; }
+        public List<BaseItem> Items { get => m_items; }
 
         private void Awake()
         {
@@ -35,7 +35,7 @@ namespace GridInventorySystem
         }
 
 
-        public void Add(InventoryItemData item)
+        public void Add(BaseItem item)
         {
             this.m_items.Add(item);
             int index = m_items.IndexOf(item);
@@ -46,7 +46,7 @@ namespace GridInventorySystem
 
         }
 
-        public bool Remove(InventoryItemData item)
+        public bool Remove(BaseItem item)
         {
             int index = m_items.IndexOf(item);
             bool result = m_items.Remove(item);
@@ -59,7 +59,7 @@ namespace GridInventorySystem
             return result;
         }
 
-        public IEnumerator<InventoryItemData> GetEnumerator()
+        public IEnumerator<BaseItem> GetEnumerator()
         {
             return this.m_items.GetEnumerator();
         }

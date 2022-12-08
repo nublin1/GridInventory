@@ -10,7 +10,7 @@ using NaughtyAttributes;
 namespace GridInventorySystem
 {
     [CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
-    public class InventoryItemData : ScriptableObject
+    public class InventoryItemData 
     {
         [ShowNonSerializedField]        
         private string m_Id;
@@ -36,6 +36,7 @@ namespace GridInventorySystem
         private Transform itemContainer;
         #endregion
 
+        #region StackOptions
         [SerializeField]
         [Range(1, 100)]
         private int m_Stack = 1;
@@ -43,9 +44,10 @@ namespace GridInventorySystem
         [SerializeField]
         [Range(1, 999f)]
         private int m_maxStack;
+        #endregion
 
         #region Properties
-        public string Id { get => m_Id; set => m_Id = value; }
+        public string Id { get => m_Id;}
         public string ItemName { get => itemName; }
         public Sprite Icon { get => icon; }
         public int Width { get => width; }

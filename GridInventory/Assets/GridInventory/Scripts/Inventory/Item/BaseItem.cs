@@ -2,12 +2,25 @@ using GridInventorySystem;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEditor;
+using NaughtyAttributes;
 
-public class BaseItem
+public class BaseItem : ScriptableObject
 {
-    private InventoryItemData m_itemData;
+    #region GeneralSettings
+    [ShowNonSerializedField]
+    private string m_Id;
+
+    [SerializeField]
+    private string itemName;
+    [SerializeField]
+    private Sprite icon;
+    [SerializeField]
+    private int width;
+    [SerializeField]
+    private int height;
+    #endregion
+    
     private List<Vector2Int> gridPositionList;
     private Dir m_dir;
     private Transform m_itemTransform;
@@ -17,17 +30,53 @@ public class BaseItem
     private Image highlightImage;
     private Image itemIconImage;
 
-    #region getters
-    public InventoryItemData ItemData { get => m_itemData; }
+    #region containerOptions
+    [SerializeField]
+    private bool isContainer;
+
+    [ShowIf("isContainer")]
+    [SerializeField]
+    private GameObject pf_ItemContainer;
+    private Transform itemContainer;
+    #endregion
+
+    #region StackOptions
+    [SerializeField]
+    [Range(1, 100)]
+    private int m_Stack = 1;
+
+    [SerializeField]
+    [Range(1, 999f)]
+    private int m_maxStack;
+    #endregion
+
+    #region Properties
+    public string Id { get => m_Id; }
+    public string ItemName { get => itemName; }
+    public Sprite Icon { get => icon; }
+    public int Width { get => width; }
+    public int Height { get => height; }
+    public bool IsContainer { get => isContainer; }
+    public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
+    public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
+    public int Stack { get => m_Stack; set => m_Stack = value; }    
     public Dir Dir { get => m_dir; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
     public Image BackgroundImage { get => backgroundImage; }
     public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
     public Image HighlightImage { get => highlightImage; }
-    public Image ItemIconImage { get => itemIconImage; }   
+    public Image ItemIconImage { get => itemIconImage; }
 
     #endregion
+
+    protected virtual void OnEnable()
+    {
+        if (string.IsNullOrEmpty(this.m_Id))
+        {
+            this.m_Id = System.Guid.NewGuid().ToString();
+        }
+    }
 
     public void Update ()
     {
@@ -47,11 +96,10 @@ public class BaseItem
 
     }
 
-    public static BaseItem CreateItem(Dir dir, InventoryItemData data)
+    public static BaseItem CreateItem(Dir dir)
     {
-        BaseItem item = new BaseItem();
-        item.m_itemData = data;
-        item.gridPositionList = CalculatePositionList(dir, data.Width, data.Height, Vector2Int.zero);
+        BaseItem item = new BaseItem();        
+        item.gridPositionList = CalculatePositionList(dir, width, height, Vector2Int.zero);
         item.m_dir = dir;
 
         return item;
@@ -60,7 +108,7 @@ public class BaseItem
     public void CreateItemTransform(Vector2 cellSize)
     {
         GameObject itemObject = new();
-        itemObject.name = ItemData.name;
+        itemObject.name = itemName;
         var itemRect = itemObject.AddComponent<RectTransform>();
         itemRect.sizeDelta = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
         itemRect.anchorMin = new Vector2(0f, 1f);

@@ -97,7 +97,7 @@ public class GridInventory : MonoBehaviour
 
         foreach (var itemData in m_Collection.Items)
         {
-            var item = BaseItem.CreateItem(Dir.Up, itemData);
+            var item = BaseItem.CreateItem(Dir.Up);
             if (CanAddItem(item))
             {
                 GenerateItem(item);
