@@ -75,7 +75,10 @@ public class GridInventory : MonoBehaviour
     {
         _originalPosition = containerTransform.position;
 
-        //foreach(item)
+        foreach(BaseItem item in m_Collection.Items)
+        {
+            item.Update();
+        }
     }
 
     private void CloseButtonAction()
@@ -95,9 +98,9 @@ public class GridInventory : MonoBehaviour
             }
         }
 
-        foreach (var itemData in m_Collection.Items)
+        foreach (var item in m_Collection.Items)
         {
-            var item = BaseItem.CreateItem(Dir.Up);
+            item.Init(Dir.Up);
             if (CanAddItem(item))
             {
                 GenerateItem(item);
@@ -110,12 +113,12 @@ public class GridInventory : MonoBehaviour
         baseItem.CreateItemTransform(CellSize);
         PlaceItemToCells(baseItem);
 
-        if (baseItem.ItemData.Pf_ItemContainer != null)
+        if (baseItem.Pf_ItemContainer != null)
         {
-            var itemInventory = Instantiate(baseItem.ItemData.Pf_ItemContainer, inventorySystem.transform);
+            var itemInventory = Instantiate(baseItem.Pf_ItemContainer, inventorySystem.transform);
             itemInventory.transform.Find("Visual").gameObject.SetActive(false);
 
-            baseItem.ItemData.ItemContainer = itemInventory.transform;
+            baseItem.ItemContainer = itemInventory.transform;
             var itemCollection = itemInventory.GetComponent<GridInventory>();
             itemCollection.isContainer = true;
             inventorySystem.AddItemContainer(itemInventory.GetComponent<GridInventory>());
@@ -129,7 +132,7 @@ public class GridInventory : MonoBehaviour
         {
             item.ReculculatePositionList(_cellXY);
             PlaceItemToCells(item);
-            m_Collection.Add(item.ItemData);
+            m_Collection.Add(item);
             OnAddItem?.Invoke();
         }
         else
@@ -139,9 +142,9 @@ public class GridInventory : MonoBehaviour
                 // TODO realize stack
             }
 
-            if (observedItemInCell.ItemData.IsContainer)
+            if (observedItemInCell.IsContainer)
             {
-                var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemData.ItemContainer.GetComponent<GridInventory>();
+                var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
                 invContainer.PlaceItemToCells(item);
             }
         }
@@ -172,7 +175,7 @@ public class GridInventory : MonoBehaviour
         if (OutOfBoundsCheck(_cellXY))
             return false;
 
-        if (this.isContainer == true && placeableItem.ItemData.IsContainer == true)
+        if (this.isContainer == true && placeableItem.IsContainer == true)
             return false;
 
         placeableItem.ReculculatePositionList(_cellXY);
@@ -186,9 +189,9 @@ public class GridInventory : MonoBehaviour
             if (CanStack(placeableItem, observedItemInCell))
                 return true;
 
-            if (observedItemInCell.ItemData.IsContainer)
+            if (observedItemInCell.IsContainer)
             {
-                var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemData.ItemContainer.GetComponent<GridInventory>();
+                var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
                 if (invContainer.CanAddItem(placeableItem))
                     return true;
             }
@@ -200,7 +203,7 @@ public class GridInventory : MonoBehaviour
     private bool CanStack(BaseItem item, BaseItem comparedItem)
     {
         //Check if max stack is reached
-        if ((item.ItemData.Stack + comparedItem.ItemData.Stack) <= comparedItem.ItemData.Stack)
+        if ((item.Stack + comparedItem.Stack) <= comparedItem.Stack)
         {
             return true;
         }
@@ -248,13 +251,13 @@ public class GridInventory : MonoBehaviour
 
     public virtual bool RemoveItem(BaseItem item)
     {
-        if (item == null || m_Collection.Contains(item.ItemData) == false) { return false; }
+        if (item == null || m_Collection.Contains(item) == false) { return false; }
 
         foreach (var cell in item.GridPositionList)
             inventoryCells[cell.x, cell.y].ClearCellData();
 
         //Remove item from the collection
-        this.m_Collection.Remove(item.ItemData);
+        this.m_Collection.Remove(item);
 
         return true;
 
@@ -266,9 +269,9 @@ public class GridInventory : MonoBehaviour
         if (ObservedItem == null)
             return;
 
-        if (ObservedItem.ItemData.IsContainer)
+        if (ObservedItem.IsContainer)
         {
-            ObservedItem.ItemData.ItemContainer.transform.Find("Visual").gameObject.SetActive(true);
+            ObservedItem.ItemContainer.transform.Find("Visual").gameObject.SetActive(true);
         }
     }
 

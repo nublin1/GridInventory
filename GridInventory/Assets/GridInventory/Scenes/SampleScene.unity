@@ -536,6 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd413ac9e9056c54da6ec6f5b2d8c242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghost_InventoryItem: {fileID: 0}
 --- !u!1 &330080166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1493,11 +1494,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_items:
-  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
-  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
+  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
+  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
+  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
+  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   m_Amounts: 
 --- !u!1 &1066967868
 GameObject:
@@ -2193,8 +2194,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_items:
   - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   - {fileID: 11400000, guid: df644d1eca1aa4340a2dc53d8f4c72b4, type: 2}
+  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
+  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
   m_Amounts: 
 --- !u!1 &1816799915
 GameObject:

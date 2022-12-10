@@ -366,7 +366,6 @@
 "Assets/GridInventory/Scripts/Inventory/InventoryUtilities.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/BaseItem.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/IIsContainer.cs"
-"Assets/GridInventory/Scripts/Inventory/Item/InventoryItemData.cs"
 "Assets/GridInventory/Scripts/Inventory/Runtime/ItemCollection.cs"
 -langversion:9.0
 

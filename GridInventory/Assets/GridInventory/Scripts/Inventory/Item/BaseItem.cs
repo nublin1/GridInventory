@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEditor;
 using NaughtyAttributes;
 
+/*
+* IileName: им€ по умолчанию при создании ассета.
+* menuName: им€ ассета, отображаемое в Asset Menu.
+* order: место размещени€ ассета в Asset Menu. Unity раздел€ет ассеты на подгруппы с множителем 50. “о есть значение 51 поместит новый ассет во вторую группу Asset Menu.
+*/
+[CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
 public class BaseItem : ScriptableObject
 {
     #region GeneralSettings
@@ -70,6 +76,12 @@ public class BaseItem : ScriptableObject
 
     #endregion
 
+    public void Init(Dir dir = Dir.Up)
+    {
+        m_dir = dir;
+        gridPositionList = CalculatePositionList(dir, width, height, Vector2Int.zero);    
+    }
+
     protected virtual void OnEnable()
     {
         if (string.IsNullOrEmpty(this.m_Id))
@@ -94,23 +106,14 @@ public class BaseItem : ScriptableObject
         var newRot = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
         m_itemTransform.rotation = newRot;
 
-    }
-
-    public static BaseItem CreateItem(Dir dir)
-    {
-        BaseItem item = new BaseItem();        
-        item.gridPositionList = CalculatePositionList(dir, width, height, Vector2Int.zero);
-        item.m_dir = dir;
-
-        return item;
-    }
+    }    
 
     public void CreateItemTransform(Vector2 cellSize)
     {
         GameObject itemObject = new();
         itemObject.name = itemName;
         var itemRect = itemObject.AddComponent<RectTransform>();
-        itemRect.sizeDelta = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
+        itemRect.sizeDelta = new Vector2(cellSize.x * width, cellSize.y * height);
         itemRect.anchorMin = new Vector2(0f, 1f);
         itemRect.anchorMax = new Vector2(0f, 1f);
         itemRect.pivot = new Vector2(0f, 1f);
@@ -120,8 +123,8 @@ public class BaseItem : ScriptableObject
 
         // Collider
         var collider2d = itemObject.AddComponent<BoxCollider2D>();
-        collider2d.offset = new Vector2(cellSize.x * m_itemData.Width / 2, -cellSize.y * m_itemData.Height / 2);
-        collider2d.size = new Vector2(cellSize.x * m_itemData.Width, cellSize.y * m_itemData.Height);
+        collider2d.offset = new Vector2(cellSize.x * width / 2, -cellSize.y * height / 2);
+        collider2d.size = new Vector2(cellSize.x * width, cellSize.y * height);
         collider2d.isTrigger = true;
 
         m_itemTransform = itemObject.transform;
@@ -159,6 +162,7 @@ public class BaseItem : ScriptableObject
         highlightImage = highlight.AddComponent<Image>();
         highlightImage.color = new Color(1, 1, 1, .09f);
         highlightImage.raycastTarget = false;
+        highlightImage.enabled = false;
 
         //itemIcon
         GameObject itemIcon = new("itemIcon");
@@ -168,7 +172,7 @@ public class BaseItem : ScriptableObject
         itemIconRect.anchoredPosition = new Vector2(0f, 0f);
 
         itemIconImage = itemIcon.AddComponent<Image>();
-        itemIconImage.sprite = m_itemData.Icon;
+        itemIconImage.sprite = Icon;
         itemIconImage.raycastTarget = false;
 
 
@@ -176,10 +180,8 @@ public class BaseItem : ScriptableObject
 
     public void ReculculatePositionList(Vector2Int pivotPosition)
     {
-        gridPositionList = CalculatePositionList(m_dir, m_itemData.Width, m_itemData.Height, pivotPosition);
+        gridPositionList = CalculatePositionList(m_dir, width, height, pivotPosition);
     }
-
-
 
     public static List<Vector2Int> CalculatePositionList(Dir dir, int width, int height, Vector2Int pivotPosition)
     {
@@ -216,9 +218,9 @@ public class BaseItem : ScriptableObject
     {
         return m_dir switch
         {
-            Dir.Left => new Vector2Int(0, m_itemData.Width),
-            Dir.Down => new Vector2Int(m_itemData.Width, m_itemData.Height),
-            Dir.Right => new Vector2Int(m_itemData.Height, 0),
+            Dir.Left => new Vector2Int(0, width),
+            Dir.Down => new Vector2Int(width, height),
+            Dir.Right => new Vector2Int(height, 0),
             _ => new Vector2Int(0, 0),
         };
     }

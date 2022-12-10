@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace GridInventorySystem
 {
-    public class ItemCollection : MonoBehaviour, IEnumerable<InventoryItemData>
+    public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>
     {
         [SerializeField]
         List<BaseItem> m_items = new();

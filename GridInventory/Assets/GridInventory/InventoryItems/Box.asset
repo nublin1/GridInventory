@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c0c8a0bdaaa255448ec526104994804, type: 3}
+  m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
   m_Name: Box
   m_EditorClassIdentifier: 
   itemName: Box
@@ -18,3 +18,5 @@ MonoBehaviour:
   height: 2
   isContainer: 1
   pf_ItemContainer: {fileID: 5166874141609371545, guid: 8ad13b816a6a77343bd29505a73ce8d9, type: 3}
+  m_Stack: 1
+  m_maxStack: 1
