@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using UnityEditor;
 using NaughtyAttributes;
 
+
 /*
 * IileName: им€ по умолчанию при создании ассета.
 * menuName: им€ ассета, отображаемое в Asset Menu.
 * order: место размещени€ ассета в Asset Menu. Unity раздел€ет ассеты на подгруппы с множителем 50. “о есть значение 51 поместит новый ассет во вторую группу Asset Menu.
 */
 [CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
-public class BaseItem : ScriptableObject
+[System.Serializable]
+public class BaseItem : ScriptableObject, INameable
 {
     #region GeneralSettings
     [ShowNonSerializedField]
@@ -73,6 +75,7 @@ public class BaseItem : ScriptableObject
     public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
     public Image HighlightImage { get => highlightImage; }
     public Image ItemIconImage { get => itemIconImage; }
+    public string Name { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     #endregion
 
@@ -112,6 +115,8 @@ public class BaseItem : ScriptableObject
     {
         GameObject itemObject = new();
         itemObject.name = itemName;
+       
+
         var itemRect = itemObject.AddComponent<RectTransform>();
         itemRect.sizeDelta = new Vector2(cellSize.x * width, cellSize.y * height);
         itemRect.anchorMin = new Vector2(0f, 1f);
@@ -127,7 +132,7 @@ public class BaseItem : ScriptableObject
         collider2d.size = new Vector2(cellSize.x * width, cellSize.y * height);
         collider2d.isTrigger = true;
 
-        m_itemTransform = itemObject.transform;
+       
 
         // background
         GameObject background = new("background");
@@ -175,7 +180,7 @@ public class BaseItem : ScriptableObject
         itemIconImage.sprite = Icon;
         itemIconImage.raycastTarget = false;
 
-
+        m_itemTransform = itemObject.transform;
     }
 
     public void ReculculatePositionList(Vector2Int pivotPosition)

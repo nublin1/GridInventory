@@ -204,5 +204,7 @@ namespace GridInventorySystem
             iteract_InventoryItem.SetRotation(InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir));
         }
 
+        
+
     }
 }

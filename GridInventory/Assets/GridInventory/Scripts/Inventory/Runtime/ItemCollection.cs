@@ -1,22 +1,21 @@
-
-using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+using System;
+using System.Linq;
 
 namespace GridInventorySystem
 {
     public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>
     {
         [SerializeField]
-        List<BaseItem> m_items = new();
+        List<BaseItem> m_Items = new();
 
         [SerializeField]
         protected List<int> m_Amounts = new();
+        
 
-
-        public List<BaseItem> Items { get => m_items; }
+        public List<BaseItem> Items { get => m_Items; }
 
         private void Awake()
         {
@@ -25,20 +24,22 @@ namespace GridInventorySystem
 
         public void Initialize()
         {
-            if (this.m_Amounts.Count < this.m_items.Count)
+            if (this.m_Amounts.Count < m_Items.Count)
             {
-                for (int i = this.m_Amounts.Count; i < this.m_items.Count; i++)
+                for (int i = this.m_Amounts.Count; i < this.m_Items.Count; i++)
                 {
                     this.m_Amounts.Add(1);
                 }
             }
+
+            m_Items = CreateInstances(m_Items.ToArray()).ToList();
         }
 
 
         public void Add(BaseItem item)
         {
-            this.m_items.Add(item);
-            int index = m_items.IndexOf(item);
+            this.m_Items.Add(item);
+            int index = m_Items.IndexOf(item);
             
             this.m_Amounts.Insert(index, item.Stack);            
             //if (onChange != null)
@@ -48,8 +49,8 @@ namespace GridInventorySystem
 
         public bool Remove(BaseItem item)
         {
-            int index = m_items.IndexOf(item);
-            bool result = m_items.Remove(item);
+            int index = m_Items.IndexOf(item);
+            bool result = m_Items.Remove(item);
             if (result)
             {
                 this.m_Amounts.RemoveAt(index);                
@@ -59,9 +60,24 @@ namespace GridInventorySystem
             return result;
         }
 
+        public static BaseItem[] CreateInstances(BaseItem[] items)
+        {
+            BaseItem[] instances = new BaseItem[items.Length];
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                BaseItem item = items[i];
+                item = Instantiate(item) as BaseItem;
+
+                instances[i] = item;
+            }
+
+            return instances;
+        }
+
         public IEnumerator<BaseItem> GetEnumerator()
         {
-            return this.m_items.GetEnumerator();
+            return this.m_Items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

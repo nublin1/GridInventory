@@ -278,7 +278,7 @@ public class GridInventory : MonoBehaviour
     public void Scroll(Bounds itemBounds)
     {
         var boundCollection = GetComponentInChildren<BoxCollider2D>().bounds;
-        var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;
+        var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;        
 
         if (distanceNormal.y > 0)
         {

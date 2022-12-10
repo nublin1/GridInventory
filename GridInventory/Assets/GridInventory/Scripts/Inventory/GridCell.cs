@@ -36,6 +36,6 @@ namespace GridInventorySystem
         public void SetCellData(BaseItem _inventoryItem)
         {
             inventoryItem = _inventoryItem;
-        }
+        }        
     }
 }
