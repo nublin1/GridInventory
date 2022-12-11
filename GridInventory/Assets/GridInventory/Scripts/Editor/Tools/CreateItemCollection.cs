@@ -242,6 +242,7 @@ public class CreateItemCollection : EditorWindow
         backgroundImage.sprite = windowInfo.inventoryBackground;
         backgroundImage.color = windowInfo.inventoryBackgroundColor;
         backgroundImage.type = Image.Type.Sliced;
+        backgroundImage.raycastTarget = false;
 
         // Background Outline
         if (windowInfo.enableBackgroundOutline)
@@ -260,6 +261,7 @@ public class CreateItemCollection : EditorWindow
             backgroundOutlineImage.sprite = windowInfo.backgroundOutlineSprite;
             backgroundOutlineImage.color = windowInfo.inventoryBackgroundColor;
             backgroundOutlineImage.type = Image.Type.Sliced;
+            backgroundOutlineImage.raycastTarget = false;
         }
 
         // Header
@@ -335,6 +337,7 @@ public class CreateItemCollection : EditorWindow
         ViewportImage.sprite = viewportSprite;
         ViewportImage.color = new Color(0, 0, 0, 0.15f);
         ViewportImage.type = Image.Type.Sliced;
+        ViewportImage.raycastTarget = false;
 
         // GridImage
         var gridImage = new GameObject("GridImage");
@@ -351,6 +354,7 @@ public class CreateItemCollection : EditorWindow
         gridTexture.color = windowInfo.cellColor;
         gridTexture.texture = windowInfo.cellImage;
         gridTexture.uvRect = new Rect(0, 0, windowInfo.sizeX, windowInfo.sizeY);
+        gridTexture.raycastTarget = false;
 
         // ItemsContainer
         var ItemsContainer = new GameObject("ItemsContainer");
@@ -446,6 +450,7 @@ public class CreateItemCollection : EditorWindow
             scrollbarVertical.targetGraphic = handleImage;
             scrollbarVertical.handleRect = handleRect;
             scrollbarVertical.direction = Scrollbar.Direction.BottomToTop;
+            scrollbarVertical.value = 1;
 
             scrollbar.verticalScrollbar = scrollbarVertical;
 
@@ -464,7 +469,7 @@ public class CreateItemCollection : EditorWindow
         // BoxCollider
         var boxCollider = visual.AddComponent<BoxCollider2D>();
         boxCollider.isTrigger = true;
-        boxCollider.size = ItemsContainerRect.sizeDelta;
+        boxCollider.size = rectViewport.sizeDelta;
 
     }
 

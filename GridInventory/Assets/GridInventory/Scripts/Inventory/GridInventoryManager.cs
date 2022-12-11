@@ -77,6 +77,8 @@ namespace GridInventorySystem
                 iteract_InventoryItem.BackgroundImage.enabled = false;
                 iteract_InventoryItem.BackgroundOutlineImage.enabled = false;
                 iteract_InventoryItem.HighlightImage.enabled = false;
+                iteract_InventoryItem.ItemNameText.enabled = false;
+                iteract_InventoryItem.ItemCountText.enabled = false;                
             }
 
             if (Input.GetMouseButton(0))
@@ -90,6 +92,7 @@ namespace GridInventorySystem
 
             if (Input.GetMouseButtonUp(0))
             {
+
                 if (iteract_InventoryItem == null)
                     return;
 
@@ -110,6 +113,9 @@ namespace GridInventorySystem
                 iteract_InventoryItem.BackgroundImage.enabled = true;
                 iteract_InventoryItem.BackgroundOutlineImage.enabled = true;
                 iteract_InventoryItem.HighlightImage.enabled = true;
+                iteract_InventoryItem.ItemNameText.enabled = true;
+                iteract_InventoryItem.ItemCountText.enabled = true;
+
                 var placed = activeItemCollection.AddItem(iteract_InventoryItem, cellXY);
                 if (placed)
                     ClearIteract_InventoryItem();

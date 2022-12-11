@@ -85,6 +85,8 @@ public class BaseItem : ScriptableObject
     public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
     public Image HighlightImage { get => highlightImage; }
     public Image ItemIconImage { get => itemIconImage; }
+    public TextMeshProUGUI ItemNameText { get => m_ItemNameText; }
+    public TextMeshProUGUI ItemCountText { get => m_ItemCountText;  }
     #endregion
 
     public void Init(Dir dir = Dir.Up)
@@ -211,25 +213,28 @@ public class BaseItem : ScriptableObject
         // ItemName
         GameObject itemNameGO = new("itemName");
         itemNameGO.transform.parent = itemObject.transform;
-        m_itemNameRect = itemNameGO.AddComponent<RectTransform>();
-        m_itemNameRect.sizeDelta = itemRect.sizeDelta;
-        m_itemNameRect.anchoredPosition = new Vector2(0f, 0f);
-
-        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();
-        m_ItemNameText.fontSize = 12;
+        m_itemNameRect = itemNameGO.AddComponent<RectTransform>();   
+        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();        
+        m_ItemNameText.fontSize = 10;
         m_ItemNameText.alignment = TextAlignmentOptions.TopRight;
         m_ItemNameText.text = ItemName;
+        m_ItemNameText.raycastTarget = false;
+
+        m_itemNameRect.sizeDelta = itemRect.sizeDelta;
+        m_itemNameRect.anchoredPosition = new Vector2(0f, 0f);
 
         // ItemCount
         GameObject ItemCountGO = new("ItemCount");
         ItemCountGO.transform.parent = itemObject.transform;
-        m_itemCountRect = ItemCountGO.AddComponent<RectTransform>();
+        m_itemCountRect = ItemCountGO.AddComponent<RectTransform>(); 
+        m_ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
+        m_ItemCountText.SetNativeSize();
+        m_ItemCountText.fontSize = 10;
+        m_ItemCountText.alignment = TextAlignmentOptions.BottomRight;
+        m_ItemCountText.raycastTarget = false;
+
         m_itemCountRect.sizeDelta = itemRect.sizeDelta;
         m_itemCountRect.anchoredPosition = new Vector2(0f, 0f);
-
-        m_ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
-        m_ItemCountText.fontSize = 12;
-        m_ItemCountText.alignment = TextAlignmentOptions.BottomRight;
 
         if (m_maxStack <= 1)
             m_ItemCountText.enabled = false;
