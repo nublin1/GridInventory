@@ -9,7 +9,7 @@ namespace GridInventorySystem
         private int x;
         private int y;
 
-        private InventoryItem inventoryItem;        
+        private BaseItem inventoryItem;        
 
         public GridCell(GridInventory grid, int x, int y)
         {
@@ -18,7 +18,7 @@ namespace GridInventorySystem
             this.y = y;
         }
 
-        public InventoryItem InventoryItem { get => inventoryItem; }
+        public BaseItem InventoryItem { get => inventoryItem; }
 
         public bool IsCellEmpty()
         {
@@ -33,9 +33,9 @@ namespace GridInventorySystem
             inventoryItem = null;
         }
 
-        public void SetCellData(InventoryItem _inventoryItem)
+        public void SetCellData(BaseItem _inventoryItem)
         {
             inventoryItem = _inventoryItem;
-        }
+        }        
     }
 }
