@@ -124,30 +124,35 @@ public class GridInventory : MonoBehaviour
             inventorySystem.AddItemContainer(itemInventory.GetComponent<GridInventory>());
         }
     }
+    
 
-    public void AddItem(BaseItem item, Vector2Int _cellXY)
+    public bool AddItem(BaseItem item, Vector2Int _cellXY)
     {
-        BaseItem observedItemInCell = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem;
+        var observedItemInCell = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem;
         if (observedItemInCell == null)
         {
             item.ReculculatePositionList(_cellXY);
             PlaceItemToCells(item);
             m_Collection.Add(item);
             OnAddItem?.Invoke();
+            return true;
         }
         else
         {
             if (CanStack(item, observedItemInCell))
             {
-                // TODO realize stack
+                return StackItems(item, observedItemInCell);                
             }
 
             if (observedItemInCell.IsContainer)
             {
                 var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
-                invContainer.PlaceItemToCells(item);
+                invContainer.AddItem(item, item.GridPositionList[0]);
+                return true;
             }
         }
+
+        return false;
     }
 
     /// <summary>
@@ -170,6 +175,12 @@ public class GridInventory : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Checks if the item can be added to this container at cell position.
+    /// </summary>
+    /// <param name="placeableItem">Item to check.</param>
+    /// <param name="_cellXY">Cell to check.</param>
+    /// <returns>Returns true if the item can be added.</returns>
     public bool CanAddItem(BaseItem placeableItem, Vector2Int _cellXY)
     {
         if (OutOfBoundsCheck(_cellXY))
@@ -201,14 +212,31 @@ public class GridInventory : MonoBehaviour
     }
 
     private bool CanStack(BaseItem item, BaseItem comparedItem)
-    {
-        //Check if max stack is reached
-        if ((item.Stack + comparedItem.Stack) <= comparedItem.Stack)
-        {
-            return true;
-        }
+    {      
+        if (item.name.Equals(comparedItem.name))   
+            return true;        
 
         return false;
+    }
+
+    private bool StackItems(BaseItem item, BaseItem comparedItem)
+    {
+        //Check if max stack is reached
+        if ((item.Stack + comparedItem.Stack) <= comparedItem.MaxStack)
+        {
+            comparedItem.Stack += item.Stack;
+            comparedItem.UpdateDisplayItemCount();
+            item.Stack = 0;
+            RemoveItemCompletely(item);
+            return true;
+        }
+        else
+        {
+            var remainder = comparedItem.MaxStack - (item.Stack + comparedItem.Stack);
+            comparedItem.Stack = comparedItem.MaxStack;
+            item.Stack -= remainder;
+            return false;
+        }
     }
 
     private void PlaceItemToCells(BaseItem _inventoryItem)
@@ -261,6 +289,16 @@ public class GridInventory : MonoBehaviour
 
         return true;
 
+    }
+
+    /// <summary>
+    /// Removes the item from collection and destroy all references
+    /// </summary>
+    /// <param name="item"></param>
+    public void RemoveItemCompletely(BaseItem item)
+    {
+        Destroy(item.ItemTransform.gameObject);
+        RemoveItem(item);
     }
 
     public void TryUsingItem(Vector2Int cell)

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using NaughtyAttributes;
+using TMPro;
 
 
 /*
@@ -13,7 +14,7 @@ using NaughtyAttributes;
 */
 [CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
 [System.Serializable]
-public class BaseItem : ScriptableObject, INameable
+public class BaseItem : ScriptableObject
 {
     #region GeneralSettings
     [ShowNonSerializedField]
@@ -24,19 +25,10 @@ public class BaseItem : ScriptableObject, INameable
     [SerializeField]
     private Sprite icon;
     [SerializeField]
-    private int width;
+    private int m_width;
     [SerializeField]
-    private int height;
-    #endregion
-    
-    private List<Vector2Int> gridPositionList;
-    private Dir m_dir;
-    private Transform m_itemTransform;
-
-    private Image backgroundImage;
-    private Image backgroundOutlineImage;
-    private Image highlightImage;
-    private Image itemIconImage;
+    private int m_height;
+    #endregion    
 
     #region containerOptions
     [SerializeField]
@@ -56,18 +48,36 @@ public class BaseItem : ScriptableObject, INameable
     [SerializeField]
     [Range(1, 999f)]
     private int m_maxStack;
+
+    [SerializeField]
+    private bool m_showMaxStack;
     #endregion
+
+    private List<Vector2Int> gridPositionList;
+    private Dir m_dir;
+    private Transform m_itemTransform;
+
+    private Image backgroundImage;
+    private Image backgroundOutlineImage;
+    private Image highlightImage;
+    private Image itemIconImage;
+
+    private RectTransform m_itemNameRect;
+    private TextMeshProUGUI m_ItemNameText;
+    private RectTransform m_itemCountRect;
+    private TextMeshProUGUI m_ItemCountText;
 
     #region Properties
     public string Id { get => m_Id; }
     public string ItemName { get => itemName; }
     public Sprite Icon { get => icon; }
-    public int Width { get => width; }
-    public int Height { get => height; }
+    public int Width { get => m_width; }
+    public int Height { get => m_height; }
     public bool IsContainer { get => isContainer; }
     public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
     public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
-    public int Stack { get => m_Stack; set => m_Stack = value; }    
+    public int Stack { get => m_Stack; set => m_Stack = value; }
+    public int MaxStack { get => m_maxStack; }
     public Dir Dir { get => m_dir; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
@@ -75,14 +85,12 @@ public class BaseItem : ScriptableObject, INameable
     public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
     public Image HighlightImage { get => highlightImage; }
     public Image ItemIconImage { get => itemIconImage; }
-    public string Name { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
     #endregion
 
     public void Init(Dir dir = Dir.Up)
     {
         m_dir = dir;
-        gridPositionList = CalculatePositionList(dir, width, height, Vector2Int.zero);    
+        gridPositionList = CalculatePositionList(dir, m_width, m_height, Vector2Int.zero);
     }
 
     protected virtual void OnEnable()
@@ -93,32 +101,53 @@ public class BaseItem : ScriptableObject, INameable
         }
     }
 
-    public void Update ()
+    public void Update()
     {
         var bounds = m_itemTransform.GetComponent<BoxCollider2D>().bounds;
-        if (bounds != null && bounds.Contains(Input.mousePosition))        
+        if (bounds != null && bounds.Contains(Input.mousePosition))
             highlightImage.enabled = true;
-        else 
+        else
             highlightImage.enabled = false;
-        
+
     }
 
     public void SetRotation(Dir dir)
     {
+        if (dir == m_dir)
+            return;
+
         m_dir = dir;
         var newRot = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
         m_itemTransform.rotation = newRot;
 
-    }    
+        var newSize = new Vector2(m_itemNameRect.sizeDelta.y, m_itemNameRect.sizeDelta.x);
+        m_itemNameRect.localRotation = Quaternion.Inverse(newRot);
+        m_itemNameRect.sizeDelta = newSize;
+
+        m_itemCountRect.localRotation = Quaternion.Inverse(newRot);
+        m_itemCountRect.sizeDelta = newSize;
+       
+    }
+
+    public void UpdateDisplayItemCount()
+    {
+        if (m_maxStack <= 1)
+            return;
+
+        if (m_showMaxStack)
+            m_ItemCountText.text = m_Stack.ToString() + "/" + m_maxStack.ToString();
+        else
+            m_ItemCountText.text = m_Stack.ToString();
+    }
 
     public void CreateItemTransform(Vector2 cellSize)
     {
         GameObject itemObject = new();
         itemObject.name = itemName;
-       
+
 
         var itemRect = itemObject.AddComponent<RectTransform>();
-        itemRect.sizeDelta = new Vector2(cellSize.x * width, cellSize.y * height);
+        itemRect.sizeDelta = new Vector2(cellSize.x * m_width, cellSize.y * m_height);
         itemRect.anchorMin = new Vector2(0f, 1f);
         itemRect.anchorMax = new Vector2(0f, 1f);
         itemRect.pivot = new Vector2(0f, 1f);
@@ -128,11 +157,10 @@ public class BaseItem : ScriptableObject, INameable
 
         // Collider
         var collider2d = itemObject.AddComponent<BoxCollider2D>();
-        collider2d.offset = new Vector2(cellSize.x * width / 2, -cellSize.y * height / 2);
-        collider2d.size = new Vector2(cellSize.x * width, cellSize.y * height);
+        collider2d.offset = new Vector2(cellSize.x * m_width / 2, -cellSize.y * m_height / 2);
+        collider2d.size = new Vector2(cellSize.x * m_width, cellSize.y * m_height);
         collider2d.isTrigger = true;
 
-       
 
         // background
         GameObject background = new("background");
@@ -180,12 +208,39 @@ public class BaseItem : ScriptableObject, INameable
         itemIconImage.sprite = Icon;
         itemIconImage.raycastTarget = false;
 
+        // ItemName
+        GameObject itemNameGO = new("itemName");
+        itemNameGO.transform.parent = itemObject.transform;
+        m_itemNameRect = itemNameGO.AddComponent<RectTransform>();
+        m_itemNameRect.sizeDelta = itemRect.sizeDelta;
+        m_itemNameRect.anchoredPosition = new Vector2(0f, 0f);
+
+        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();
+        m_ItemNameText.fontSize = 12;
+        m_ItemNameText.alignment = TextAlignmentOptions.TopRight;
+        m_ItemNameText.text = ItemName;
+
+        // ItemCount
+        GameObject ItemCountGO = new("ItemCount");
+        ItemCountGO.transform.parent = itemObject.transform;
+        m_itemCountRect = ItemCountGO.AddComponent<RectTransform>();
+        m_itemCountRect.sizeDelta = itemRect.sizeDelta;
+        m_itemCountRect.anchoredPosition = new Vector2(0f, 0f);
+
+        m_ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
+        m_ItemCountText.fontSize = 12;
+        m_ItemCountText.alignment = TextAlignmentOptions.BottomRight;
+
+        if (m_maxStack <= 1)
+            m_ItemCountText.enabled = false;
+
+        UpdateDisplayItemCount();
         m_itemTransform = itemObject.transform;
     }
 
     public void ReculculatePositionList(Vector2Int pivotPosition)
     {
-        gridPositionList = CalculatePositionList(m_dir, width, height, pivotPosition);
+        gridPositionList = CalculatePositionList(m_dir, m_width, m_height, pivotPosition);
     }
 
     public static List<Vector2Int> CalculatePositionList(Dir dir, int width, int height, Vector2Int pivotPosition)
@@ -223,9 +278,9 @@ public class BaseItem : ScriptableObject, INameable
     {
         return m_dir switch
         {
-            Dir.Left => new Vector2Int(0, width),
-            Dir.Down => new Vector2Int(width, height),
-            Dir.Right => new Vector2Int(height, 0),
+            Dir.Left => new Vector2Int(0, m_width),
+            Dir.Down => new Vector2Int(m_width, m_height),
+            Dir.Right => new Vector2Int(m_height, 0),
             _ => new Vector2Int(0, 0),
         };
     }
