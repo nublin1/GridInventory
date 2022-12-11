@@ -221,7 +221,11 @@ public class GridInventory : MonoBehaviour
 
     private bool StackItems(BaseItem item, BaseItem comparedItem)
     {
-        //Check if max stack is reached
+        // Check if comparedItem max stack is reached
+        if (comparedItem.Stack >= comparedItem.MaxStack)
+            return false;
+
+        // Check if it fits in one stack
         if ((item.Stack + comparedItem.Stack) <= comparedItem.MaxStack)
         {
             comparedItem.Stack += item.Stack;
@@ -234,7 +238,9 @@ public class GridInventory : MonoBehaviour
         {
             var remainder = comparedItem.MaxStack - (item.Stack + comparedItem.Stack);
             comparedItem.Stack = comparedItem.MaxStack;
-            item.Stack -= remainder;
+            item.Stack += remainder;
+            comparedItem.UpdateDisplayItemCount();
+            item.UpdateDisplayItemCount();
             return false;
         }
     }
