@@ -4,30 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-public class WindowInfo : ScriptableObject
-{
-   
-    //public Object rootTransform;
-
-    public int sizeX, sizeY;
-    public Vector2Int cellSize = new Vector2Int(50, 50);
-    public float second;
-
-    public Color cellColor = Color.black;
-    public Texture cellImage;
-
-    public Color inventoryBackgroundColor = Color.white;
-    public Sprite inventoryBackground;
-
-    public bool enableBackgroundOutline;
-    public Color backgroundOutlineColor = Color.black;
-    public Sprite backgroundOutlineSprite;
-}
-
 public class CreateItemCollection : EditorWindow
 {
-    private static WindowInfo windowInfo;
+    private static GridInventoryEditorData windowInfo;
     private SerializedObject windowInfoSO;
 
     private GameObject rootObj;
@@ -84,13 +63,12 @@ public class CreateItemCollection : EditorWindow
     [InitializeOnLoadMethod]
     private static void OnLoad()
     {
-        windowInfo = (WindowInfo)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(WindowInfo));
+        windowInfo = (GridInventoryEditorData)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(GridInventoryEditorData));
         if (!windowInfo)
         {
-            windowInfo = CreateInstance<WindowInfo>();
+            windowInfo = CreateInstance<GridInventoryEditorData>();
             AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
-            AssetDatabase.Refresh();
-            Debug.Log("Cr");
+            AssetDatabase.Refresh();           
         }
     }
 

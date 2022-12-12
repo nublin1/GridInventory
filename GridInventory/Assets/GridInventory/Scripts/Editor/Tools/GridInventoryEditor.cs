@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GridInventoryEditor : EditorWindow
 {
+    private SerializedObject windowInfoSO;
+    private static GridInventoryEditorData windowInfo;
     private GridInventoryInspector m_gridInventoryInspector;
     
 
@@ -20,6 +22,18 @@ public class GridInventoryEditor : EditorWindow
         editor.Show();
     }
 
+    [InitializeOnLoadMethod]
+    private static void OnLoad()
+    {
+        windowInfo = (GridInventoryEditorData)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(GridInventoryEditorData));
+        if (!windowInfo)
+        {
+            windowInfo = CreateInstance<GridInventoryEditorData>();
+            AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
+            AssetDatabase.Refresh();
+        }
+    }
+
     private void OnEnable()
     {
         m_gridInventoryInspector = new GridInventoryInspector();
@@ -33,6 +47,26 @@ public class GridInventoryEditor : EditorWindow
     private void OnDestroy()
     {
         this.m_gridInventoryInspector.OnDestroy();
+    }
+
+    private void Update()
+    {
+        if (EditorWindow.mouseOverWindow == this)
+            Repaint();
+    }
+
+    private void CreateGUI()
+    {
+        windowInfoSO = new SerializedObject(windowInfo);
+
+
+
+        LoadDefaultResources();
+    }
+
+    private void LoadDefaultResources()
+    {
+
     }
 
     private void OnGUI()
