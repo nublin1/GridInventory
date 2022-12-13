@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: f3759bf913a9dc04a814f53e17193623, type: 3}
   m_Name: WindowInfo
-  m_EditorClassIdentifier: Assembly-CSharp-Editor::GridInventoryEditorData
+  m_EditorClassIdentifier: 
   sizeX: 0
   sizeY: 0
   cellSize: {x: 50, y: 50}

@@ -30,6 +30,7 @@ public class GridInventoryEditor : EditorWindow
         {
             windowInfo = CreateInstance<GridInventoryEditorData>();
             AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
+            AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
     }

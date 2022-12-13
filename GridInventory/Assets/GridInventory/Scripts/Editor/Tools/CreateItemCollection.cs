@@ -63,13 +63,14 @@ public class CreateItemCollection : EditorWindow
     [InitializeOnLoadMethod]
     private static void OnLoad()
     {
-        windowInfo = (GridInventoryEditorData)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(GridInventoryEditorData));
-        if (!windowInfo)
-        {
-            windowInfo = CreateInstance<GridInventoryEditorData>();
-            AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
-            AssetDatabase.Refresh();           
-        }
+       // windowInfo = (GridInventoryEditorData)AssetDatabase.LoadAssetAtPath("Assets/WindowInfo.asset", typeof(GridInventoryEditorData));
+       // if (!windowInfo)
+       // {
+       //     windowInfo = CreateInstance<GridInventoryEditorData>();
+       //     AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
+       //     AssetDatabase.SaveAssets();
+       //     AssetDatabase.Refresh();           
+       // }
     }
 
     private void OnDestroy()
