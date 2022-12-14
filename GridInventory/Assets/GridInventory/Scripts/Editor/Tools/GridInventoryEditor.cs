@@ -10,9 +10,7 @@ public class GridInventoryEditor : EditorWindow
     private GridInventoryInspector m_gridInventoryInspector;
 
     //Inventory
-   
-
-    [MenuItem("Tools/TestEditor", false, 0)]
+    [MenuItem("Tools/Create inventory", false, 0)]
     public static void ShowWindow()
     {
         GridInventoryEditor[] objArray = Resources.FindObjectsOfTypeAll<GridInventoryEditor>();
@@ -79,7 +77,7 @@ public class GridInventoryEditor : EditorWindow
         m_gridInventoryInspector.EditorProperties.backgroundOutlineSprite = windowInfoSO.FindProperty("backgroundOutlineSprite");
 
         m_gridInventoryInspector.EditorProperties.enableHeader = windowInfoSO.FindProperty("enableHeader");
-        m_gridInventoryInspector.EditorProperties.HeaderSize = windowInfoSO.FindProperty("HeaderSize");
+        m_gridInventoryInspector.EditorProperties.HeaderHeight = windowInfoSO.FindProperty("HeaderHeight");
         m_gridInventoryInspector.EditorProperties.HeaderColor = windowInfoSO.FindProperty("HeaderColor");
         m_gridInventoryInspector.EditorProperties.headerBackGroundSprite = windowInfoSO.FindProperty("headerBackGroundSprite");
         m_gridInventoryInspector.EditorProperties.headerTitle_Text = windowInfoSO.FindProperty("headerTitle_Text");
@@ -93,7 +91,7 @@ public class GridInventoryEditor : EditorWindow
         m_gridInventoryInspector.EditorProperties.handleSprite = windowInfoSO.FindProperty("handleSprite");
         m_gridInventoryInspector.EditorProperties.slidebarWidth = windowInfoSO.FindProperty("slidebarWidth");
 
-        LoadDefaultResources();
+        LoadDefaultResources();        
     }
 
     private void LoadDefaultResources()

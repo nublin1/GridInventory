@@ -23,7 +23,7 @@ public class GridInventoryEditorData : ScriptableObject
     public Sprite backgroundOutlineSprite;
 
     public bool enableHeader;
-    public Vector2Int HeaderSize = new Vector2Int(0, 12);
+    public float HeaderHeight =  12;
     public Color HeaderColor = Color.black;
     public Sprite headerBackGroundSprite;
     public string headerTitle_Text = "";
@@ -56,7 +56,7 @@ public class InventoryEditorProperties
     public SerializedProperty backgroundOutlineSprite;
 
     public SerializedProperty enableHeader;
-    public SerializedProperty HeaderSize;
+    public SerializedProperty HeaderHeight;
     public SerializedProperty HeaderColor;
     public SerializedProperty headerBackGroundSprite;
     public SerializedProperty headerTitle_Text;
