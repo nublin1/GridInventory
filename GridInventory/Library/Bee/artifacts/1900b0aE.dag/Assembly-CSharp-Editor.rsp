@@ -375,6 +375,7 @@
 "Assets/GridInventory/Scripts/Editor/Styles.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/CreateItemCollection.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditor.cs"
+"Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditorData.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryInspector.cs"
 -langversion:9.0
 

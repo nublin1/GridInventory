@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GridInventoryInspector
 {
+    private InventoryEditorProperties m_EditorProperties = new InventoryEditorProperties();
+    public InventoryEditorProperties EditorProperties { get => m_EditorProperties; }
+
     private const float LIST_RESIZE_WIDTH = 10f;
 
     //private bool m_StartDrag;
@@ -13,7 +16,7 @@ public class GridInventoryInspector
     protected Rect m_SidebarRect = new Rect(0, 10, 200, 500);
     protected Vector2 m_SidebarScrollPosition;
 
-    private List<string> m_Items = new List<string>() { "One", "Two", "Three" };
+    private List<string> m_Items = new List<string>() { "General", "Background", "Header", "Scrollbar" };
 
     List<Rect> fields_Rects;
 
@@ -29,6 +32,7 @@ public class GridInventoryInspector
             return default;
         }
     }
+
 
     public void OnEnable()
     {
@@ -48,7 +52,7 @@ public class GridInventoryInspector
     public void OnGUI(Rect position)
     {
         DrawSidebar(new Rect(0, 0, m_SidebarRect.width, position.height));
-        //DrawContent(new Rect(m_SidebarRect.width, 0, 350, position.height));
+        DrawContent(new Rect(m_SidebarRect.width, 0, 450, position.height));
         //ResizeSidebar();
     }
 
@@ -101,7 +105,7 @@ public class GridInventoryInspector
                     Select(currentItem);
                 }
 
-                DrawItemLabel(i);
+                DrawItemLabel(currentItem);
                 //string error = HasConfigurationErrors(currentItem);
                 //if (!string.IsNullOrEmpty(error))
                 //{
@@ -151,9 +155,57 @@ public class GridInventoryInspector
 
     protected virtual void DrawContent(Rect position)
     {
-        GUILayout.BeginArea(position, "");
-        GUILayout.Label("Test Content");
-        GUILayout.EndArea();
+        GUILayout.BeginArea(position, "", EditorStyles.helpBox);
+
+        if (m_SelectedItemIndex == 0)
+        {
+            var rootTextInfo = "The object to which the inventory will be attached after creation. If empty, a new object will be created";
+            //EditorGUILayout.PropertyField(rootTranform, new GUIContent("RootTranform (Optional)", rootTextInfo), true);
+            EditorProperties.rootObj = (GameObject)EditorGUILayout.ObjectField(new GUIContent("RootTranform (Optional)", rootTextInfo), EditorProperties.rootObj, typeof(GameObject), true);
+
+            EditorGUILayout.PropertyField(EditorProperties.sizeX, GUILayout.ExpandWidth(false));
+            EditorGUILayout.PropertyField(EditorProperties.sizeY, GUILayout.ExpandWidth(false));
+            EditorGUILayout.PropertyField(EditorProperties.cellSize, GUILayout.MaxWidth(200));
+            EditorGUILayout.PropertyField(EditorProperties.cellColor);
+            EditorGUILayout.PropertyField(EditorProperties.cellImage, false);
+        }
+        else if (m_SelectedItemIndex ==1)
+        {
+            EditorGUILayout.PropertyField(EditorProperties.inventoryBackgroundColor);
+            EditorGUILayout.PropertyField(EditorProperties.inventoryBackground, false);
+
+            EditorGUILayout.PropertyField(EditorProperties.enableBackgroundOutline);
+            if (EditorProperties.enableBackgroundOutline.boolValue)
+            {
+                EditorGUILayout.PropertyField(EditorProperties.backgroundOutlineColor, false);
+                EditorGUILayout.PropertyField(EditorProperties.backgroundOutlineSprite, false);
+            }
+        }
+        else if (m_SelectedItemIndex == 2)
+        {
+            EditorGUILayout.PropertyField(EditorProperties.enableHeader);
+            if (EditorProperties.enableHeader.boolValue)
+            {
+                EditorGUILayout.PropertyField(EditorProperties.HeaderSize);
+                EditorGUILayout.PropertyField(EditorProperties.HeaderColor);
+                EditorGUILayout.PropertyField(EditorProperties.headerBackGroundSprite);
+                EditorGUILayout.PropertyField(EditorProperties.headerTitle_Text);
+                EditorGUILayout.PropertyField(EditorProperties.draggableHeader);
+            }
+        }
+        else if (m_SelectedItemIndex == 3)
+        {
+            EditorGUILayout.PropertyField(EditorProperties.enabledVerticalScrollbar);
+            if (EditorProperties.enabledVerticalScrollbar.boolValue)
+            {
+                EditorGUILayout.PropertyField(EditorProperties.sizeOfViewport);
+                EditorGUILayout.PropertyField(EditorProperties.scrollBackground);
+                EditorGUILayout.PropertyField(EditorProperties.handleSprite);
+                EditorGUILayout.PropertyField(EditorProperties.slidebarWidth);
+            }
+        }
+
+            GUILayout.EndArea();
     }
 
     private void ResizeSidebar()
@@ -163,12 +215,12 @@ public class GridInventoryInspector
         int controlID = GUIUtility.GetControlID(FocusType.Passive);
     }
 
-    void DrawItemLabel(int index)
+    void DrawItemLabel(string currentItem)
     {
         GUILayout.BeginHorizontal();
-        Color color = Color.green;
+        //Color color = Color.green;
         //GUI.backgroundColor = color;
-        GUILayout.Label("Test Name", Styles.selectButtonText);
+        GUILayout.Label(currentItem, Styles.selectButtonText);
         GUILayout.EndHorizontal();
     }
 

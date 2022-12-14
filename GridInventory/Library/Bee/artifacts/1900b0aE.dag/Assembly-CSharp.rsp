@@ -364,7 +364,6 @@
 "Assets/GridInventory/Scripts/Inventory/GridInventoryManager.cs"
 "Assets/GridInventory/Scripts/Inventory/InventoryUtilities.cs"
 "Assets/GridInventory/Scripts/Inventory/Item/BaseItem.cs"
-"Assets/GridInventory/Scripts/Inventory/Item/INameable.cs"
 "Assets/GridInventory/Scripts/Inventory/Runtime/ItemCollection.cs"
 -langversion:9.0
 

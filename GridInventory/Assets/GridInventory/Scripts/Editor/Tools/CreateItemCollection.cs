@@ -40,7 +40,6 @@ public class CreateItemCollection : EditorWindow
     private Vector2Int sizeOfViewport;
     private Sprite scrollBackground;
     private Sprite handleSprite;
-
     private float slidebarWidth = 10;
 
     //
