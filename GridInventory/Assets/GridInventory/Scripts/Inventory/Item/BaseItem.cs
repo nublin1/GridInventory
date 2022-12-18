@@ -12,7 +12,7 @@ using TMPro;
 * menuName: им€ ассета, отображаемое в Asset Menu.
 * order: место размещени€ ассета в Asset Menu. Unity раздел€ет ассеты на подгруппы с множителем 50. “о есть значение 51 поместит новый ассет во вторую группу Asset Menu.
 */
-[CreateAssetMenu(fileName = "New InventoryItem", menuName = "InventoryItem", order = 51)]
+[CreateAssetMenu(fileName = "New InventoryItem", menuName = "Items/InventoryItem", order = 51)]
 [System.Serializable]
 public class BaseItem : ScriptableObject
 {
@@ -21,7 +21,7 @@ public class BaseItem : ScriptableObject
     private string m_Id;
 
     [SerializeField]
-    private string itemName;
+    public string itemName;
     [SerializeField]
     private Sprite icon;
     [SerializeField]
@@ -97,10 +97,12 @@ public class BaseItem : ScriptableObject
 
     protected virtual void OnEnable()
     {
-        if (string.IsNullOrEmpty(this.m_Id))
-        {
+        if (string.IsNullOrEmpty(this.m_Id))       
             this.m_Id = System.Guid.NewGuid().ToString();
-        }
+
+        itemName = "New Item";
+
+
     }
 
     public void Update()
@@ -119,7 +121,7 @@ public class BaseItem : ScriptableObject
             return;
 
         m_dir = dir;
-        var newRot = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
+        var newRot = Quaternion.Euler(0, 0, Utilities.GetRotationAngle(m_dir));
         m_itemTransform.rotation = newRot;
 
         var newSize = new Vector2(m_itemNameRect.sizeDelta.y, m_itemNameRect.sizeDelta.x);
@@ -155,7 +157,7 @@ public class BaseItem : ScriptableObject
         itemRect.pivot = new Vector2(0f, 1f);
         itemRect.anchoredPosition = new Vector2(0f, 0f);
 
-        itemObject.transform.rotation = Quaternion.Euler(0, 0, InventoryUtilities.GetRotationAngle(m_dir));
+        itemObject.transform.rotation = Quaternion.Euler(0, 0, Utilities.GetRotationAngle(m_dir));
 
         // Collider
         var collider2d = itemObject.AddComponent<BoxCollider2D>();

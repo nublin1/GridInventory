@@ -371,11 +371,15 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.TestRunner.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
-"Assets/GridInventory/Scripts/Editor/ICollectionEditor.cs"
+"Assets/GridInventory/Scripts/Editor/BaseCollectionEditor.cs"
+"Assets/GridInventory/Scripts/Editor/BaseEditor.cs"
+"Assets/GridInventory/Scripts/Editor/ItemCollectionInspector.cs"
+"Assets/GridInventory/Scripts/Editor/ItemEditor.cs"
 "Assets/GridInventory/Scripts/Editor/Styles.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditor.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditorData.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryInspector.cs"
+"Assets/GridInventory/Scripts/Editor/Tools/PickerWindow.cs"
 -langversion:9.0
 
 /deterministic

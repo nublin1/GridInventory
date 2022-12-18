@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace GridInventorySystem
 {
-    public class InventoryUtilities
+    public static class Utilities
     {        
         public static Dir GetNextDir(Dir dir)
         {
@@ -34,7 +35,22 @@ namespace GridInventorySystem
             }
         }
 
-        
+        public static IEnumerable<SerializedProperty> EnumerateChildProperties(SerializedProperty property)
+        {
+            var iterator = property.Copy();
+            var end = iterator.GetEndProperty();
+            if (iterator.NextVisible(enterChildren: true))
+            {
+                do
+                {
+                    if (SerializedProperty.EqualContents(iterator, end))
+                        yield break;
+
+                    yield return iterator;
+                }
+                while (iterator.NextVisible(enterChildren: false));
+            }
+        }
     }
 
     public enum Dir
@@ -44,4 +60,6 @@ namespace GridInventorySystem
         Right,
         Down,
     }
+
+    
 }

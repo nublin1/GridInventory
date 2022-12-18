@@ -210,7 +210,7 @@ namespace GridInventorySystem
 
         private void RotateIteractItem()
         {
-            iteract_InventoryItem.SetRotation(InventoryUtilities.GetNextDir(iteract_InventoryItem.Dir));
+            iteract_InventoryItem.SetRotation(Utilities.GetNextDir(iteract_InventoryItem.Dir));
         }
 
 
