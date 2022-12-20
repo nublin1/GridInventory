@@ -54,59 +54,51 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
     protected override void DrawItem(BaseItem item)
     {
-        // Get all fields in this script
-        FieldInfo[] fields = item.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-        // Iterate through the fields and print their names and values
-        foreach (FieldInfo field in fields)
+        if (editor != null)
         {
-            if (field.IsDefined(typeof(SerializeField), false))
-            {
-                //Debug.Log(field.Name + ": " + field.GetValue(this));
-                //EditorGUILayout.ObjectField(field.Name);
-            }
+            editor.OnInspectorGUI();
         }
-
-
-
-        int index = m_Items.IndexOf(item);
-        m_SerializedObject.Update();
-
-        SerializedProperty element = this.m_SerializedProperty.GetArrayElementAtIndex(index);
-        foreach (var child in Utilities.EnumerateChildProperties(element))
-        {
-            Debug.Log(child);
-            EditorGUILayout.PropertyField(
-                child,
-                includeChildren: true
-            );
-            EditorGUI.EndDisabledGroup();
-
-        }
-
-        m_SerializedObject.ApplyModifiedProperties();
     }
 
     protected override void Create()
     {
         BaseItem item = ScriptableObject.CreateInstance<BaseItem>();
+        item.name = item.itemName;
+        item.hideFlags = HideFlags.HideInHierarchy;
 
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         m_Items.Add(item);
-        
+        Select(item);
+
         EditorUtility.SetDirty(m_Database);
     }
 
     protected override void Remove(BaseItem item)
     {
         int index = m_Items.IndexOf(item);
-        
+
+        if (EditorUtility.DisplayDialog("Delete Item", "Are you sure you want to delete " + item.name + "?", "Yes", "No"))
+        {
+            GameObject.DestroyImmediate(item, true);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            m_Items.Remove(item);
+        }
     }
 
     protected override void AddContextItem(GenericMenu menu)
     {
         base.AddContextItem(menu);
+    }
+
+    protected override void Select(BaseItem item)
+    {
+        base.Select(item);
+        if (editor != null)
+            ScriptableObject.DestroyImmediate(editor);
+
+        editor = Editor.CreateEditor(item);
     }
 }

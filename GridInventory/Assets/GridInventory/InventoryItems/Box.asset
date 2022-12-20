@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Box
   icon: {fileID: 21300000, guid: 8466da75e3d49fd448179a5e2422e2bd, type: 3}
-  m_width: 2
+  m_width: 4
   m_height: 2
   isContainer: 1
   pf_ItemContainer: {fileID: 5166874141609371545, guid: 8ad13b816a6a77343bd29505a73ce8d9, type: 3}

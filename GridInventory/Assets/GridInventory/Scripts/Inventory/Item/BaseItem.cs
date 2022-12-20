@@ -21,13 +21,13 @@ public class BaseItem : ScriptableObject
     private string m_Id;
 
     [SerializeField]
-    public string itemName;
+    public string itemName = "New item";
     [SerializeField]
     private Sprite icon;
     [SerializeField]
-    private int m_width;
+    private int m_width =1;
     [SerializeField]
-    private int m_height;
+    private int m_height=1;
     #endregion    
 
     #region containerOptions
@@ -98,11 +98,7 @@ public class BaseItem : ScriptableObject
     protected virtual void OnEnable()
     {
         if (string.IsNullOrEmpty(this.m_Id))       
-            this.m_Id = System.Guid.NewGuid().ToString();
-
-        itemName = "New Item";
-
-
+            this.m_Id = System.Guid.NewGuid().ToString();       
     }
 
     public void Update()

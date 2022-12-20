@@ -38,6 +38,8 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         }
     }
 
+    protected Editor editor;
+
     public BaseCollectionEditor(string title, ItemDatabase database)
     {
         this.m_ToolbarName = title;
@@ -110,6 +112,21 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
             }
         }
 
+        switch (Event.current.rawType)
+        {
+            case EventType.MouseDown:
+                if (Event.current.button == 1)
+                    for (int j = 0; j < fields_Rects.Count; j++)
+                    {
+                        if (fields_Rects[j].Contains(Event.current.mousePosition))
+                        {
+                            ShowContextMenu(m_Items[j]);
+                            break;
+                        }
+                    }
+                break;
+        }
+
         for (int j = 0; j < fields_Rects.Count; j++)
         {
 
@@ -151,7 +168,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         GUILayout.EndArea();
     }
 
-    void Select(T item)
+    protected virtual void Select(T item)
     {
         int index = m_Items.IndexOf(item);
         if (this.m_SelectedItemIndex != index)
