@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -51,6 +52,17 @@ namespace GridInventorySystem
                 while (iterator.NextVisible(enterChildren: false));
             }
         }
+
+        public static object GetValue(SerializedProperty property)
+        {
+
+            string propertyPath = property.propertyPath;
+            object value = property.serializedObject.targetObject;
+            int i = 0;
+            //while (NextPropertyPath(propertyPath, ref i, out var token))
+            //    value = GetPropertyPathValue(value, token);
+            return value;
+        }        
     }
 
     public enum Dir
