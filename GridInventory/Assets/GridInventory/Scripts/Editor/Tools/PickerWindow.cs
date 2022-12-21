@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class PickerWindow : EditorWindow
 {
-
     private string m_SearchString = string.Empty;
     private bool isSearching
     {

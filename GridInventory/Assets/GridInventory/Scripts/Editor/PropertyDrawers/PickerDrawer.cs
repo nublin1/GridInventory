@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-//[CustomPropertyDrawer(typeof(PickerAttribute), true)]
+[CustomPropertyDrawer(typeof(PickerAttribute), true)]
 public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObject
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -22,6 +22,7 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
         GUIContent buttonContent = new GUIContent(current != null ? current.name : "Null");
         if (GUI.Button(buttonRect, buttonContent, buttonStyle))
         {
+            Debug.Log("Selectopn");
         }
     }
 

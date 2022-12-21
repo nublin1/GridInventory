@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GridInventorySystem
 {
-    [CustomEditor(typeof(ItemCollection), true)]
+    //[CustomEditor(typeof(ItemCollection), true)]
     public class ItemCollectionCustomInspector : Editor
     {
         private SerializedProperty script;
@@ -69,21 +69,21 @@ namespace GridInventorySystem
 
             m_ItemList.onSelectCallback = (ReorderableList list) =>
             {               
-                Debug.Log("Test");
-                
+                  
             };
+
             m_ItemList.onChangedCallback = (ReorderableList list) => {
-                Debug.Log("Changed");
+                
             };
 
             m_ItemList.onAddDropdownCallback = (Rect rect, ReorderableList list) =>
             {
-                rect = m_rect;
-                Debug.Log("AddDropdown");
+                
             };
+
             m_ItemList.onMouseUpCallback = (ReorderableList list) => 
             {
-                Debug.Log("onMouseUp");
+               
             };
         }
 

@@ -1,13 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 namespace GridInventorySystem
 {
     public static class Utilities
-    {        
+    {
+        private static Dictionary<Type, FieldInfo[]> m_SerializedFieldInfoLookup;
+        private readonly static Dictionary<MemberInfo, object[]> m_MemberAttributeLookup;
+
+        static Utilities()
+        {
+            m_SerializedFieldInfoLookup = new Dictionary<Type, FieldInfo[]>();
+            m_MemberAttributeLookup = new Dictionary<MemberInfo, object[]>();
+        }
+
+        static Regex arrayElementRegex = new Regex(@"\GArray\.data\[(\d+)\]", RegexOptions.Compiled);
+
         public static Dir GetNextDir(Dir dir)
         {
             switch (dir)
@@ -55,14 +69,149 @@ namespace GridInventorySystem
 
         public static object GetValue(SerializedProperty property)
         {
-
             string propertyPath = property.propertyPath;
             object value = property.serializedObject.targetObject;
             int i = 0;
-            //while (NextPropertyPath(propertyPath, ref i, out var token))
-            //    value = GetPropertyPathValue(value, token);
+            while (NextPropertyPath(propertyPath, ref i, out var token))
+                value = GetPropertyPathValue(value, token);
             return value;
-        }        
+        }
+
+        private static bool NextPropertyPath(string propertyPath, ref int index, out PropertyPath component)
+        {
+            component = new PropertyPath();
+
+            if (index >= propertyPath.Length)
+                return false;
+
+            var arrayElementMatch = arrayElementRegex.Match(propertyPath, index);
+            if (arrayElementMatch.Success)
+            {
+                index += arrayElementMatch.Length + 1;
+                component.elementIndex = int.Parse(arrayElementMatch.Groups[1].Value);
+                return true;
+            }
+
+            int dot = propertyPath.IndexOf('.', index);
+            if (dot == -1)
+            {
+                component.propertyName = propertyPath.Substring(index);
+                index = propertyPath.Length;
+            }
+            else
+            {
+                component.propertyName = propertyPath.Substring(index, dot - index);
+                index = dot + 1;
+            }
+
+            return true;
+        }
+
+        private static object GetPropertyPathValue(object container, PropertyPath component)
+        {
+            if (component.propertyName == null)
+            {
+                IList list = (IList)container;
+                if (list.Count - 1 < component.elementIndex)
+                {
+                    for (int i = list.Count - 1; i < component.elementIndex; i++)
+                    {
+                        list.Add(default);
+                    }
+                }
+                return list[component.elementIndex];
+            }
+            else
+            {
+                return GetFieldValue(container, component.propertyName);
+            }
+        }
+
+        private static object GetFieldValue(object container, string name)
+        {
+            if (container == null)
+                return null;
+            var type = container.GetType();
+            FieldInfo field = type.GetSerializedField(name);
+            return field.GetValue(container);
+        }
+
+        public static FieldInfo GetSerializedField(this Type type, string name)
+        {
+            return type.GetAllSerializedFields().Where(x => x.Name == name).FirstOrDefault();
+        }
+
+        public static FieldInfo[] GetAllSerializedFields(this Type type)
+        {
+            if (type == null)
+            {
+                return new FieldInfo[0];
+            }
+            FieldInfo[] fields = GetSerializedFields(type).Concat(GetAllSerializedFields(type.BaseType)).ToArray();
+            fields = fields.OrderBy(x => x.DeclaringType.BaseTypesAndSelf().Count()).ToArray();
+            return fields;
+        }
+
+        public static FieldInfo[] GetSerializedFields(this Type type)
+        {
+            FieldInfo[] fields;
+            if (!m_SerializedFieldInfoLookup.TryGetValue(type, out fields))
+            {
+                fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(x => x.IsPublic && !x.HasAttribute(typeof(NonSerializedAttribute)) || x.HasAttribute(typeof(SerializeField)) || x.HasAttribute(typeof(SerializeReference))).ToArray();
+                fields = fields.OrderBy(x => x.DeclaringType.BaseTypesAndSelf().Count()).ToArray();
+                m_SerializedFieldInfoLookup.Add(type, fields);
+            }
+            return fields;
+        }
+
+        public static IEnumerable<Type> BaseTypesAndSelf(this Type type)
+        {
+            while (type != null)
+            {
+                yield return type;
+                type = type.BaseType;
+            }
+        }
+
+        public static bool HasAttribute(this MemberInfo memberInfo, Type attributeType)
+        {
+            object[] objArray = GetCustomAttributes(memberInfo, true);
+            for (int i = 0; i < (int)objArray.Length; i++)
+            {
+                if (objArray[i].GetType() == attributeType || objArray[i].GetType().IsSubclassOf(attributeType))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static object[] GetCustomAttributes(MemberInfo memberInfo, bool inherit)
+        {
+            object[] customAttributes;
+            if (!m_MemberAttributeLookup.TryGetValue(memberInfo, out customAttributes))
+            {
+                customAttributes = memberInfo.GetCustomAttributes(inherit);
+                m_MemberAttributeLookup.Add(memberInfo, customAttributes);
+            }
+            return customAttributes;
+        }
+
+        public static Type GetElementType(Type type)
+        {
+            Type[] interfaces = type.GetInterfaces();
+
+            return (from i in interfaces
+                    where i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                    select i.GetGenericArguments()[0]).FirstOrDefault();
+        }
+
+    }
+
+    struct PropertyPath
+    {
+        public string propertyName;
+        public int elementIndex;
     }
 
     public enum Dir
@@ -71,7 +220,5 @@ namespace GridInventorySystem
         Left,
         Right,
         Down,
-    }
-
-    
+    }    
 }

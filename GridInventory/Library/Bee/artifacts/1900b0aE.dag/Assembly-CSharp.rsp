@@ -366,6 +366,8 @@
 "Assets/GridInventory/Scripts/Inventory/Runtime/ItemCollection.cs"
 "Assets/GridInventory/Scripts/Inventory/Runtime/ItemDatabase.cs"
 "Assets/GridInventory/Scripts/Inventory/Utilities.cs"
+"Assets/GridInventory/Scripts/Runtime/Attributes/BaseItemPickerAttribute.cs"
+"Assets/GridInventory/Scripts/Runtime/Attributes/PickerAttribute.cs"
 -langversion:9.0
 
 /deterministic

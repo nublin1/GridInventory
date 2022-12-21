@@ -8,6 +8,7 @@ namespace GridInventorySystem
 {
     public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>
     {
+        [BaseItemPicker (true)]
         [SerializeField]
         List<BaseItem> m_Items = new();
 
