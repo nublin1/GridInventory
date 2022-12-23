@@ -1,4 +1,5 @@
 using GridInventorySystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -22,8 +23,23 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
         GUIContent buttonContent = new GUIContent(current != null ? current.name : "Null");
         if (GUI.Button(buttonRect, buttonContent, buttonStyle))
         {
-            Debug.Log("Selectopn");
+            ObjectPickerWindow.ShowWindow(buttonRect, typeof(ItemDatabase), BuildSelectableObjects(),
+                     (UnityEngine.Object obj) => {
+                         property.serializedObject.Update();
+                         property.objectReferenceValue = obj;
+                         property.serializedObject.ApplyModifiedProperties();
+                     },
+                     () => {
+                         //ItemDatabase db = EditorTools.CreateAsset<ItemDatabase>(true);
+                     });
         }
+    }
+
+    private Dictionary<UnityEngine.Object, List<UnityEngine.Object>> BuildSelectableObjects()
+    {
+        // TODO
+        Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new Dictionary<UnityEngine.Object, List<UnityEngine.Object>>();
+        return selectableObjects;
     }
 
     protected abstract List<T> GetItems(ItemDatabase database);

@@ -383,7 +383,8 @@
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditor.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryEditorData.cs"
 "Assets/GridInventory/Scripts/Editor/Tools/GridInventoryInspector.cs"
-"Assets/GridInventory/Scripts/Editor/Tools/PickerWindow.cs"
+"Assets/GridInventory/Scripts/Editor/Tools/Pickers/ObjectPickerWindow.cs"
+"Assets/GridInventory/Scripts/Editor/Tools/Pickers/PickerWindow.cs"
 -langversion:9.0
 
 /deterministic
