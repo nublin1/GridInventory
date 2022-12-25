@@ -2,6 +2,7 @@ using GridInventorySystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -36,9 +37,22 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
     }
 
     private Dictionary<UnityEngine.Object, List<UnityEngine.Object>> BuildSelectableObjects()
-    {
-        // TODO
+    {        
         Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new Dictionary<UnityEngine.Object, List<UnityEngine.Object>>();
+
+        string[] guids = AssetDatabase.FindAssets("t:ItemDatabase");
+        for (int i = 0; i < guids.Length; i++)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDatabase));
+            List<UnityEngine.Object> items = GetItems(obj as ItemDatabase).Cast<UnityEngine.Object>().ToList();
+            for (int j = 0; j < items.Count; j++)
+            {
+                //items[j].name = items[j].Name;
+            }
+            selectableObjects.Add(obj, items);
+        }
+
         return selectableObjects;
     }
 

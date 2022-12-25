@@ -16,7 +16,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
 
     protected Vector2 m_ScrollPosition;
     protected string m_SearchString = string.Empty;
-
+    protected bool m_SearchStringShow = false;
 
 
     //private bool m_StartDrag;
@@ -25,7 +25,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     List<Rect> fields_Rects;
 
     protected List<T> m_Items = new List<T>();
-    int m_SelectedItemIndex;
+    protected int m_SelectedItemIndex;
     T selectedItem
     {
         get
@@ -44,7 +44,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     {
         this.m_ToolbarName = title;
         m_Database = database;
-        m_Items = m_Database.items as List<T>;
+       
     }
 
     protected void DrawSidebar(Rect position)
@@ -54,20 +54,35 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         GUILayout.BeginArea(m_SidebarRect, "", EditorStyles.textArea);
         GUILayout.BeginHorizontal();
 
-        GUIContent content = EditorGUIUtility.IconContent("CreateAddNew");
-        if (GUILayout.Button(content, GUILayout.Width(35f)))
+        GUIContent content = EditorGUIUtility.TrIconContent("CreateAddNew", "Create new item");       
+        if (GUILayout.Button(content, GUILayout.Width(35f), GUILayout.Height(35f)))
         {
             Create();
-        }
+        }     
+
+        GUILayout.Space(1f);
+
+        GUIContent contentFind = EditorGUIUtility.TrIconContent("BillboardRenderer Icon", "Find Item");        
+        if (GUILayout.Button(contentFind, GUILayout.Width(35f), GUILayout.Height(35f)))
+        {
+            m_SearchStringShow = !m_SearchStringShow;
+        }        
 
         GUILayout.Space(1f);
         GUILayout.EndHorizontal();
+
+        DoSearchGUI();
+
         EditorGUILayout.Space();
 
         fields_Rects = new List<Rect>();
         for (int i = 0; i < m_Items.Count; i++)
         {
             var currentItem = m_Items[i];
+
+            if(!MatchesSearch(currentItem, m_SearchString) && m_SearchStringShow == true) {
+                continue;
+            }
 
             using (var h = new EditorGUILayout.HorizontalScope(Styles.selectButton, GUILayout.Height(25f)))
             {
@@ -93,6 +108,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
                 rect.width -= LIST_RESIZE_WIDTH * 0.5f;
                 if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
                 {
+                    GUI.FocusControl("");
                     Select(currentItem);
                 }
 
@@ -180,7 +196,17 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
 
     protected virtual void DoSearchGUI()
     {
-        //m_SearchString = EditorTools.SearchField(m_SearchString);
+        if (m_SearchStringShow == false)
+        {           
+            return;
+        }
+
+        m_SearchString = GUILayout.TextField(m_SearchString);
+        Rect rect = GUILayoutUtility.GetLastRect();
+
+        if (Event.current.type == EventType.MouseUp && rect.Contains(Event.current.mousePosition)) {
+            GUI.FocusControl(null);
+        }
     }
 
     private void ShowContextMenu(T currentItem)
@@ -193,7 +219,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         contextMenu.ShowAsContext();
     }
 
-    void DrawItemLabel(int index, T currentItem)
+    protected virtual void DrawItemLabel(int index, T currentItem)
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label(index + ": " + GetSidebarLabel(currentItem), Styles.selectButtonText, GUILayout.Width(17), GUILayout.Height(17));
@@ -217,4 +243,12 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     protected virtual void Remove(T item) { }
 
     protected virtual void AddContextItem(GenericMenu menu) { }
+
+    /// <summary>
+    /// Checks for search.
+    /// </summary>
+    /// <returns><c>true</c>, if search was matchesed, <c>false</c> otherwise.</returns>
+    /// <param name="item">Item.</param>
+    /// <param name="search">Search.</param>
+    protected abstract bool MatchesSearch(T item, string search);
 }

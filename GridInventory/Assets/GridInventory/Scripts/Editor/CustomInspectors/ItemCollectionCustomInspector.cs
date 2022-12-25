@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GridInventorySystem
 {
-    //[CustomEditor(typeof(ItemCollection), true)]
+    [CustomEditor(typeof(ItemCollection), true)]
     public class ItemCollectionCustomInspector : Editor
     {
         private SerializedProperty script;
@@ -24,15 +24,13 @@ namespace GridInventorySystem
             CreateItemList(serializedObject, m_Items);
         }
 
-       
-
         private void CreateItemList(SerializedObject serializedObject, SerializedProperty elements)
         {
             this.m_ItemList = new ReorderableList(serializedObject, elements, true, true, true, true);
 
             m_ItemList.drawHeaderCallback = (Rect rect) =>
-            {                    
-                EditorGUI.LabelField(rect, "Items (Item, Amount)");                
+            {
+                EditorGUI.LabelField(rect, "Items (Item, Amount)");
             };
 
             m_ItemList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
@@ -41,7 +39,7 @@ namespace GridInventorySystem
                 rect.height = EditorGUIUtility.singleLineHeight;
                 rect.y = rect.y + verticalOffset;
                 rect.width = rect.width - 52f;
-                
+
 
                 SerializedProperty element = elements.GetArrayElementAtIndex(index);
                 EditorGUI.PropertyField(rect, element, GUIContent.none, true);
@@ -62,29 +60,22 @@ namespace GridInventorySystem
                 EditorGUI.PropertyField(rect, amount, GUIContent.none);
             };
 
-            m_ItemList.onAddCallback = (ReorderableList list) => {
+            m_ItemList.onAddCallback = (ReorderableList list) =>
+            {
                 ReorderableList.defaultBehaviours.DoAddButton(list);
-                Debug.Log("add");
             };
 
             m_ItemList.onSelectCallback = (ReorderableList list) =>
-            {               
-                  
-            };
-
-            m_ItemList.onChangedCallback = (ReorderableList list) => {
-                
-            };
-
-            m_ItemList.onAddDropdownCallback = (Rect rect, ReorderableList list) =>
             {
-                
+
             };
 
-            m_ItemList.onMouseUpCallback = (ReorderableList list) => 
+            m_ItemList.onChangedCallback = (ReorderableList list) =>
             {
-               
+
             };
+
+
         }
 
         public override void OnInspectorGUI()

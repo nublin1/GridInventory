@@ -1200,7 +1200,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 941893058}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.62500006
+  m_Size: 0.625
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1803,6 +1803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Items:
-  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
   - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
-  m_Amounts: 010000000100000001000000
+  - {fileID: -2454543315995271007, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
+  m_Amounts: 01000000010000000100000001000000

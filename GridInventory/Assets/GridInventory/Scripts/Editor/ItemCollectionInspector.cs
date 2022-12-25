@@ -8,20 +8,26 @@ public class ItemCollectionInspector : EditorWindow
     private static ItemDatabase m_Database;
     private static List<BaseEditor> m_ChildEditors;
 
-
-    private string[] toolbarNames = {"Items", "Rarity", "Categories" };
+    private string[] toolbarNames = { "Items", "Rarity", "Categories" };
     private int toolbarIndex;
 
     [MenuItem("Tools/Items Editor", false, 1)]
     public static void ShowWindow()
     {
+        var exited = Resources.FindObjectsOfTypeAll<ItemCollectionInspector>();
+        ItemCollectionInspector editor;
 
-        ItemCollectionInspector editor = CreateInstance<ItemCollectionInspector>();
-
-        editor.minSize = new Vector2(600, 300);
-        editor.titleContent = new GUIContent("Inventory System");
-
-        editor.Show();
+        if (exited.Length <= 0)
+        {
+            editor = CreateInstance<ItemCollectionInspector>();
+            editor.titleContent = new GUIContent("Inventory System");
+            editor.Show();
+        }
+        else
+        {
+            editor = exited[0];
+            editor.Show();
+        }
     }
 
     private void OnEnable()
@@ -57,9 +63,9 @@ public class ItemCollectionInspector : EditorWindow
         if (m_ChildEditors == null)
             return;
 
-        foreach (BaseEditor editor in m_ChildEditors)
+        if (m_ChildEditors != null)
         {
-            editor.OnGUI(position);
+            m_ChildEditors[toolbarIndex].OnGUI(position);
         }
     }
 
@@ -107,8 +113,10 @@ public class ItemCollectionInspector : EditorWindow
             EditorUtility.SetDirty(m_Database);
             m_ChildEditors = new List<BaseEditor>();
             m_ChildEditors.Add(new ItemEditor("Test1", m_Database));
-            
-            foreach(BaseEditor editor in m_ChildEditors)
+            m_ChildEditors.Add(new RariryEditor("Test2", m_Database));
+            m_ChildEditors.Add(new CategoryEditor("Test3", m_Database));
+
+            foreach (BaseEditor editor in m_ChildEditors)
             {
                 editor.OnEnable();
             }

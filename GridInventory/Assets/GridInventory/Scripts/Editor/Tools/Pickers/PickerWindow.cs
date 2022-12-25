@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PickerWindow : EditorWindow
 {
+    private static Style style;
+
     private string m_SearchString = string.Empty;
     private bool isSearching
     {
@@ -53,19 +55,27 @@ public class PickerWindow : EditorWindow
     }
 
     private void OnGUI()
-    {
+    {        
         Header();
         DrawSelectableObjects();
     }
 
     private void Header()
     {
+        if (style == null)
+            style = new Style();
+
         GUIContent content = new GUIContent(this.m_Root == null ? "Select " + ObjectNames.NicifyVariableName(this.m_Type.Name) : this.m_Root.name);
-        Rect headerRect = GUILayoutUtility.GetRect(content, EditorStyles.helpBox);
-        if (GUI.Button(headerRect, content, EditorStyles.helpBox))
+        Rect headerRect = GUILayoutUtility.GetRect(content, style.header, GUILayout.Height(30));
+        if (GUI.Button(headerRect, content, style.header))
         {
             this.m_Root = null;
         }
+
+        // Draw a horizontal line
+        Rect rect = EditorGUILayout.GetControlRect(false, 1);
+        rect.height = 1;
+        EditorGUI.DrawRect(rect, Color.gray);
     }
 
     private void DrawSelectableObjects()
@@ -84,7 +94,7 @@ public class PickerWindow : EditorWindow
             Rect rect = GUILayoutUtility.GetRect(label, Styles.elementButton, GUILayout.Height(20f));
             GUI.backgroundColor = (rect.Contains(Event.current.mousePosition) ? GUI.backgroundColor : new Color(0.2f, 0.5f, 0, 0.0f));
 
-            if (GUI.Button(rect, label))
+            if (GUI.Button(rect, label, style.elementButton))
             {
                 if (this.m_Root != null && this.m_SelectableObjects[this.m_Root].Count > 0)
                 {
@@ -109,7 +119,7 @@ public class PickerWindow : EditorWindow
             Rect rect1 = GUILayoutUtility.GetRect(createContent, Styles.elementButton, GUILayout.Height(20f));
             GUI.backgroundColor = (rect1.Contains(Event.current.mousePosition) ? GUI.backgroundColor : new Color(0.2f, 0.5f, 0, 0.0f));
 
-            if (GUI.Button(rect1, createContent))
+            if (GUI.Button(rect1, createContent, style.elementButton))
             {
             }
         }
@@ -132,6 +142,26 @@ public class PickerWindow : EditorWindow
         //Debug.Log(m_SelectableObjects);
     }
 
+    private class Style
+    {
+        public GUIStyle header = new GUIStyle("HeaderStyle");
+        public GUIStyle elementButton = new GUIStyle("MeTransitionSelectHead");
 
+        public Style()
+        {
+            header.alignment = TextAnchor.MiddleCenter;
+            header.fontSize = 16;
+            header.fontStyle = FontStyle.Bold;
+            header.stretchWidth = true;
+            header.margin = new RectOffset(1, 1, 0, 4);
+            header.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+            header.border = new RectOffset(1, 1, 1, 1);
+
+            elementButton.alignment = TextAnchor.MiddleLeft;
+            elementButton.padding.left = 22;
+            elementButton.margin = new RectOffset(1, 1, 0, 0);
+            elementButton.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+        }
+    }
 
 }
