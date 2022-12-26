@@ -39,12 +39,13 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     }
 
     protected Editor editor;
+    private Vector2 m_SidebarScrollPosition;
 
     public BaseCollectionEditor(string title, ItemDatabase database)
     {
         this.m_ToolbarName = title;
         m_Database = database;
-       
+
     }
 
     protected void DrawSidebar(Rect position)
@@ -54,33 +55,42 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         GUILayout.BeginArea(m_SidebarRect, "", EditorStyles.textArea);
         GUILayout.BeginHorizontal();
 
-        GUIContent content = EditorGUIUtility.TrIconContent("CreateAddNew", "Create new item");       
+        GUIContent content = EditorGUIUtility.TrIconContent("CreateAddNew", "Create new item");
         if (GUILayout.Button(content, GUILayout.Width(35f), GUILayout.Height(35f)))
         {
             Create();
-        }     
+        }
 
         GUILayout.Space(1f);
 
-        GUIContent contentFind = EditorGUIUtility.TrIconContent("BillboardRenderer Icon", "Find Item");        
+        GUIContent contentFind = EditorGUIUtility.TrIconContent("BillboardRenderer Icon", "Find item");
         if (GUILayout.Button(contentFind, GUILayout.Width(35f), GUILayout.Height(35f)))
         {
             m_SearchStringShow = !m_SearchStringShow;
-        }        
+        }
 
         GUILayout.Space(1f);
+
+        GUIContent contentSort = EditorGUIUtility.TrIconContent("AlphabeticalSorting", "Sort items");
+        if (GUILayout.Button(contentSort, GUILayout.Width(35f), GUILayout.Height(35f)))
+        {
+            ShowSortMenu();
+        }
+
         GUILayout.EndHorizontal();
 
         DoSearchGUI();
 
         EditorGUILayout.Space();
+        m_SidebarScrollPosition = GUILayout.BeginScrollView(m_SidebarScrollPosition);
 
         fields_Rects = new List<Rect>();
         for (int i = 0; i < m_Items.Count; i++)
         {
             var currentItem = m_Items[i];
 
-            if(!MatchesSearch(currentItem, m_SearchString) && m_SearchStringShow == true) {
+            if (!MatchesSearch(currentItem, m_SearchString) && m_SearchStringShow == true)
+            {
                 continue;
             }
 
@@ -171,6 +181,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
             }
         }
 
+        GUILayout.EndScrollView();
         GUILayout.EndArea();
     }
 
@@ -197,14 +208,15 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     protected virtual void DoSearchGUI()
     {
         if (m_SearchStringShow == false)
-        {           
+        {
             return;
         }
 
         m_SearchString = GUILayout.TextField(m_SearchString);
         Rect rect = GUILayoutUtility.GetLastRect();
 
-        if (Event.current.type == EventType.MouseUp && rect.Contains(Event.current.mousePosition)) {
+        if (Event.current.type == EventType.MouseUp && rect.Contains(Event.current.mousePosition))
+        {
             GUI.FocusControl(null);
         }
     }
@@ -212,12 +224,13 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     private void ShowContextMenu(T currentItem)
     {
         GenericMenu contextMenu = new GenericMenu();
-
         contextMenu.AddItem(new GUIContent("Delete"), false, delegate { Remove(currentItem); });
 
         AddContextItem(contextMenu);
         contextMenu.ShowAsContext();
     }
+
+    protected virtual void ShowSortMenu()    {  }
 
     protected virtual void DrawItemLabel(int index, T currentItem)
     {
@@ -240,7 +253,7 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     /// Remove the specified item from collection.
     /// </summary>
     /// <param name="item">Item.</param>
-    protected virtual void Remove(T item) { }
+    protected virtual void Remove(T item) { }    
 
     protected virtual void AddContextItem(GenericMenu menu) { }
 

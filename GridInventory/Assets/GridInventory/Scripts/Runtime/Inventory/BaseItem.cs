@@ -28,8 +28,10 @@ public class BaseItem : ScriptableObject
     private int m_width =1;
     [SerializeField]
     private int m_height=1;
-    []
-    #endregion    
+    [SerializeField]
+    [Multiline(4)]
+    private string m_Description = string.Empty;
+    #endregion
 
     #region containerOptions
     [SerializeField]
@@ -74,6 +76,7 @@ public class BaseItem : ScriptableObject
     public Sprite Icon { get => icon; }
     public int Width { get => m_width; }
     public int Height { get => m_height; }
+    public string Description { get => m_Description; }
     public bool IsContainer { get => isContainer; }
     public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
     public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }

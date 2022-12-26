@@ -75,16 +75,30 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         if (EditorUtility.DisplayDialog("Delete Item", "Are you sure you want to delete " + item.name + "?", "Yes", "No"))
         {
-            GameObject.DestroyImmediate(item, true);
+            GameObject.DestroyImmediate(item,true);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             m_Items.Remove(item);
+            if (editor != null)
+                ScriptableObject.DestroyImmediate(editor);
         }
     }
 
     protected override void AddContextItem(GenericMenu menu)
     {
         base.AddContextItem(menu);
+    }
+
+    protected override void ShowSortMenu()
+    {
+        base.ShowSortMenu();
+        GenericMenu contextSortMenu = new GenericMenu();
+        contextSortMenu.AddItem(new GUIContent("Sort A->Z"), false, delegate {
+            var selected = m_Items[m_SelectedItemIndex];
+            m_Items.Sort(delegate (BaseItem a, BaseItem b) { return a.ItemName.CompareTo(b.ItemName); });
+            Select(selected);
+        });
+        contextSortMenu.ShowAsContext();
     }
 
     protected override void Select(BaseItem item)
