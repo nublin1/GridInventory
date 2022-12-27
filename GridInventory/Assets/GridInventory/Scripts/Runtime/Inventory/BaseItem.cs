@@ -29,6 +29,8 @@ public class BaseItem : ScriptableObject
     [SerializeField]
     private int m_height=1;
     [SerializeField]
+    private GameObject m_prefab;
+    [SerializeField]
     [Multiline(4)]
     private string m_Description = string.Empty;
     #endregion
@@ -76,6 +78,7 @@ public class BaseItem : ScriptableObject
     public Sprite Icon { get => icon; }
     public int Width { get => m_width; }
     public int Height { get => m_height; }
+    public GameObject Prefab { get => m_prefab; }
     public string Description { get => m_Description; }
     public bool IsContainer { get => isContainer; }
     public GameObject Pf_ItemContainer { get => pf_ItemContainer; }

@@ -98,6 +98,11 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             m_Items.Sort(delegate (BaseItem a, BaseItem b) { return a.ItemName.CompareTo(b.ItemName); });
             Select(selected);
         });
+        contextSortMenu.AddItem(new GUIContent("Sort Z->A"), false, delegate {
+            var selected = m_Items[m_SelectedItemIndex];
+            m_Items.Sort(delegate (BaseItem a, BaseItem b) { return b.ItemName.CompareTo(a.ItemName); });
+            Select(selected);
+        });
         contextSortMenu.ShowAsContext();
     }
 
