@@ -142,6 +142,11 @@ namespace GridInventorySystem
         private void ReturnItemToInitialPosition()
         {
             savedItem.SetRotation(oldDir);
+            savedItem.BackgroundImage.enabled = true;
+            savedItem.BackgroundOutlineImage.enabled = true;
+            savedItem.HighlightImage.enabled = true;
+            savedItem.ItemNameText.enabled = true;
+            savedItem.ItemCountText.enabled = true;
             savedItemCollection.AddItem(savedItem, oldCell);
             ClearIteract_InventoryItem();
         }

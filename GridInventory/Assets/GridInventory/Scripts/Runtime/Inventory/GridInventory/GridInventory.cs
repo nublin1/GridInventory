@@ -213,7 +213,7 @@ public class GridInventory : MonoBehaviour
 
     private bool CanStack(BaseItem item, BaseItem comparedItem)
     {      
-        if (item.name.Equals(comparedItem.name))   
+        if (item.name.Equals(comparedItem.name) && comparedItem.Stack < comparedItem.MaxStack)   
             return true;        
 
         return false;
@@ -221,8 +221,9 @@ public class GridInventory : MonoBehaviour
 
     private bool StackItems(BaseItem item, BaseItem comparedItem)
     {
-        // Check if comparedItem max stack is reached
-        if (comparedItem.Stack >= comparedItem.MaxStack)
+
+        // Check if comparedItem max stack is reached or if MaxStack is invalid
+        if (comparedItem.Stack >= comparedItem.MaxStack || comparedItem.MaxStack <= 0)
             return false;
 
         // Check if it fits in one stack
@@ -236,6 +237,18 @@ public class GridInventory : MonoBehaviour
         }
         else
         {
+            // Check if item's stack is already at the maximum capacity
+            if (item.Stack >= item.MaxStack)
+            {
+                var t_buffer = comparedItem.Stack;
+                item.Stack = t_buffer;
+                comparedItem.Stack = item.MaxStack;
+                comparedItem.UpdateDisplayItemCount();
+                item.UpdateDisplayItemCount();
+
+                return false;
+            }
+
             var remainder = comparedItem.MaxStack - (item.Stack + comparedItem.Stack);
             comparedItem.Stack = comparedItem.MaxStack;
             item.Stack += remainder;
