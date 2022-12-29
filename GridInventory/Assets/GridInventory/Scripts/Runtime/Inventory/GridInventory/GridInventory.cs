@@ -245,6 +245,7 @@ public class GridInventory : MonoBehaviour
                 comparedItem.Stack = item.MaxStack;
                 comparedItem.UpdateDisplayItemCount();
                 item.UpdateDisplayItemCount();
+                m_Collection.UpdateAmounts();
 
                 return false;
             }
@@ -254,6 +255,7 @@ public class GridInventory : MonoBehaviour
             item.Stack += remainder;
             comparedItem.UpdateDisplayItemCount();
             item.UpdateDisplayItemCount();
+            m_Collection.UpdateAmounts();
             return false;
         }
     }

@@ -25,16 +25,14 @@ namespace GridInventorySystem
 
         public void Initialize()
         {
-            if (this.m_Amounts.Count < m_Items.Count)
-            {
-                for (int i = this.m_Amounts.Count; i < this.m_Items.Count; i++)
-                {
-                    this.m_Amounts.Add(1);
-                }
-            }
-
+            m_Amounts.Clear();  
             m_Items = CreateInstances(m_Items.ToArray()).ToList();
-        }
+
+            for (int i = 0; i < this.m_Items.Count; i++)
+            {
+                this.m_Amounts.Add(m_Items[i].Stack);
+            }
+        }               
 
 
         public void Add(BaseItem item)
@@ -59,6 +57,14 @@ namespace GridInventorySystem
                 //    onChange.Invoke();
             }
             return result;
+        }
+
+        public void UpdateAmounts()
+        {
+            for (int i = 0; i < m_Amounts.Count; i++)
+            {
+                m_Amounts[i] = m_Items[i].Stack;
+            }
         }
 
         public static BaseItem[] CreateInstances(BaseItem[] items)
