@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemName: SMG
   icon: {fileID: 21300000, guid: 5331d3ef704e31f4991c2db49a49390a, type: 3}
-  m_width: 3
+  m_width: 4
   m_height: 2
+  m_prefab: {fileID: 0}
+  m_Description: 
   isContainer: 0
   pf_ItemContainer: {fileID: 0}
   m_Stack: 1

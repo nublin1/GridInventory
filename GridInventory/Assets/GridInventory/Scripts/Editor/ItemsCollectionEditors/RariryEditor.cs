@@ -39,6 +39,8 @@ public class RariryEditor : BaseCollectionEditor<Rarity>
     {
         DrawSidebar(new Rect(0, m_SidebarRect.y, m_SidebarRect.width, position.height));
         DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, 450, position.height));
+
+        ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].Name);
     }
 
     protected override string GetSidebarLabel(Rarity item)

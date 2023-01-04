@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GridInventorySystem;
 using UnityEditor;
-using UnityEngine;
+
 
 [CustomPropertyDrawer(typeof(BaseItemPickerAttribute))]
 public class ItemPickerDrawer : PickerDrawer<BaseItem>

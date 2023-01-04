@@ -22,8 +22,12 @@ public class BaseItem : ScriptableObject
 
     [SerializeField]
     private string m_ItemName = "New item";
+    [BoxGroup("Images")]
     [SerializeField]
     private Sprite icon;
+    [BoxGroup("Images")]
+    [SerializeField]
+    private Color backgroundColor = new Color(0, 0, 0, 0.15f);
     [SerializeField]
     private int m_width =1;
     [SerializeField]
@@ -56,6 +60,15 @@ public class BaseItem : ScriptableObject
 
     [SerializeField]
     private bool m_showMaxStack;
+    #endregion
+
+    #region Other
+    [RarityPicker(true)]
+    [SerializeField]
+    private Rarity rarity;
+    [CategoryPicker(true)]
+    [SerializeField]
+    private Category category;
     #endregion
 
     private List<Vector2Int> gridPositionList;
@@ -183,7 +196,7 @@ public class BaseItem : ScriptableObject
         itemBackgroundRect.anchoredPosition = new Vector2(0f, 0f);
 
         backgroundImage = background.AddComponent<Image>();
-        backgroundImage.color = new Color(0, 0, 0, 0.15f);
+        backgroundImage.color = backgroundColor;
         backgroundImage.raycastTarget = false;
 
         // background Outline

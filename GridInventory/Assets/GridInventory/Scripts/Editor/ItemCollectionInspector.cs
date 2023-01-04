@@ -32,12 +32,16 @@ public class ItemCollectionInspector : EditorWindow
 
     private void OnEnable()
     {
-        UpdateChildEditors();
+        m_Database = AssetDatabase.LoadAssetAtPath<ItemDatabase>(EditorPrefs.GetString("ItemDatabasePath"));
+        UpdateChildEditors();        
     }
 
     private void OnDisable()
     {
-
+        if (m_Database != null)
+        {
+            EditorPrefs.SetString("ItemDatabasePath", AssetDatabase.GetAssetPath(m_Database));
+        }
     }
 
     private void OnDestroy()
@@ -111,10 +115,12 @@ public class ItemCollectionInspector : EditorWindow
         if (m_Database != null)
         {
             EditorUtility.SetDirty(m_Database);
-            m_ChildEditors = new List<BaseEditor>();
-            m_ChildEditors.Add(new ItemEditor("Test1", m_Database));
-            m_ChildEditors.Add(new RariryEditor("Test2", m_Database));
-            m_ChildEditors.Add(new CategoryEditor("Test3", m_Database));
+            m_ChildEditors = new List<BaseEditor>
+            {
+                new ItemEditor("Test1", m_Database),
+                new RariryEditor("Test2", m_Database),
+                new CategoryEditor("Test3", m_Database)
+            };
 
             foreach (BaseEditor editor in m_ChildEditors)
             {

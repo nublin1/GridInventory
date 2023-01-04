@@ -12,9 +12,7 @@ namespace GridInventorySystem
         private SerializedProperty script;
 
         private SerializedProperty m_Items;
-        private ReorderableList m_ItemList;
-
-        private Rect m_rect;
+        private ReorderableList m_ItemList;        
 
         private void OnEnable()
         {
@@ -42,7 +40,7 @@ namespace GridInventorySystem
 
 
                 SerializedProperty element = elements.GetArrayElementAtIndex(index);
-                EditorGUI.PropertyField(rect, element, GUIContent.none, true);
+                EditorGUI.PropertyField(rect, element, GUIContent.none, false);
 
                 SerializedProperty amounts = serializedObject.FindProperty("m_Amounts");
                 if (amounts.arraySize < this.m_Items.arraySize)
@@ -55,8 +53,7 @@ namespace GridInventorySystem
                 }
                 SerializedProperty amount = amounts.GetArrayElementAtIndex(index);
                 rect.x += rect.width + 2f;
-                rect.width = 50f;
-                m_rect = rect;
+                rect.width = 50f;                
                 EditorGUI.PropertyField(rect, amount, GUIContent.none);
             };
 

@@ -12,7 +12,8 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     private const float LIST_MAX_WIDTH = 400f;
     private const float LIST_RESIZE_WIDTH = 10f;
 
-    protected Rect m_SidebarRect = new Rect(0, 50, 200, 500);
+    protected Rect m_SidebarRect = new Rect(0, 40, 200, 500);
+    protected float m_contentWidth = 450;
 
     protected Vector2 m_ScrollPosition;
     protected string m_SearchString = string.Empty;
@@ -45,14 +46,14 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     {
         this.m_ToolbarName = title;
         m_Database = database;
-
     }
 
     protected void DrawSidebar(Rect position)
     {
         m_SidebarRect = position;
-
         GUILayout.BeginArea(m_SidebarRect, "", EditorStyles.textArea);
+
+        #region icons
         GUILayout.BeginHorizontal();
 
         GUIContent content = EditorGUIUtility.TrIconContent("CreateAddNew", "Create new item");
@@ -62,7 +63,6 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         }
 
         GUILayout.Space(1f);
-
         GUIContent contentFind = EditorGUIUtility.TrIconContent("BillboardRenderer Icon", "Find item");
         if (GUILayout.Button(contentFind, GUILayout.Width(35f), GUILayout.Height(35f)))
         {
@@ -70,7 +70,6 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         }
 
         GUILayout.Space(1f);
-
         GUIContent contentSort = EditorGUIUtility.TrIconContent("AlphabeticalSorting", "Sort items");
         if (GUILayout.Button(contentSort, GUILayout.Width(35f), GUILayout.Height(35f)))
         {
@@ -78,10 +77,11 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         }
 
         GUILayout.EndHorizontal();
+        #endregion
 
         DoSearchGUI();
-
         EditorGUILayout.Space();
+
         m_SidebarScrollPosition = GUILayout.BeginScrollView(m_SidebarScrollPosition);
 
         fields_Rects = new List<Rect>();
@@ -188,10 +188,12 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
     protected virtual void DrawContent(Rect position)
     {
         GUILayout.BeginArea(position, "", EditorStyles.helpBox);
+        m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition, GUIStyle.none);
         if (selectedItem != null)
         {
             DrawItem(selectedItem);
         }
+        GUILayout.EndScrollView();
         GUILayout.EndArea();
     }
 

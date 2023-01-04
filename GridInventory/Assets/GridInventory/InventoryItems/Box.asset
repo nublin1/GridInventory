@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemName: Box
   icon: {fileID: 21300000, guid: 8466da75e3d49fd448179a5e2422e2bd, type: 3}
+  backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
   m_width: 4
-  m_height: 2
+  m_height: 4
+  m_prefab: {fileID: 0}
+  m_Description: 
   isContainer: 1
   pf_ItemContainer: {fileID: 5166874141609371545, guid: 8ad13b816a6a77343bd29505a73ce8d9, type: 3}
   m_Stack: 1
   m_maxStack: 1
   m_showMaxStack: 0
+  rarity: {fileID: -8202195673115845998, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  category: {fileID: 0}

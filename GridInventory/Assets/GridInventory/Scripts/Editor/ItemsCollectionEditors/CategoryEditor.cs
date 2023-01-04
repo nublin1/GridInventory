@@ -9,7 +9,7 @@ public class CategoryEditor : BaseCollectionEditor<Category>
     {
         ToolbarName = title;
         m_Database = database;
-        m_Items = m_Database.Categoryes;
+        m_Items = m_Database.categories;
     }
 
     public override void OnEnable()
@@ -39,6 +39,8 @@ public class CategoryEditor : BaseCollectionEditor<Category>
     {
         DrawSidebar(new Rect(0, m_SidebarRect.y, m_SidebarRect.width, position.height));
         DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, 450, position.height));
+
+        ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].Name);
     }
 
     protected override string GetSidebarLabel(Category item)
