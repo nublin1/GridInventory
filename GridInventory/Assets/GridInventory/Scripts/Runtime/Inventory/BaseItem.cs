@@ -27,7 +27,7 @@ public class BaseItem : ScriptableObject
     private Sprite icon;
     [BoxGroup("Images")]
     [SerializeField]
-    private Color backgroundColor = new Color(0, 0, 0, 0.15f);
+    private Color m_backgroundColor = new Color(0, 0, 0, 0.15f);
     [SerializeField]
     private int m_width =1;
     [SerializeField]
@@ -89,6 +89,7 @@ public class BaseItem : ScriptableObject
     public string Id { get => m_Id; }
     public string ItemName { get => m_ItemName; set => m_ItemName = value; }
     public Sprite Icon { get => icon; }
+    public Color BackgroundColor { get => m_backgroundColor; }
     public int Width { get => m_width; }
     public int Height { get => m_height; }
     public GameObject Prefab { get => m_prefab; }
@@ -98,6 +99,7 @@ public class BaseItem : ScriptableObject
     public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
     public int Stack { get => m_Stack; set => m_Stack = value; }
     public int MaxStack { get => m_maxStack; }
+    public bool ShowMaxStack { get => m_showMaxStack; }
     public Dir Dir { get => m_dir; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
@@ -196,7 +198,7 @@ public class BaseItem : ScriptableObject
         itemBackgroundRect.anchoredPosition = new Vector2(0f, 0f);
 
         backgroundImage = background.AddComponent<Image>();
-        backgroundImage.color = backgroundColor;
+        backgroundImage.color = m_backgroundColor;
         backgroundImage.raycastTarget = false;
 
         // background Outline

@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemName: 11mm
   icon: {fileID: 21300000, guid: 12acc10a4d4953d43a01206f7cf84ae4, type: 3}
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
+  m_backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
   m_width: 4
   m_height: 2
   m_prefab: {fileID: 0}
@@ -131,11 +131,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
-  m_Name: "\u0435\u0443\u044B\u0435 \u0443\u0435\u0443"
+  m_Name: Grenade
   m_EditorClassIdentifier: 
-  m_ItemName: "\u0435\u0443\u044B\u0435 \u0443\u0435\u0443"
-  icon: {fileID: 21300000, guid: 36e6970b84831434a9eac79abd03700b, type: 3}
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
+  m_ItemName: Grenade
+  icon: {fileID: 21300000, guid: 1f3e56584a9357248b105d4aa53e12a3, type: 3}
+  m_backgroundColor: {r: 0.8396226, g: 0, b: 0, a: 0.2}
   m_width: 1
   m_height: 1
   m_prefab: {fileID: 0}

@@ -11,7 +11,8 @@ using UnityEngine.UIElements;
 public class ItemEditor : BaseCollectionEditor<BaseItem>
 {
     private static GUIStyle customStyle;
-    float cellSize = 50;
+    float cellSize = 1;
+    int fontSize = 12;
 
     private Vector2 m_ScrollPreviewPosition;
 
@@ -81,36 +82,55 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         cellSize = EditorGUILayout.Slider(cellSize, 1, 10, GUILayout.MaxWidth(250));
         GUILayout.EndHorizontal();
 
-        var size = new Vector2Int((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
+        var size = new Vector2((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
 
-        Texture2D backgroundImage = new Texture2D(size.x, size.y);        
+        Texture2D backgroundImage = new Texture2D((int)size.x, (int)size.y);
         // Fill the texture with the desired color
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
-                backgroundImage.SetPixel(x, y, new Color(0, 0, 0, 0.15f));
+                backgroundImage.SetPixel(x, y, m_Items[m_SelectedItemIndex].BackgroundColor);
         }
         backgroundImage.Apply();
 
-        Texture backgroundOutlineImage = new Texture2D(size.x, size.y);
+        Texture backgroundOutlineImage = new Texture2D((int)size.x, (int)size.y);
         backgroundOutlineImage = (Texture)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Texture));
+        var icon = m_Items[m_SelectedItemIndex].Icon;
 
-        var source = m_Items[m_SelectedItemIndex].Icon;
+        size *= cellSize;
 
-        //
-            var pos = new Vector2(position.width / 2 - size.x/2, position.height / 2 - size.y / 2);
-        //
-        //m_ScrollPreviewPosition = GUILayout.BeginScrollView(m_ScrollPreviewPosition, GUIStyle.none);
+
+
+        // Draw preview       
+        var pos = new Vector2(position.width / 2 - size.x / 2, position.height / 2 - size.y / 2);   
+        //m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 10, 400, 400), m_ScrollPreviewPosition, new Rect(0, 0, 420, 400));
+
+        // Create a transformation matrix that includes a rotation transform
+        //Matrix4x4 matrix = Matrix4x4.TRS(Vector3.one, Quaternion.Euler(0, 90, 0), Vector3.one);
+        // Set the transformation matrix for the GUI drawing
+        //GUI.matrix = matrix;
+
         GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), backgroundImage);
         var def_Color = GUI.color;
         GUI.color = new Color(0, 0, 0, 0.6f);
         GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), backgroundOutlineImage);
         GUI.color = def_Color;
-        if (source != null)
-            GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), source.texture);
+        if (icon != null)
+            GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), icon.texture);
 
+        // Draw text
+        GUI.skin.label.fontSize = (int)(fontSize * cellSize);
+        GUI.skin.label.alignment = TextAnchor.UpperRight;
+        GUI.Label(new Rect(pos.x, pos.y, size.x, size.y), m_Items[m_SelectedItemIndex].ItemName);
+        GUI.skin.label.alignment = TextAnchor.LowerRight;
+        var stack_str = m_Items[m_SelectedItemIndex].Stack.ToString();
+        if (m_Items[m_SelectedItemIndex].ShowMaxStack)
+            stack_str = stack_str + "/" + m_Items[m_SelectedItemIndex].MaxStack.ToString();
+        if (m_Items[m_SelectedItemIndex].Stack > 1)
+            GUI.Label(new Rect(pos.x, pos.y, size.x, size.y), stack_str);
 
-       // GUILayout.EndScrollView();
+       // GUI.EndScrollView();
+       
         GUILayout.EndArea();
     }
 
@@ -143,7 +163,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
     }
 
     protected override void Remove(BaseItem item)
-    {        
+    {
         if (EditorUtility.DisplayDialog("Delete Item", "Are you sure you want to delete " + item.name + "?", "Yes", "No"))
         {
             GameObject.DestroyImmediate(item, true);
