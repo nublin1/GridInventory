@@ -1,8 +1,11 @@
+using Codice.CM.Common;
 using GridInventorySystem;
 using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,10 +14,14 @@ using UnityEngine.UIElements;
 public class ItemEditor : BaseCollectionEditor<BaseItem>
 {
     private static GUIStyle customStyle;
-    float cellSize = 1;
-    int fontSize = 12;
+    float viewportScale = 1;
+    float itemRot = 0;
+    int fontSize = 10;
 
     private Vector2 m_ScrollPreviewPosition;
+
+    Vector2 base_Size;
+    private Texture2D backgroundImage;
 
     public ItemEditor(string title, ItemDatabase _database) : base(title, _database)
     {
@@ -26,20 +33,20 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
     [InitializeOnLoadMethod]
     private static void CreateCustomStyle()
     {
-        // Create a new GUIStyle
-        customStyle = new GUIStyle();
-
-        // Set the font size, color, and padding of the style
-        customStyle.fontSize = 14;
-        customStyle.normal.textColor = Color.white;
-        customStyle.padding = new RectOffset(5, 5, 3, 3);
-
-        // Set the background image and text alignment of the style
-        customStyle.normal.background = Texture2D.whiteTexture;
-        customStyle.alignment = TextAnchor.MiddleCenter;
-
-        // Add the style to the EditorStyles object
-        //EditorStyles.AddCustomStyle(customStyle);
+        //// Create a new GUIStyle
+        //customStyle = new GUIStyle();
+        //
+        //// Set the font size, color, and padding of the style
+        //customStyle.fontSize = 14;
+        //customStyle.normal.textColor = Color.white;
+        //customStyle.padding = new RectOffset(5, 5, 3, 3);
+        //
+        //// Set the background image and text alignment of the style
+        //customStyle.normal.background = Texture2D.whiteTexture;
+        //customStyle.alignment = TextAnchor.MiddleCenter;
+        //
+        //// Add the style to the EditorStyles object
+        ////EditorStyles.AddCustomStyle(customStyle);
     }
 
 
@@ -67,9 +74,9 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
     public override void OnGUI(Rect position)
     {
         DrawSidebar(new Rect(0, m_SidebarRect.y, m_SidebarRect.width, position.height - 30f));
-        DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, m_contentWidth, position.height - 50f));
+        DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, CONTENT_WIDTH, position.height - 50f));
 
-        DrawPrev(new Rect(m_SidebarRect.width + 450, m_SidebarRect.y, position.width - m_contentWidth - m_SidebarRect.width - 5f, position.height - 50f));
+        DrawPrev(new Rect(m_SidebarRect.width + 450, m_SidebarRect.y, position.width - CONTENT_WIDTH - m_SidebarRect.width - 5f, position.height - 50f));
 
         ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].ItemName);
     }
@@ -79,58 +86,50 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         GUILayout.BeginArea(position, "", EditorStyles.helpBox);
 
         GUILayout.BeginHorizontal();
-        cellSize = EditorGUILayout.Slider(cellSize, 1, 10, GUILayout.MaxWidth(250));
+        viewportScale = EditorGUILayout.Slider(viewportScale, 1, 10, GUILayout.MaxWidth(250));
+        //itemRot = EditorGUILayout.Slider(itemRot, 0, 90, GUILayout.MaxWidth(250));
         GUILayout.EndHorizontal();
 
-        var size = new Vector2((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
+       
+        
 
-        Texture2D backgroundImage = new Texture2D((int)size.x, (int)size.y);
-        // Fill the texture with the desired color
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-                backgroundImage.SetPixel(x, y, m_Items[m_SelectedItemIndex].BackgroundColor);
-        }
-        backgroundImage.Apply();
-
-        Texture backgroundOutlineImage = new Texture2D((int)size.x, (int)size.y);
+        Texture backgroundOutlineImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
         backgroundOutlineImage = (Texture)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Texture));
         var icon = m_Items[m_SelectedItemIndex].Icon;
 
-        size *= cellSize;
+        var scaled_Size = base_Size * viewportScale;
 
+        // Draw preview  
+        var s_rect = new Rect(0, 0, position.width - 10, position.height - 25);
+        var pos = new Vector2(s_rect.width / 2 - scaled_Size.x / 2, s_rect.height / 2 - scaled_Size.y / 2);
 
+        m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 25, s_rect.width, s_rect.height), m_ScrollPreviewPosition, new Rect(pos.x, pos.y, s_rect.x + scaled_Size.x, s_rect.y + scaled_Size.y));
 
-        // Draw preview       
-        var pos = new Vector2(position.width / 2 - size.x / 2, position.height / 2 - size.y / 2);   
-        //m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 10, 400, 400), m_ScrollPreviewPosition, new Rect(0, 0, 420, 400));
+        //Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x/2, pos.y + scaled_Size.y/2);
+        //GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
 
-        // Create a transformation matrix that includes a rotation transform
-        //Matrix4x4 matrix = Matrix4x4.TRS(Vector3.one, Quaternion.Euler(0, 90, 0), Vector3.one);
-        // Set the transformation matrix for the GUI drawing
-        //GUI.matrix = matrix;
-
-        GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), backgroundImage);
+        GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundImage);
         var def_Color = GUI.color;
         GUI.color = new Color(0, 0, 0, 0.6f);
-        GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), backgroundOutlineImage);
+        GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundOutlineImage);
         GUI.color = def_Color;
         if (icon != null)
-            GUI.DrawTexture(new Rect(pos.x, pos.y, size.x, size.y), icon.texture);
+            GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), icon.texture);
 
         // Draw text
-        GUI.skin.label.fontSize = (int)(fontSize * cellSize);
+        GUI.skin.label.fontSize = (int)(fontSize * viewportScale);
         GUI.skin.label.alignment = TextAnchor.UpperRight;
-        GUI.Label(new Rect(pos.x, pos.y, size.x, size.y), m_Items[m_SelectedItemIndex].ItemName);
+        GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), m_Items[m_SelectedItemIndex].ItemName);
         GUI.skin.label.alignment = TextAnchor.LowerRight;
         var stack_str = m_Items[m_SelectedItemIndex].Stack.ToString();
         if (m_Items[m_SelectedItemIndex].ShowMaxStack)
             stack_str = stack_str + "/" + m_Items[m_SelectedItemIndex].MaxStack.ToString();
         if (m_Items[m_SelectedItemIndex].Stack > 1)
-            GUI.Label(new Rect(pos.x, pos.y, size.x, size.y), stack_str);
+            GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), stack_str);
 
-       // GUI.EndScrollView();
-       
+        //GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
+        GUI.EndScrollView();
+
         GUILayout.EndArea();
     }
 
@@ -207,6 +206,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         editor = Editor.CreateEditor(item);
 
+        RebuildPreviewImages();
     }
 
     protected override bool MatchesSearch(BaseItem item, string search)
@@ -215,5 +215,22 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             return false;
 
         return (item.name.ToLower().Contains(search.ToLower()) || search.ToLower() == item.GetType().Name.ToLower());
+    }
+
+    private void RebuildPreviewImages()
+    {
+        base_Size = new Vector2((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
+        backgroundImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
+
+        Color color;
+        if (m_Items[m_SelectedItemIndex].IsCategoryBasedColor && m_Items[m_SelectedItemIndex].Category != null)
+            color = m_Items[m_SelectedItemIndex].Category.Color;
+        else
+            color = m_Items[m_SelectedItemIndex].BackgroundColor;
+         
+        Color[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
+        // Fill the texture with the desired color
+        backgroundImage.SetPixels(colors);
+        backgroundImage.Apply();
     }
 }

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemName: 9mm
   icon: {fileID: 21300000, guid: 519b058634a0a7e42ae0c669df08e2a0, type: 3}
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
+  m_categoryBasedColor: 0
+  m_backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
   m_width: 1
   m_height: 1
   m_prefab: {fileID: 0}
@@ -25,4 +26,4 @@ MonoBehaviour:
   m_maxStack: 25
   m_showMaxStack: 1
   rarity: {fileID: 8945672125769861896, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
-  category: {fileID: -5835148667884528989, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  m_category: {fileID: 0}

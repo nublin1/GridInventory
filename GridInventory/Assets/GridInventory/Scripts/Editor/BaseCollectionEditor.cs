@@ -7,13 +7,10 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
 {
     public string m_ToolbarName;
     protected ItemDatabase m_Database;
-
-    private const float LIST_MIN_WIDTH = 200f;
-    private const float LIST_MAX_WIDTH = 400f;
+    
     private const float LIST_RESIZE_WIDTH = 10f;
-
     protected Rect m_SidebarRect = new Rect(0, 40, 200, 500);
-    protected float m_contentWidth = 450;
+    protected const float CONTENT_WIDTH = 450;
 
     protected Vector2 m_ScrollPosition;
     protected string m_SearchString = string.Empty;

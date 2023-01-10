@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using TMPro;
 
 
+
 /*
 * IileName: имя по умолчанию при создании ассета.
 * menuName: имя ассета, отображаемое в Asset Menu.
@@ -27,11 +28,15 @@ public class BaseItem : ScriptableObject
     private Sprite icon;
     [BoxGroup("Images")]
     [SerializeField]
+    private bool m_categoryBasedColor = false;
+    [BoxGroup("Images")]
+    [HideIf("m_categoryBasedColor")]
+    [SerializeField]
     private Color m_backgroundColor = new Color(0, 0, 0, 0.15f);
     [SerializeField]
-    private int m_width =1;
+    private int m_width = 1;
     [SerializeField]
-    private int m_height=1;
+    private int m_height = 1;
     [SerializeField]
     private GameObject m_prefab;
     [SerializeField]
@@ -68,9 +73,9 @@ public class BaseItem : ScriptableObject
     private Rarity rarity;
     [CategoryPicker(true)]
     [SerializeField]
-    private Category category;
+    private Category m_category;
     #endregion
-
+    
     private List<Vector2Int> gridPositionList;
     private Dir m_dir;
     private Transform m_itemTransform;
@@ -89,6 +94,7 @@ public class BaseItem : ScriptableObject
     public string Id { get => m_Id; }
     public string ItemName { get => m_ItemName; set => m_ItemName = value; }
     public Sprite Icon { get => icon; }
+    public bool IsCategoryBasedColor { get => m_categoryBasedColor; }
     public Color BackgroundColor { get => m_backgroundColor; }
     public int Width { get => m_width; }
     public int Height { get => m_height; }
@@ -101,6 +107,7 @@ public class BaseItem : ScriptableObject
     public int MaxStack { get => m_maxStack; }
     public bool ShowMaxStack { get => m_showMaxStack; }
     public Dir Dir { get => m_dir; }
+    public Category Category { get => m_category; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
     public Transform ItemTransform { get => m_itemTransform; }
     public Image BackgroundImage { get => backgroundImage; }
@@ -108,7 +115,7 @@ public class BaseItem : ScriptableObject
     public Image HighlightImage { get => highlightImage; }
     public Image ItemIconImage { get => itemIconImage; }
     public TextMeshProUGUI ItemNameText { get => m_ItemNameText; }
-    public TextMeshProUGUI ItemCountText { get => m_ItemCountText;  }
+    public TextMeshProUGUI ItemCountText { get => m_ItemCountText; }
     #endregion
 
     public void Init(Dir dir = Dir.Up)
@@ -119,14 +126,14 @@ public class BaseItem : ScriptableObject
 
     protected virtual void OnEnable()
     {
-        if (string.IsNullOrEmpty(this.m_Id))       
+        if (string.IsNullOrEmpty(this.m_Id))
             this.m_Id = System.Guid.NewGuid().ToString();
-        
+
     }
 
     private void Awake()
     {
-         name = ItemName;
+        name = ItemName;
     }
 
     public void Update()
@@ -135,7 +142,7 @@ public class BaseItem : ScriptableObject
         if (bounds != null && bounds.Contains(Input.mousePosition))
             highlightImage.enabled = true;
         else
-            highlightImage.enabled = false;       
+            highlightImage.enabled = false;
 
     }
 
@@ -154,7 +161,7 @@ public class BaseItem : ScriptableObject
 
         m_itemCountRect.localRotation = Quaternion.Inverse(newRot);
         m_itemCountRect.sizeDelta = newSize;
-       
+
     }
 
     public void UpdateDisplayItemCount()
@@ -198,7 +205,10 @@ public class BaseItem : ScriptableObject
         itemBackgroundRect.anchoredPosition = new Vector2(0f, 0f);
 
         backgroundImage = background.AddComponent<Image>();
-        backgroundImage.color = m_backgroundColor;
+        if (m_categoryBasedColor && m_category != null)
+            backgroundImage.color = m_category.Color;
+        else
+            backgroundImage.color = m_backgroundColor;
         backgroundImage.raycastTarget = false;
 
         // background Outline
@@ -239,8 +249,8 @@ public class BaseItem : ScriptableObject
         // ItemName
         GameObject itemNameGO = new("itemName");
         itemNameGO.transform.parent = itemObject.transform;
-        m_itemNameRect = itemNameGO.AddComponent<RectTransform>();   
-        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();        
+        m_itemNameRect = itemNameGO.AddComponent<RectTransform>();
+        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();
         m_ItemNameText.fontSize = 10;
         m_ItemNameText.alignment = TextAlignmentOptions.TopRight;
         m_ItemNameText.text = ItemName;
@@ -252,7 +262,7 @@ public class BaseItem : ScriptableObject
         // ItemCount
         GameObject ItemCountGO = new("ItemCount");
         ItemCountGO.transform.parent = itemObject.transform;
-        m_itemCountRect = ItemCountGO.AddComponent<RectTransform>(); 
+        m_itemCountRect = ItemCountGO.AddComponent<RectTransform>();
         m_ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
         m_ItemCountText.SetNativeSize();
         m_ItemCountText.fontSize = 10;
