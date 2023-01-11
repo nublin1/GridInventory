@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace GridInventorySystem
 {
-    public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>
+    public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>, IDataPersistence
     {
         [BaseItemPicker (true)]
         [SerializeField]
@@ -90,6 +90,16 @@ namespace GridInventorySystem
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        public void LoadData(GameData data)
+        {
+            
+        }
+
+        public void SaveData(ref GameData data)
+        {
+            data.itemsCount = m_Items.Count;
         }
     }
 }

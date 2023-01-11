@@ -1114,7 +1114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66f19862ff8acc44a0334656b900d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableCollections: []
+  availableCollections:
+  - {fileID: 2096214114}
   activeItemCollection: {fileID: 0}
   savedItemCollection: {fileID: 0}
 --- !u!1 &1280424910
@@ -1200,7 +1201,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 941893058}
   m_Direction: 2
   m_Value: 1.0000002
-  m_Size: 0.62500006
+  m_Size: 0.6250001
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
