@@ -6,8 +6,13 @@ using System.Linq;
 
 public class DataPersistentManager : MonoBehaviour
 {
+    [Header("Fole Storage Config")]
+    [SerializeField]
+    private string fileName;
+
     private GameData gameData;
     private List<IDataPersistence> dataPersistencesObjects;
+    private FileDataHandler fileDataHandler;
 
     public static DataPersistentManager instance { get; private set; }
 
@@ -18,9 +23,10 @@ public class DataPersistentManager : MonoBehaviour
 
     private void Start()
     {
+        fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         dataPersistencesObjects = FindAllIDataPersistence();
+        LoadGame();
     }
-
    
 
     public void NewGame()
@@ -30,11 +36,18 @@ public class DataPersistentManager : MonoBehaviour
 
     public void SaveGame()
     {
+        foreach (IDataPersistence dataPersistenceObj in dataPersistencesObjects)
+        {
+            dataPersistenceObj.SaveData(ref gameData.m_data);
+        }        
 
+        fileDataHandler.Save(gameData);
     }
 
     public void LoadGame()
     {
+        gameData= fileDataHandler.Load(); 
+
         if(gameData == null)
         {
             Debug.Log("No data was found");
@@ -42,8 +55,10 @@ public class DataPersistentManager : MonoBehaviour
         }
 
         foreach(IDataPersistence dataPersistenceObj in dataPersistencesObjects) {
-            dataPersistenceObj.LoadData(gameData);
+            dataPersistenceObj.LoadData(gameData.m_data);
         }
+
+        gameData.m_data.Clear();
         
     }
 

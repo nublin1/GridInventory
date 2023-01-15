@@ -6,6 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class ItemDatabase : ScriptableObject
 {    
+
+
     public List<BaseItem> items = new List<BaseItem>();
 	public List<Rarity> rarities = new List<Rarity>();
 	public List<Category> categories = new List<Category>();

@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3759bf913a9dc04a814f53e17193623, type: 3}
   m_Name: WindowInfo
   m_EditorClassIdentifier: 
-  sizeX: 0
-  sizeY: 0
+  sizeX: 6
+  sizeY: 8
   cellSize: {x: 50, y: 50}
   second: 0
   cellColor: {r: 0, g: 0, b: 0, a: 1}
-  cellImage: {fileID: 0}
+  cellImage: {fileID: 2800000, guid: 69f7c0da7b8f5984fa8b67609e363ae6, type: 3}
   inventoryBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
-  inventoryBackground: {fileID: 0}
-  enableBackgroundOutline: 0
+  inventoryBackground: {fileID: 21300000, guid: 3c8cb42eb765c144ab75db70ae5a7eca, type: 3}
+  enableBackgroundOutline: 1
   backgroundOutlineColor: {r: 0, g: 0, b: 0, a: 1}
-  backgroundOutlineSprite: {fileID: 0}
-  enableHeader: 0
+  backgroundOutlineSprite: {fileID: 21300000, guid: d74b707e92c4b2b4eb4023982e975d04, type: 3}
+  enableHeader: 1
   HeaderHeight: 12
   HeaderColor: {r: 0, g: 0, b: 0, a: 1}
-  headerBackGroundSprite: {fileID: 0}
-  headerTitle_Text: 
+  headerBackGroundSprite: {fileID: 21300000, guid: 7646c2f66ab39eb42b2495c5be399dab, type: 3}
+  headerTitle_Text: Container2
   draggableHeader: 1
-  viewportSprite: {fileID: 0}
-  enabledVerticalScrollbar: 0
-  sizeOfViewport: {x: 0, y: 0}
-  scrollBackground: {fileID: 0}
-  handleSprite: {fileID: 0}
+  viewportSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  enabledVerticalScrollbar: 1
+  sizeOfViewport: {x: 6, y: 5}
+  scrollBackground: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  handleSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   slidebarWidth: 10

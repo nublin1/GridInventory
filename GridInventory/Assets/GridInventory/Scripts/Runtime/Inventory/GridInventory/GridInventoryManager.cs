@@ -7,6 +7,9 @@ namespace GridInventorySystem
 {
     public class GridInventoryManager : MonoBehaviour
     {
+        [SerializeField]
+        private ItemDatabase m_Database = null;
+
         [SerializeField] private List<GridInventory> availableCollections;
         [SerializeField] private PointerEventData m_PointerEventData;
 
@@ -40,6 +43,7 @@ namespace GridInventorySystem
                 if (collection.InventorySystem == null)
                     availableCollections[^1].InventorySystem = this;
 
+                collection.GetComponent<ItemCollection>().database = m_Database;
             }
 
             activeItemCollection = availableCollections[0];

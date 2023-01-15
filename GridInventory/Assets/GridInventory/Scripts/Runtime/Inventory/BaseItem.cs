@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using NaughtyAttributes;
 using TMPro;
+using Unity.VisualScripting;
 
 
 
@@ -15,7 +16,7 @@ using TMPro;
 */
 [CreateAssetMenu(fileName = "New InventoryItem", menuName = "Items/InventoryItem", order = 51)]
 [System.Serializable]
-public class BaseItem : ScriptableObject
+public class BaseItem : ScriptableObject, IDataPersistence
 {
     #region GeneralSettings
     [ShowNonSerializedField]
@@ -91,7 +92,7 @@ public class BaseItem : ScriptableObject
     private TextMeshProUGUI m_ItemCountText;
 
     #region Properties
-    public string Id { get => m_Id; }
+    public string Id { get => m_Id; }   
     public string ItemName { get => m_ItemName; set => m_ItemName = value; }
     public Sprite Icon { get => icon; }
     public bool IsCategoryBasedColor { get => m_categoryBasedColor; }
@@ -133,7 +134,7 @@ public class BaseItem : ScriptableObject
 
     private void Awake()
     {
-        name = ItemName;
+        name = ItemName;        
     }
 
     public void Update()
@@ -142,8 +143,7 @@ public class BaseItem : ScriptableObject
         if (bounds != null && bounds.Contains(Input.mousePosition))
             highlightImage.enabled = true;
         else
-            highlightImage.enabled = false;
-
+            highlightImage.enabled = false;        
     }
 
     public void SetRotation(Dir dir)
@@ -336,5 +336,17 @@ public class BaseItem : ScriptableObject
             case Dir.Down: return new Vector2Int(width, height);
             case Dir.Right: return new Vector2Int(height, 0);
         }
+    }
+
+    public void LoadData(Dictionary<string, object> data)
+    {
+        
+    }
+
+    public void SaveData(ref Dictionary<string, object> data)
+    {
+        data.Add("ID", Id);
+        data.Add("Name", m_ItemName);
+        data.Add("Stack", m_Stack);
     }
 }

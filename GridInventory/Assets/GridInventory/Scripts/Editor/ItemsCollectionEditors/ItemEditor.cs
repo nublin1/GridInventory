@@ -152,6 +152,8 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         item.name = item.ItemName;
         item.hideFlags = HideFlags.HideInHierarchy;
 
+      
+
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

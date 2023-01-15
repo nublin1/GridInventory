@@ -3,18 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using static UnityEditor.Progress;
+using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 namespace GridInventorySystem
 {
     public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>, IDataPersistence
     {
-        [BaseItemPicker (true)]
+        public ItemDatabase database { get; set; }
+
+        [BaseItemPicker(true)]
         [SerializeField]
         List<BaseItem> m_Items = new();
 
         [SerializeField]
         protected List<int> m_Amounts = new();
-        
 
         public List<BaseItem> Items { get => m_Items; }
 
@@ -25,22 +29,22 @@ namespace GridInventorySystem
 
         public void Initialize()
         {
-            m_Amounts.Clear();  
+            m_Amounts.Clear();
             m_Items = CreateInstances(m_Items.ToArray()).ToList();
 
             for (int i = 0; i < this.m_Items.Count; i++)
             {
                 this.m_Amounts.Add(m_Items[i].Stack);
             }
-        }               
+        }
 
 
         public void Add(BaseItem item)
         {
             this.m_Items.Add(item);
             int index = m_Items.IndexOf(item);
-            
-            this.m_Amounts.Insert(index, item.Stack);            
+
+            this.m_Amounts.Insert(index, item.Stack);
             //if (onChange != null)
             //    onChange.Invoke();
 
@@ -52,7 +56,7 @@ namespace GridInventorySystem
             bool result = m_Items.Remove(item);
             if (result)
             {
-                this.m_Amounts.RemoveAt(index);                
+                this.m_Amounts.RemoveAt(index);
                 //if (onChange != null)
                 //    onChange.Invoke();
             }
@@ -92,14 +96,55 @@ namespace GridInventorySystem
             return this.GetEnumerator();
         }
 
-        public void LoadData(GameData data)
+        public void LoadData(Dictionary<string, object> data)
         {
+            if (!data.ContainsKey(transform.name))
+            {
+                return;
+            }
+
+            List<object> loaded_Items = ((IEnumerable)data[transform.name]).Cast<object>()
+                .Select(x => x == null ? x : x.ToString())
+                .ToList();
             
+
+            foreach (object item in loaded_Items)
+            {
+                Dictionary<string, object> itemData = JsonConvert.DeserializeObject<Dictionary<string, object>>(item.ToString());
+
+                if (itemData != null)
+                {
+                }
+            }
+
         }
 
-        public void SaveData(ref GameData data)
+        public void SaveData(ref Dictionary<string, object> data)
         {
-            data.itemsCount = m_Items.Count;
+            if (m_Items.Count == 0)
+            {
+                return;
+            }
+
+
+            List<object> mItems = new List<object>();
+            for (int i = 0; i < m_Items.Count; i++)
+            {
+                BaseItem item = m_Items[i];
+                if (item != null)
+                {
+                    Dictionary<string, object> itemData = new Dictionary<string, object>();
+                    item.SaveData(ref itemData);
+                    mItems.Add(itemData);
+                }
+                else
+                {
+                    mItems.Add(null);
+                }
+            }
+
+            data.Add(transform.name, mItems);
+
         }
     }
 }
