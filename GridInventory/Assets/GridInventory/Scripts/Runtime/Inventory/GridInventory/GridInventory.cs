@@ -9,9 +9,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ItemCollection))]
 public class GridInventory : MonoBehaviour
 {
-    [SerializeField] private int gridWidth;
-    [SerializeField] private int gridHeight;
-    [SerializeField] private Vector2 cellSize = new Vector2(25, 25);
+    private int gridWidth;
+    private int gridHeight;
+    private Vector2 cellSize = new Vector2(25, 25);
 
     [SerializeField] private GridInventoryManager inventorySystem;
     [SerializeField] private Scrollbar scrollbar;

@@ -41,9 +41,7 @@ namespace GridInventorySystem
                 if (!isExist)
                     availableCollections.Add(collection);
                 if (collection.InventorySystem == null)
-                    availableCollections[^1].InventorySystem = this;
-
-                collection.GetComponent<ItemCollection>().database = m_Database;
+                    availableCollections[^1].InventorySystem = this;               
             }
 
             activeItemCollection = availableCollections[0];

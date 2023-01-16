@@ -15,8 +15,7 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
     {
         EditorGUI.BeginProperty(position, label, property);
         T current = (T)Utilities.GetValue(property);
-        position = EditorGUI.PrefixLabel(position, label);
-       
+        position = EditorGUI.PrefixLabel(position, label);       
         DoSelection(position, property, label, current);
         EditorGUI.EndProperty();
 
@@ -43,7 +42,7 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
 
     private Dictionary<UnityEngine.Object, List<UnityEngine.Object>> BuildSelectableObjects()
     {        
-        Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new Dictionary<UnityEngine.Object, List<UnityEngine.Object>>();
+        Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new();
 
         string[] guids = AssetDatabase.FindAssets("t:ItemDatabase");
         for (int i = 0; i < guids.Length; i++)
@@ -51,10 +50,7 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
             string path = AssetDatabase.GUIDToAssetPath(guids[i]);
             UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDatabase));
             List<UnityEngine.Object> items = GetItems(obj as ItemDatabase).Cast<UnityEngine.Object>().ToList();
-            for (int j = 0; j < items.Count; j++)
-            {
-                //items[j].name = items[j].Name;
-            }
+            
             selectableObjects.Add(obj, items);
         }
 

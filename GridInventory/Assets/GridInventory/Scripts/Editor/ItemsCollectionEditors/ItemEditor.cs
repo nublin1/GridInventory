@@ -151,8 +151,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         BaseItem item = ScriptableObject.CreateInstance<BaseItem>();
         item.name = item.ItemName;
         item.hideFlags = HideFlags.HideInHierarchy;
-
-      
+        item.Id = Utilities.GenerateID();
 
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
