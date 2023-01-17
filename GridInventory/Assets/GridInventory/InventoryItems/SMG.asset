@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
   m_Name: SMG
   m_EditorClassIdentifier: 
+  m_Id: 6a4a1cc6-967e-11ed-a1eb-0242ac120002
   m_ItemName: SMG
   icon: {fileID: 21300000, guid: 5331d3ef704e31f4991c2db49a49390a, type: 3}
   m_categoryBasedColor: 0

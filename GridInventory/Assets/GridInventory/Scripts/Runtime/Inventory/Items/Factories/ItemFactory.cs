@@ -5,29 +5,30 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemFactory : MonoBehaviour
 {
     /*
-    public static Transform CreateItemObject()
+    public static Transform CreateItemObject(BaseItem item)
     {
         GameObject itemObject = new();
-        itemObject.name = m_ItemName;
+        itemObject.name = item.ItemName;
 
 
         var itemRect = itemObject.AddComponent<RectTransform>();
-        itemRect.sizeDelta = new Vector2(cellSize.x * m_width, cellSize.y * m_height);
+        itemRect.sizeDelta = new Vector2(cellSize.x * item.Width, cellSize.y * item.Height);
         itemRect.anchorMin = new Vector2(0f, 1f);
         itemRect.anchorMax = new Vector2(0f, 1f);
         itemRect.pivot = new Vector2(0f, 1f);
         itemRect.anchoredPosition = new Vector2(0f, 0f);
 
-        itemObject.transform.rotation = Quaternion.Euler(0, 0, Utilities.GetRotationAngle(m_dir));
+        itemObject.transform.rotation = Quaternion.Euler(0, 0, Utilities.GetRotationAngle(item.Dir));
 
         // Collider
         var collider2d = itemObject.AddComponent<BoxCollider2D>();
-        collider2d.offset = new Vector2(cellSize.x * m_width / 2, -cellSize.y * m_height / 2);
-        collider2d.size = new Vector2(cellSize.x * m_width, cellSize.y * m_height);
+        collider2d.offset = new Vector2(cellSize.x * item.Width / 2, -cellSize.y * item.Height / 2);
+        collider2d.size = new Vector2(cellSize.x * item.Width, cellSize.y * item.Height);
         collider2d.isTrigger = true;
 
 
@@ -38,12 +39,12 @@ public class ItemFactory : MonoBehaviour
         itemBackgroundRect.sizeDelta = itemRect.sizeDelta;
         itemBackgroundRect.anchoredPosition = new Vector2(0f, 0f);
 
-        backgroundImage = background.AddComponent<Image>();
-        if (m_categoryBasedColor && m_category != null)
-            backgroundImage.color = m_category.Color;
+        item.BackgroundImage = background.AddComponent<Image>();
+        if (item.IsCategoryBasedColor && m_category != null)
+            item.BackgroundImage.color = m_category.Color;
         else
-            backgroundImage.color = m_backgroundColor;
-        backgroundImage.raycastTarget = false;
+            item.BackgroundImage.color = item.BackgroundColor;
+        item.BackgroundImage.raycastTarget = false;
 
         // background Outline
         GameObject backgroundOutline = new("backgroundOutline");
@@ -52,10 +53,10 @@ public class ItemFactory : MonoBehaviour
         itemBackgroundOutlineRect.sizeDelta = itemRect.sizeDelta;
         itemBackgroundOutlineRect.anchoredPosition = new Vector2(0f, 0f);
 
-        backgroundOutlineImage = backgroundOutline.AddComponent<Image>();
-        backgroundOutlineImage.sprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
-        backgroundOutlineImage.color = new Color(0, 0, 0, 0.6f);
-        backgroundOutlineImage.raycastTarget = false;
+        item.BackgroundOutlineImage = backgroundOutline.AddComponent<Image>();
+        item.BackgroundOutlineImage.sprite = (Sprite)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Sprite));
+        item.BackgroundOutlineImage.color = new Color(0, 0, 0, 0.6f);
+        item.BackgroundOutlineImage.raycastTarget = false;
 
         //highlight
         GameObject highlight = new("highlight");
@@ -64,10 +65,10 @@ public class ItemFactory : MonoBehaviour
         highlightRect.sizeDelta = itemRect.sizeDelta;
         highlightRect.anchoredPosition = new Vector2(0f, 0f);
 
-        highlightImage = highlight.AddComponent<Image>();
-        highlightImage.color = new Color(1, 1, 1, .09f);
-        highlightImage.raycastTarget = false;
-        highlightImage.enabled = false;
+        item.HighlightImage = highlight.AddComponent<Image>();
+        item.HighlightImage.color = new Color(1, 1, 1, .09f);
+        item.HighlightImage.raycastTarget = false;
+        item.HighlightImage.enabled = false;
 
         //itemIcon
         GameObject itemIcon = new("itemIcon");
@@ -76,19 +77,19 @@ public class ItemFactory : MonoBehaviour
         itemIconRect.sizeDelta = itemRect.sizeDelta;
         itemIconRect.anchoredPosition = new Vector2(0f, 0f);
 
-        itemIconImage = itemIcon.AddComponent<Image>();
-        itemIconImage.sprite = Icon;
-        itemIconImage.raycastTarget = false;
+        item.ItemIconImage = itemIcon.AddComponent<Image>();
+        item.ItemIconImage.sprite = item.Icon;
+        item.ItemIconImage.raycastTarget = false;
 
         // ItemName
         GameObject itemNameGO = new("itemName");
         itemNameGO.transform.parent = itemObject.transform;
         m_itemNameRect = itemNameGO.AddComponent<RectTransform>();
-        m_ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();
-        m_ItemNameText.fontSize = 10;
-        m_ItemNameText.alignment = TextAlignmentOptions.TopRight;
-        m_ItemNameText.text = ItemName;
-        m_ItemNameText.raycastTarget = false;
+        item.ItemNameText = itemNameGO.AddComponent<TextMeshProUGUI>();
+        item.ItemNameText.fontSize = 10;
+        item.ItemNameText.alignment = TextAlignmentOptions.TopRight;
+        item.ItemNameText.text = item.ItemName;
+        item.ItemNameText.raycastTarget = false;
 
         m_itemNameRect.sizeDelta = itemRect.sizeDelta;
         m_itemNameRect.anchoredPosition = new Vector2(0f, 0f);
@@ -97,11 +98,11 @@ public class ItemFactory : MonoBehaviour
         GameObject ItemCountGO = new("ItemCount");
         ItemCountGO.transform.parent = itemObject.transform;
         m_itemCountRect = ItemCountGO.AddComponent<RectTransform>();
-        m_ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
-        m_ItemCountText.SetNativeSize();
-        m_ItemCountText.fontSize = 10;
-        m_ItemCountText.alignment = TextAlignmentOptions.BottomRight;
-        m_ItemCountText.raycastTarget = false;
+        item.ItemCountText = ItemCountGO.AddComponent<TextMeshProUGUI>();
+        item.ItemCountText.SetNativeSize();
+        item.ItemCountText.fontSize = 10;
+        item.ItemCountText.alignment = TextAlignmentOptions.BottomRight;
+        item.ItemCountText.raycastTarget = false;
 
         m_itemCountRect.sizeDelta = itemRect.sizeDelta;
         m_itemCountRect.anchoredPosition = new Vector2(0f, 0f);
@@ -109,7 +110,7 @@ public class ItemFactory : MonoBehaviour
         if (m_maxStack <= 1)
             m_ItemCountText.enabled = false;
 
-        UpdateDisplayItemCount();
+        item.UpdateDisplayItemCount();
         m_itemTransform = itemObject.transform;
     } */
 }

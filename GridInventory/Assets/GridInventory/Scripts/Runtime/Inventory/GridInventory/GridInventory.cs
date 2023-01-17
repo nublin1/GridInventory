@@ -9,9 +9,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ItemCollection))]
 public class GridInventory : MonoBehaviour
 {
-    private int gridWidth;
-    private int gridHeight;
-    private Vector2 cellSize = new Vector2(25, 25);
+    [SerializeField] private int gridWidth;
+    [SerializeField] private int gridHeight;
+    [SerializeField] private Vector2 cellSize = new Vector2(25, 25);
 
     [SerializeField] private GridInventoryManager inventorySystem;
     [SerializeField] private Scrollbar scrollbar;
@@ -65,6 +65,15 @@ public class GridInventory : MonoBehaviour
     {
         scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
 
+        inventoryCells = new GridCell[gridWidth, gridHeight];
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                inventoryCells[i, j] = new GridCell(this, i, j);
+            }
+        }
+
         Init();
 
         if (closeButton != null)
@@ -75,7 +84,7 @@ public class GridInventory : MonoBehaviour
     {
         _originalPosition = containerTransform.position;
 
-        foreach(BaseItem item in m_Collection.Items)
+        foreach (BaseItem item in m_Collection.Items)
         {
             item.Update();
         }
@@ -88,30 +97,32 @@ public class GridInventory : MonoBehaviour
 
     private void Init()
     {
-        inventoryCells = new GridCell[gridWidth, gridHeight];
-
-        for (int i = 0; i < gridWidth; i++)
-        {
-            for (int j = 0; j < gridHeight; j++)
-            {
-                inventoryCells[i, j] = new GridCell(this, i, j);
-            }
-        }
-
         foreach (var item in m_Collection.Items)
         {
             item.Init(Dir.Up);
             if (CanAddItem(item))
             {
                 GenerateItem(item);
+                PlaceItemToCells(item);
             }
         }
+    }
+
+    public List<BaseItem> InitItems(List<BaseItem> items)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].Init(Dir.Up);
+            GenerateItem(items[i]);
+        }
+
+        return items;
     }
 
     private void GenerateItem(BaseItem baseItem)
     {
         baseItem.CreateItemTransform(CellSize);
-        PlaceItemToCells(baseItem);
+        
 
         if (baseItem.Pf_ItemContainer != null)
         {
@@ -124,7 +135,29 @@ public class GridInventory : MonoBehaviour
             inventorySystem.AddItemContainer(itemInventory.GetComponent<GridInventory>());
         }
     }
-    
+
+
+    public void RemoveAllItems()
+    {
+        for (int i = m_Collection.Items.Count - 1; i >= 0; i--)
+        {            
+            if (m_Collection.Items[i].ItemTransform != null)
+            {
+                RemoveItemCompletely(m_Collection.Items[i]);
+            }
+        }
+
+        m_Collection.Items.Clear();
+    }
+
+    public void AddItems(List<BaseItem> baseItems)
+    {
+        for (int i = baseItems.Count - 1; i >= 0; i--)
+        {
+            if (baseItems[i].ItemTransform != null && transform.GetComponent<GridInventory>().CanAddItem(baseItems[i]))
+                AddItem(baseItems[i], baseItems[i].GridPositionList[0]);
+        }
+    }
 
     public bool AddItem(BaseItem item, Vector2Int _cellXY)
     {
@@ -141,7 +174,7 @@ public class GridInventory : MonoBehaviour
         {
             if (CanStack(item, observedItemInCell))
             {
-                return StackItems(item, observedItemInCell);                
+                return StackItems(item, observedItemInCell);
             }
 
             if (observedItemInCell.IsContainer)
@@ -212,9 +245,9 @@ public class GridInventory : MonoBehaviour
     }
 
     private bool CanStack(BaseItem item, BaseItem comparedItem)
-    {      
-        if (item.name.Equals(comparedItem.name) && comparedItem.Stack < comparedItem.MaxStack)   
-            return true;        
+    {
+        if (item.name.Equals(comparedItem.name) && comparedItem.Stack < comparedItem.MaxStack)
+            return true;
 
         return false;
     }
@@ -337,7 +370,7 @@ public class GridInventory : MonoBehaviour
     public void Scroll(Bounds itemBounds)
     {
         var boundCollection = GetComponentInChildren<BoxCollider2D>().bounds;
-        var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;        
+        var distanceNormal = (Input.mousePosition - boundCollection.center).normalized;
 
         if (distanceNormal.y > 0)
         {

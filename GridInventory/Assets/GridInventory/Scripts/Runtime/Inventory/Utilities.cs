@@ -237,7 +237,7 @@ namespace GridInventorySystem
 
     public enum Dir
     {
-        Up,
+        Up = 0,
         Left,
         Right,
         Down,

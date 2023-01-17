@@ -6,6 +6,7 @@ using System.Linq;
 using static UnityEditor.Progress;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace GridInventorySystem
 {
@@ -129,6 +130,8 @@ namespace GridInventorySystem
                             BaseItem newitem = dbItem;
                             newitem = Instantiate(dbItem) as BaseItem;
                             newitem.Stack = itemData["Stack"].ConvertTo<int>();
+                            newitem.Init((Dir)itemData["Dir"].ConvertTo<int>());
+                            
 
                             itemsToAdd.Add(newitem);
                             break;
@@ -137,9 +140,14 @@ namespace GridInventorySystem
                 }
             }
 
-           
-            m_Items = itemsToAdd;
-            Initialize();
+            itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);
+
+            transform.GetComponent<GridInventory>().RemoveAllItems();
+            transform.GetComponent<GridInventory>().AddItems(itemsToAdd);
+
+            //m_Items = III; 
+            // Initialize();
+
         }
 
         public void SaveData(ref Dictionary<string, object> data)

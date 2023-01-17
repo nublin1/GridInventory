@@ -19,7 +19,7 @@ using Unity.VisualScripting;
 public class BaseItem : ScriptableObject, IDataPersistence
 {
     #region GeneralSettings
-    [ShowNonSerializedField]
+    [SerializeField]
     private string m_Id;
 
     [SerializeField]
@@ -95,7 +95,7 @@ public class BaseItem : ScriptableObject, IDataPersistence
     public string Id { get => m_Id; set => m_Id = value; }   
     public string ItemName { get => m_ItemName; set => m_ItemName = value; }
     public Sprite Icon { get => icon; }
-    public bool IsCategoryBasedColor { get => m_categoryBasedColor; }
+    public bool IsCategoryBasedColor { get => m_categoryBasedColor; set => m_categoryBasedColor = value; }
     public Color BackgroundColor { get => m_backgroundColor; }
     public int Width { get => m_width; }
     public int Height { get => m_height; }
@@ -110,13 +110,13 @@ public class BaseItem : ScriptableObject, IDataPersistence
     public Dir Dir { get => m_dir; }
     public Category Category { get => m_category; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
-    public Transform ItemTransform { get => m_itemTransform; }
-    public Image BackgroundImage { get => backgroundImage; }
-    public Image BackgroundOutlineImage { get => backgroundOutlineImage; }
-    public Image HighlightImage { get => highlightImage; }
-    public Image ItemIconImage { get => itemIconImage; }
-    public TextMeshProUGUI ItemNameText { get => m_ItemNameText; }
-    public TextMeshProUGUI ItemCountText { get => m_ItemCountText; }
+    public Transform ItemTransform       { get => m_itemTransform; set => m_itemTransform = value; }
+    public Image BackgroundImage         { get => backgroundImage; set => backgroundImage = value; }
+    public Image BackgroundOutlineImage  { get => backgroundOutlineImage; set => backgroundOutlineImage = value; }
+    public Image HighlightImage          { get => highlightImage; set => highlightImage = value; }
+    public Image ItemIconImage           { get => itemIconImage; set => itemIconImage = value; }
+    public TextMeshProUGUI ItemNameText  { get => m_ItemNameText; set => m_ItemNameText = value; }
+    public TextMeshProUGUI ItemCountText { get => m_ItemCountText; set => m_ItemCountText = value; }
     #endregion
 
     public void Init(Dir dir = Dir.Up)
@@ -341,5 +341,7 @@ public class BaseItem : ScriptableObject, IDataPersistence
         data.Add("ID", Id);
         data.Add("Name", m_ItemName);
         data.Add("Stack", m_Stack);
+        data.Add("Dir", Dir);
+        data.Add("Position", gridPositionList[0]);
     }
 }

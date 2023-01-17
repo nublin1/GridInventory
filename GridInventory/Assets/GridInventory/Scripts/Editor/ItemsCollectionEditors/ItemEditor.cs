@@ -223,15 +223,15 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         base_Size = new Vector2((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
         backgroundImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
 
-        Color color;
+        Color32 color;
         if (m_Items[m_SelectedItemIndex].IsCategoryBasedColor && m_Items[m_SelectedItemIndex].Category != null)
             color = m_Items[m_SelectedItemIndex].Category.Color;
         else
             color = m_Items[m_SelectedItemIndex].BackgroundColor;
          
-        Color[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
+        Color32[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
         // Fill the texture with the desired color
-        backgroundImage.SetPixels(colors);
+        backgroundImage.SetPixels32(colors,0);
         backgroundImage.Apply();
     }
 }
