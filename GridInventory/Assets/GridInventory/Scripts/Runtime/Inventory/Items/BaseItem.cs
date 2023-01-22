@@ -132,6 +132,9 @@ public class BaseItem : ScriptableObject, IDataPersistence
 
     public void Update()
     {
+        if (m_itemTransform == null)
+            return;
+
         var bounds = m_itemTransform.GetComponent<BoxCollider2D>().bounds;
         if (bounds != null && bounds.Contains(Input.mousePosition))
             highlightImage.enabled = true;

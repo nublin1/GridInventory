@@ -36,6 +36,8 @@ public class DataPersistentManager : MonoBehaviour
 
     public void SaveGame()
     {
+        gameData.m_data.Clear();
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistencesObjects)
         {
             dataPersistenceObj.SaveData(ref gameData.m_data);

@@ -20,6 +20,7 @@ public class GridInventory : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     //
+
     private bool isContainer = false;
     private Vector3 _originalPosition = Vector3.zero;
     private Vector3 scaleFactor;
@@ -51,33 +52,20 @@ public class GridInventory : MonoBehaviour
 
     private void Awake()
     {
-        if (scrollbar == null)
-        {
-            if (TryGetComponent(out Scrollbar _scrollbar))
-                scrollbar = _scrollbar;
-        }
-
-        if (TryGetComponent(out ItemCollection _itemCollection))
-            m_Collection = _itemCollection;
+        Init();
     }
 
     private void Start()
     {
-        scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
-
-        inventoryCells = new GridCell[gridWidth, gridHeight];
-        for (int i = 0; i < gridWidth; i++)
+        foreach (var item in m_Collection.Items)
         {
-            for (int j = 0; j < gridHeight; j++)
+            item.Init(Dir.Up);
+            if (CanAddItem(item))
             {
-                inventoryCells[i, j] = new GridCell(this, i, j);
+                GenerateItem(item);
+                PlaceItemToCells(item);
             }
         }
-
-        Init();
-
-        if (closeButton != null)
-            closeButton.onClick.AddListener(CloseButtonAction);
     }
 
     private void Update()
@@ -97,15 +85,32 @@ public class GridInventory : MonoBehaviour
 
     private void Init()
     {
-        foreach (var item in m_Collection.Items)
+        // Init Components
+        if (scrollbar == null)
+            if (TryGetComponent(out Scrollbar _scrollbar))
+                scrollbar = _scrollbar;
+
+        if (scrollbar == null)
+            if (TryGetComponent(out ItemCollection _itemCollection))
+                m_Collection = _itemCollection;
+
+        if (closeButton != null)
+            closeButton.onClick.AddListener(CloseButtonAction);
+
+        scaleFactor = GetComponentInParent<Canvas>().transform.lossyScale;
+
+        // init inventory
+        if (inventoryCells == null)
         {
-            item.Init(Dir.Up);
-            if (CanAddItem(item))
+            inventoryCells = new GridCell[gridWidth, gridHeight];
+            for (int i = 0; i < gridWidth; i++)
             {
-                GenerateItem(item);
-                PlaceItemToCells(item);
+                for (int j = 0; j < gridHeight; j++)
+                {
+                    inventoryCells[i, j] = new GridCell(this, i, j);
+                }
             }
-        }
+        }         
     }
 
     public List<BaseItem> InitItems(List<BaseItem> items)
@@ -122,7 +127,7 @@ public class GridInventory : MonoBehaviour
     private void GenerateItem(BaseItem baseItem)
     {
         baseItem.CreateItemTransform(CellSize);
-        
+
 
         if (baseItem.Pf_ItemContainer != null)
         {
@@ -140,7 +145,7 @@ public class GridInventory : MonoBehaviour
     public void RemoveAllItems()
     {
         for (int i = m_Collection.Items.Count - 1; i >= 0; i--)
-        {            
+        {
             if (m_Collection.Items[i].ItemTransform != null)
             {
                 RemoveItemCompletely(m_Collection.Items[i]);
@@ -152,9 +157,14 @@ public class GridInventory : MonoBehaviour
 
     public void AddItems(List<BaseItem> baseItems)
     {
+        Init();
+
         for (int i = baseItems.Count - 1; i >= 0; i--)
         {
-            if (baseItems[i].ItemTransform != null && transform.GetComponent<GridInventory>().CanAddItem(baseItems[i]))
+            if (IsContainedItem(baseItems[i]))
+                continue;
+
+            if (baseItems[i].ItemTransform != null && transform.GetComponent<GridInventory>().CanAddItem(baseItems[i], baseItems[i].GridPositionList[0]))
                 AddItem(baseItems[i], baseItems[i].GridPositionList[0]);
         }
     }
@@ -320,6 +330,14 @@ public class GridInventory : MonoBehaviour
 
         }
         return true;
+    }
+
+    public bool IsContainedItem(BaseItem _inventoryItem)
+    {
+        foreach(var item in m_Collection.Items)        
+            if (_inventoryItem.Id.Equals(item.Id)) return true;        
+        
+        return false;
     }
 
     public BaseItem GetInventoryItem(Vector2Int _cell)
