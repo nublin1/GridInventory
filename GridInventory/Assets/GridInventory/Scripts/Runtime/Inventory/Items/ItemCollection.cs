@@ -140,8 +140,7 @@ namespace GridInventorySystem
                 }
             }
 
-            itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);
-            
+            itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);            
             transform.GetComponent<GridInventory>().AddItems(itemsToAdd);
 
             //m_Items = III; 

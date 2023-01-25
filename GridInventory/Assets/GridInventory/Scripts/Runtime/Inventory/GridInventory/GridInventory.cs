@@ -159,13 +159,19 @@ public class GridInventory : MonoBehaviour
     {
         Init();
 
+        List<BaseItem> itemsToAdd = new();
         for (int i = baseItems.Count - 1; i >= 0; i--)
         {
             if (IsContainedItem(baseItems[i]))
                 continue;
 
             if (baseItems[i].ItemTransform != null && transform.GetComponent<GridInventory>().CanAddItem(baseItems[i], baseItems[i].GridPositionList[0]))
-                AddItem(baseItems[i], baseItems[i].GridPositionList[0]);
+                itemsToAdd.Add(baseItems[i]);              
+        }       
+
+        foreach(var item in itemsToAdd)
+        {
+            AddItem(item, item.GridPositionList[0]);
         }
     }
 
