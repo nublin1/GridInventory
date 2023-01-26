@@ -56,7 +56,7 @@ public class GridInventory : MonoBehaviour
     }
 
     private void Start()
-    {
+    {       
         foreach (var item in m_Collection.Items)
         {
             item.Init(Dir.Up);
@@ -65,7 +65,7 @@ public class GridInventory : MonoBehaviour
                 GenerateItem(item);
                 PlaceItemToCells(item);
             }
-        }
+        }        
     }
 
     private void Update()
@@ -158,18 +158,26 @@ public class GridInventory : MonoBehaviour
     public void AddItems(List<BaseItem> baseItems)
     {
         Init();
+        
 
-        List<BaseItem> itemsToAdd = new();
+        List<BaseItem> itemsToAdd = new();        
         for (int i = baseItems.Count - 1; i >= 0; i--)
         {
             if (IsContainedItem(baseItems[i]))
-                continue;
+            {
+                var item = GetInventoryItem(baseItems[i].Id);
+                if (item.GridPositionList != null)
+                    continue;
+                else
+                    itemsToAdd.Add(baseItems[i]);                
+            }
+            
+            itemsToAdd.Add(baseItems[i]);              
+        }
 
-            if (baseItems[i].ItemTransform != null && transform.GetComponent<GridInventory>().CanAddItem(baseItems[i], baseItems[i].GridPositionList[0]))
-                itemsToAdd.Add(baseItems[i]);              
-        }       
+        itemsToAdd = InitItems(itemsToAdd);
 
-        foreach(var item in itemsToAdd)
+        foreach (var item in itemsToAdd)
         {
             AddItem(item, item.GridPositionList[0]);
         }
@@ -353,6 +361,16 @@ public class GridInventory : MonoBehaviour
 
         var item = inventoryCells[_cell.x, _cell.y].InventoryItem;
         return item;
+    }
+
+    public BaseItem GetInventoryItem(string ID)
+    {
+        for(int i =0; i< m_Collection.Items.Count(); i++)
+        {
+            if (m_Collection.Items[i].Id.Equals(ID)) return m_Collection.Items[i];
+        }
+
+        return null;
     }
 
     public virtual bool RemoveItem(BaseItem item)
