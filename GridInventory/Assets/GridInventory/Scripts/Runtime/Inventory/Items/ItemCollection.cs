@@ -23,10 +23,10 @@ namespace GridInventorySystem
 
         private void Awake()
         {           
-            Initialize();
+           
         }
 
-        private void Initialize()
+        public void Initialize()
         {           
             m_Amounts.Clear();            
             m_Items = CreateInstances(m_Items.ToArray()).ToList();
@@ -76,7 +76,7 @@ namespace GridInventorySystem
 
             for (int i = 0; i < items.Length; i++)
             {
-                BaseItem item = items[i];
+                var item = items[i];
                 item = Instantiate(item);
                 item.Id = items[i].Id;
 
@@ -98,6 +98,8 @@ namespace GridInventorySystem
 
         public void LoadData(Dictionary<string, object> data)
         {
+            
+
             if (!data.ContainsKey(transform.name))
             {
                 return;
@@ -140,7 +142,7 @@ namespace GridInventorySystem
                 }
             }
 
-            //itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);            
+            itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);            
             transform.GetComponent<GridInventory>().AddItems(itemsToAdd);
 
             //m_Items = III; 

@@ -22,6 +22,7 @@ public class GridInventory : MonoBehaviour
     //
 
     private bool isContainer = false;
+    private bool wasInited = false;
     private Vector3 _originalPosition = Vector3.zero;
     private Vector3 scaleFactor;
     private GridCell[,] inventoryCells;
@@ -56,16 +57,8 @@ public class GridInventory : MonoBehaviour
     }
 
     private void Start()
-    {       
-        foreach (var item in m_Collection.Items)
-        {
-            item.Init(Dir.Up);
-            if (CanAddItem(item))
-            {
-                GenerateItem(item);
-                PlaceItemToCells(item);
-            }
-        }        
+    {    
+             
     }
 
     private void Update()
@@ -110,7 +103,26 @@ public class GridInventory : MonoBehaviour
                     inventoryCells[i, j] = new GridCell(this, i, j);
                 }
             }
-        }         
+        }
+
+        if (wasInited)
+            return;
+
+        m_Collection.Initialize();
+
+        for (int i = 0; i < m_Collection.Items.Count; i++)
+        {
+            m_Collection.Items[i].Init(Dir.Up);
+            var pos = CanAddItem(m_Collection.Items[i]);
+            if (pos != null)
+            {
+                m_Collection.Items[i].ReculculatePositionList(pos[0]);
+                GenerateItem(m_Collection.Items[i]);
+                PlaceItemToCells(m_Collection.Items[i]);
+            }
+        }
+
+        wasInited = true;
     }
 
     public List<BaseItem> InitItems(List<BaseItem> items)
@@ -169,7 +181,10 @@ public class GridInventory : MonoBehaviour
                 if (item.GridPositionList != null)
                     continue;
                 else
-                    itemsToAdd.Add(baseItems[i]);                
+                {
+                    itemsToAdd.Add(baseItems[i]);
+                    continue;
+                }
             }
             
             itemsToAdd.Add(baseItems[i]);              
@@ -217,7 +232,7 @@ public class GridInventory : MonoBehaviour
     /// </summary>
     /// <param name="_item">Item to check.</param>
     /// <returns>Returns true if the item can be added.</returns>
-    public bool CanAddItem(BaseItem _item)
+    public List<Vector2Int> CanAddItem(BaseItem _item)
     {
         for (int x = 0; x < gridWidth; x++)
         {
@@ -226,10 +241,10 @@ public class GridInventory : MonoBehaviour
                 _item.ReculculatePositionList(new Vector2Int(x, y));
 
                 if (IsPositionsEmpty(_item.GridPositionList))
-                    return true;
+                    return _item.GridPositionList;
             }
         }
-        return false;
+        return null;
     }
 
     /// <summary>
@@ -260,7 +275,8 @@ public class GridInventory : MonoBehaviour
             if (observedItemInCell.IsContainer)
             {
                 var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
-                if (invContainer.CanAddItem(placeableItem))
+                var pos = invContainer.CanAddItem(placeableItem);
+                if (pos != null)
                     return true;
             }
         }
