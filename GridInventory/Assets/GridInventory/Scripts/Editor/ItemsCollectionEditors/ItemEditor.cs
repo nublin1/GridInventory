@@ -15,7 +15,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 {
     private static GUIStyle customStyle;
     float viewportScale = 1;
-    float itemRot = 0;
+    bool previewHorizontal = false;
     int fontSize = 10;
 
     private Vector2 m_ScrollPreviewPosition;
@@ -28,26 +28,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         ToolbarName = title;
         m_Database = _database;
         m_Items = m_Database.items;
-    }
-
-    [InitializeOnLoadMethod]
-    private static void CreateCustomStyle()
-    {
-        //// Create a new GUIStyle
-        //customStyle = new GUIStyle();
-        //
-        //// Set the font size, color, and padding of the style
-        //customStyle.fontSize = 14;
-        //customStyle.normal.textColor = Color.white;
-        //customStyle.padding = new RectOffset(5, 5, 3, 3);
-        //
-        //// Set the background image and text alignment of the style
-        //customStyle.normal.background = Texture2D.whiteTexture;
-        //customStyle.alignment = TextAnchor.MiddleCenter;
-        //
-        //// Add the style to the EditorStyles object
-        ////EditorStyles.AddCustomStyle(customStyle);
-    }
+    }  
 
 
     public override void OnEnable()
@@ -76,22 +57,23 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         DrawSidebar(new Rect(0, m_SidebarRect.y, m_SidebarRect.width, position.height - 30f));
         DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, CONTENT_WIDTH, position.height - 50f));
 
-        DrawPrev(new Rect(m_SidebarRect.width + 450, m_SidebarRect.y, position.width - CONTENT_WIDTH - m_SidebarRect.width - 5f, position.height - 50f));
+        DrawPreview(new Rect(m_SidebarRect.width + 450, m_SidebarRect.y, position.width - CONTENT_WIDTH - m_SidebarRect.width - 5f, position.height - 50f));
 
         ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].ItemName);
     }
 
-    void DrawPrev(Rect position)
+    void DrawPreview(Rect position)
     {
         GUILayout.BeginArea(position, "", EditorStyles.helpBox);
 
         GUILayout.BeginHorizontal();
         viewportScale = EditorGUILayout.Slider(viewportScale, 1, 10, GUILayout.MaxWidth(250));
-        //itemRot = EditorGUILayout.Slider(itemRot, 0, 90, GUILayout.MaxWidth(250));
-        GUILayout.EndHorizontal();
+        previewHorizontal = EditorGUILayout.Toggle("Rotate Preview", previewHorizontal, GUILayout.MaxWidth(250));
+        float itemRot = 0;
+        if (previewHorizontal)
+            itemRot = 90;
 
-       
-        
+        GUILayout.EndHorizontal();   
 
         Texture backgroundOutlineImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
         backgroundOutlineImage = (Texture)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Texture));
@@ -105,16 +87,20 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 25, s_rect.width, s_rect.height), m_ScrollPreviewPosition, new Rect(pos.x, pos.y, s_rect.x + scaled_Size.x, s_rect.y + scaled_Size.y));
 
-        //Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x/2, pos.y + scaled_Size.y/2);
-        //GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
+        Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x/2, pos.y + scaled_Size.y/2);
+        Matrix4x4 matrixBackup = GUI.matrix;       
 
         GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundImage);
         var def_Color = GUI.color;
         GUI.color = new Color(0, 0, 0, 0.6f);
         GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundOutlineImage);
         GUI.color = def_Color;
+        GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
         if (icon != null)
             GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), icon.texture);
+        
+        GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
+        GUI.matrix = matrixBackup;
 
         // Draw text
         GUI.skin.label.fontSize = (int)(fontSize * viewportScale);
@@ -127,9 +113,8 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         if (m_Items[m_SelectedItemIndex].Stack > 1)
             GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), stack_str);
 
-        //GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
+        
         GUI.EndScrollView();
-
         GUILayout.EndArea();
     }
 
@@ -151,6 +136,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         BaseItem item = ScriptableObject.CreateInstance<BaseItem>();
         item.name = item.ItemName;
         item.hideFlags = HideFlags.HideInHierarchy;
+        item.Id = Utilities.GenerateID();
 
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
@@ -172,6 +158,9 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             if (editor != null)
                 ScriptableObject.DestroyImmediate(editor);
         }
+
+        m_SelectedItemIndex = 0;
+        Select(m_Items[m_SelectedItemIndex]);
     }
 
     protected override void AddContextItem(GenericMenu menu)
@@ -222,15 +211,15 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         base_Size = new Vector2((int)(50 * m_Items[m_SelectedItemIndex].Width), (int)(50 * m_Items[m_SelectedItemIndex].Height));
         backgroundImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
 
-        Color color;
+        Color32 color;
         if (m_Items[m_SelectedItemIndex].IsCategoryBasedColor && m_Items[m_SelectedItemIndex].Category != null)
             color = m_Items[m_SelectedItemIndex].Category.Color;
         else
             color = m_Items[m_SelectedItemIndex].BackgroundColor;
          
-        Color[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
+        Color32[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
         // Fill the texture with the desired color
-        backgroundImage.SetPixels(colors);
+        backgroundImage.SetPixels32(colors,0);
         backgroundImage.Apply();
     }
 }

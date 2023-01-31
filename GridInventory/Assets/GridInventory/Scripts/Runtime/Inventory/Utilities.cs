@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -48,6 +49,26 @@ namespace GridInventorySystem
                 case Dir.Down: return 180;
                 case Dir.Right: return 270;
             }
+        }
+
+        public static List<ItemDatabase> GetAllDatabases()
+        {           
+            List<ItemDatabase> databases = new List<ItemDatabase>();
+
+            string[] guids = AssetDatabase.FindAssets("t:ItemDatabase");
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDatabase));
+                databases.Add(obj as ItemDatabase);               
+            }
+
+            return databases;
+        }
+
+        public static string GenerateID()
+        {
+            return System.Guid.NewGuid().ToString();
         }
 
         public static IEnumerable<SerializedProperty> EnumerateChildProperties(SerializedProperty property)
@@ -216,7 +237,7 @@ namespace GridInventorySystem
 
     public enum Dir
     {
-        Up,
+        Up = 0,
         Left,
         Right,
         Down,

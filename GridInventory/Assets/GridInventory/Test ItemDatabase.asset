@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
   m_Name: 11mm
   m_EditorClassIdentifier: 
+  m_Id: 
   m_ItemName: 11mm
   icon: {fileID: 21300000, guid: 12acc10a4d4953d43a01206f7cf84ae4, type: 3}
   m_categoryBasedColor: 0
@@ -116,6 +117,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a7724c56b330fa4b875b81fa9c0f2e1, type: 2}
   - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
   - {fileID: 2407911576337326899}
+  - {fileID: 0}
   rarities:
   - {fileID: -8202195673115845998}
   - {fileID: 8945672125769861896}
@@ -134,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
   m_Name: Grenade
   m_EditorClassIdentifier: 
+  m_Id: 6a4a1de8-967e-11ed-a1eb-0242ac120002
   m_ItemName: Grenade
   icon: {fileID: 21300000, guid: 1f3e56584a9357248b105d4aa53e12a3, type: 3}
   m_categoryBasedColor: 0

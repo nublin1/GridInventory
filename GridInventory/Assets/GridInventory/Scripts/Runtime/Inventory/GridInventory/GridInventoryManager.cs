@@ -7,6 +7,9 @@ namespace GridInventorySystem
 {
     public class GridInventoryManager : MonoBehaviour
     {
+        [SerializeField]
+        private ItemDatabase m_Database = null;
+
         [SerializeField] private List<GridInventory> availableCollections;
         [SerializeField] private PointerEventData m_PointerEventData;
 
@@ -38,8 +41,7 @@ namespace GridInventorySystem
                 if (!isExist)
                     availableCollections.Add(collection);
                 if (collection.InventorySystem == null)
-                    availableCollections[^1].InventorySystem = this;
-
+                    availableCollections[^1].InventorySystem = this;               
             }
 
             activeItemCollection = availableCollections[0];
