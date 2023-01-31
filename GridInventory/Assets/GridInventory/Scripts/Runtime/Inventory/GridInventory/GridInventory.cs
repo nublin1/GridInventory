@@ -108,8 +108,9 @@ public class GridInventory : MonoBehaviour
         if (wasInited)
             return;
 
-        m_Collection.Initialize();
+        //m_Collection.Initialize();
 
+        /*
         for (int i = 0; i < m_Collection.Items.Count; i++)
         {
             m_Collection.Items[i].Init(Dir.Up);
@@ -121,6 +122,7 @@ public class GridInventory : MonoBehaviour
                 PlaceItemToCells(m_Collection.Items[i]);
             }
         }
+        */
 
         wasInited = true;
     }
@@ -175,6 +177,7 @@ public class GridInventory : MonoBehaviour
         List<BaseItem> itemsToAdd = new();        
         for (int i = baseItems.Count - 1; i >= 0; i--)
         {
+            /*
             if (IsContainedItem(baseItems[i]))
             {
                 var item = GetInventoryItem(baseItems[i].Id);
@@ -186,11 +189,13 @@ public class GridInventory : MonoBehaviour
                     continue;
                 }
             }
+            */
             
             itemsToAdd.Add(baseItems[i]);              
         }
 
         itemsToAdd = InitItems(itemsToAdd);
+        RemoveAllItems();
 
         foreach (var item in itemsToAdd)
         {

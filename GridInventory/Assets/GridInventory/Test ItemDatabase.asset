@@ -117,6 +117,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a7724c56b330fa4b875b81fa9c0f2e1, type: 2}
   - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
   - {fileID: 2407911576337326899}
+  - {fileID: 0}
   rarities:
   - {fileID: -8202195673115845998}
   - {fileID: 8945672125769861896}
