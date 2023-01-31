@@ -10,6 +10,7 @@ namespace GridInventorySystem
     public class ItemCollectionCustomInspector : Editor
     {
         private SerializedProperty script;
+        private SerializedProperty m_Saveable;
 
         private SerializedProperty m_Items;
         private ReorderableList m_ItemList;        
@@ -17,6 +18,7 @@ namespace GridInventorySystem
         private void OnEnable()
         {
             this.script = serializedObject.FindProperty("m_Script");
+            m_Saveable = serializedObject.FindProperty("m_saveable");
             this.m_Items = serializedObject.FindProperty("m_Items");
 
             CreateItemList(serializedObject, m_Items);
@@ -54,7 +56,7 @@ namespace GridInventorySystem
                 SerializedProperty amount = amounts.GetArrayElementAtIndex(index);
                 rect.x += rect.width + 2f;
                 rect.width = 50f;                
-                EditorGUI.PropertyField(rect, amount, GUIContent.none);
+                EditorGUI.PropertyField(rect, amount, GUIContent.none);               
             };
 
             m_ItemList.onAddCallback = (ReorderableList list) =>
@@ -78,10 +80,11 @@ namespace GridInventorySystem
         public override void OnInspectorGUI()
         {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.PropertyField(script);
-            EditorGUI.EndDisabledGroup();
+            EditorGUILayout.PropertyField(script);            
+            EditorGUI.EndDisabledGroup();            
 
             serializedObject.Update();
+            EditorGUILayout.PropertyField(m_Saveable);
 
             GUILayout.Space(3f);
             m_ItemList.DoLayoutList();

@@ -8,12 +8,19 @@ public class ItemGenerator : MonoBehaviour
 
     void Start()
     {
-        
+        GenerateItems();
+
+
     }
 
   
     void Update()
     {
         
+    }
+
+    void GenerateItems()
+    {
+
     }
 }

@@ -21,6 +21,9 @@ namespace GridInventorySystem
 
         public List<BaseItem> Items { get => m_Items; }
 
+        [SerializeField]
+        private bool m_saveable = false;
+
         private void Awake()
         {           
            
@@ -151,7 +154,7 @@ namespace GridInventorySystem
 
         public void SaveData(ref Dictionary<string, object> data)
         {
-            if (m_Items.Count == 0)
+            if (m_Items.Count == 0 || m_saveable== false)
             {
                 return;
             }

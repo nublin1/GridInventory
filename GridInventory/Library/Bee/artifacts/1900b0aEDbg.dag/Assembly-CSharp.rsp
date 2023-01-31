@@ -362,6 +362,7 @@
 "Assets/GridInventory/Scripts/Runtime/Attributes/PickerAttribute.cs"
 "Assets/GridInventory/Scripts/Runtime/Attributes/RarityPickerAttribute.cs"
 "Assets/GridInventory/Scripts/Runtime/DragPanel.cs"
+"Assets/GridInventory/Scripts/Runtime/Generators/ItemGenerator.cs"
 "Assets/GridInventory/Scripts/Runtime/Inventory/GridInventory/Condition.cs"
 "Assets/GridInventory/Scripts/Runtime/Inventory/GridInventory/GridCell.cs"
 "Assets/GridInventory/Scripts/Runtime/Inventory/GridInventory/GridInventory.cs"

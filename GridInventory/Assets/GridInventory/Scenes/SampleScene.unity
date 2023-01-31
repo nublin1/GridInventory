@@ -1658,6 +1658,7 @@ GameObject:
   - component: {fileID: 1189306982}
   - component: {fileID: 1189306984}
   - component: {fileID: 1189306983}
+  - component: {fileID: 1189306985}
   m_Layer: 0
   m_Name: container_Test
   m_TagString: Untagged
@@ -1719,6 +1720,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Items: []
   m_Amounts: 0100000001000000010000000100000001000000
+  m_saveable: 0
+--- !u!114 &1189306985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189306981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae72513924f9be443b519d30be9f0bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Pools: []
 --- !u!1 &1225973471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,6 +2245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Items: []
   m_Amounts: 0100000001000000010000000100000001000000
+  m_saveable: 1
 --- !u!1 &1710353743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,7 +2329,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1479387291}
   m_Direction: 2
   m_Value: 0.9999998
-  m_Size: 0.6250001
+  m_Size: 0.62500006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2468,8 +2484,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500909773}
   m_HandleRect: {fileID: 1500909772}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6250001
+  m_Value: 0.9999998
+  m_Size: 0.62500006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
