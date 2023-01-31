@@ -97,8 +97,7 @@ namespace GridInventorySystem
         }
 
         public void LoadData(Dictionary<string, object> data)
-        {
-            
+        {            
 
             if (!data.ContainsKey(transform.name))
             {
