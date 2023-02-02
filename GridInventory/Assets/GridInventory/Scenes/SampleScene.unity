@@ -1733,7 +1733,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae72513924f9be443b519d30be9f0bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Pools: []
+  m_Pools:
+  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
 --- !u!1 &1225973471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,8 +2329,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1479387292}
   m_HandleRect: {fileID: 1479387291}
   m_Direction: 2
-  m_Value: 0.9999998
-  m_Size: 0.62500006
+  m_Value: 1
+  m_Size: 0.6250001
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2484,8 +2485,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500909773}
   m_HandleRect: {fileID: 1500909772}
   m_Direction: 2
-  m_Value: 0.9999998
-  m_Size: 0.62500006
+  m_Value: 1
+  m_Size: 0.6250001
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

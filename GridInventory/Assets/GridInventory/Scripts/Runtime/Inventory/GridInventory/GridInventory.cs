@@ -39,26 +39,24 @@ public class GridInventory : MonoBehaviour
     public Scrollbar Scrollbar { get => scrollbar; }
     public Transform ContainerTransform { get => containerTransform; set => containerTransform = value; }
     public GridInventoryManager InventorySystem { get => inventorySystem; set => inventorySystem = value; }
+    public ItemCollection ItemCollection { get => m_Collection; }
 
     #endregion
 
-    #region Events
-    public delegate void AAddItem();
-    public static event AAddItem OnAddItem;
+    #region Events   
     public delegate void AFailedAddItem();
     public static event AFailedAddItem OnFailedAddItem;
-    public delegate void ARemoveItem();
-    public static event ARemoveItem OnRemoveItem;
+
     #endregion
 
     private void Awake()
     {
-        Init();
+        InitInventory();
     }
 
     private void Start()
-    {    
-             
+    {
+       
     }
 
     private void Update()
@@ -76,8 +74,8 @@ public class GridInventory : MonoBehaviour
         transform.Find("Visual").gameObject.SetActive(false);
     }
 
-    private void Init()
-    {
+    public void InitInventory()
+    {      
         // Init Components
         if (scrollbar == null)
             if (TryGetComponent(out Scrollbar _scrollbar))
@@ -105,24 +103,12 @@ public class GridInventory : MonoBehaviour
             }
         }
 
+
         if (wasInited)
             return;
 
-        //m_Collection.Initialize();
-
-        /*
-        for (int i = 0; i < m_Collection.Items.Count; i++)
-        {
-            m_Collection.Items[i].Init(Dir.Up);
-            var pos = CanAddItem(m_Collection.Items[i]);
-            if (pos != null)
-            {
-                m_Collection.Items[i].ReculculatePositionList(pos[0]);
-                GenerateItem(m_Collection.Items[i]);
-                PlaceItemToCells(m_Collection.Items[i]);
-            }
-        }
-        */
+        m_Collection.OnAddItem += AddItem;
+        m_Collection.OnRemoveItem += RemoveItem;        
 
         wasInited = true;
     }
@@ -131,11 +117,20 @@ public class GridInventory : MonoBehaviour
     {
         for (int i = 0; i < items.Count; i++)
         {
-            items[i].Init(Dir.Up);
+            items[i] = InitItem(items[i]);
             GenerateItem(items[i]);
         }
 
         return items;
+    }
+
+    public BaseItem InitItem(BaseItem item, Dir dir = Dir.Up)
+    {
+        //item.Init(dir);
+        GenerateItem(item);
+        item.SetRotation(dir);
+
+        return item;
     }
 
     private void GenerateItem(BaseItem baseItem)
@@ -153,84 +148,44 @@ public class GridInventory : MonoBehaviour
             itemCollection.isContainer = true;
             inventorySystem.AddItemContainer(itemInventory.GetComponent<GridInventory>());
         }
-    }
+    }   
+    
+    
 
-
-    public void RemoveAllItems()
+    private void AddItem(BaseItem item, Vector2Int _cellXY)
     {
-        for (int i = m_Collection.Items.Count - 1; i >= 0; i--)
+        var _targetPosit = _cellXY;
+        if (_cellXY == new Vector2Int(-1, -1))
         {
-            if (m_Collection.Items[i].ItemTransform != null)
+            if (item.GridPositionList == null)
             {
-                RemoveItemCompletely(m_Collection.Items[i]);
+                InitItem(item);
             }
+
+            _targetPosit = CanAddItem(item)[0];
         }
 
-        m_Collection.Items.Clear();
-    }
-
-    public void AddItems(List<BaseItem> baseItems)
-    {
-        Init();
-        
-
-        List<BaseItem> itemsToAdd = new();        
-        for (int i = baseItems.Count - 1; i >= 0; i--)
-        {
-            /*
-            if (IsContainedItem(baseItems[i]))
-            {
-                var item = GetInventoryItem(baseItems[i].Id);
-                if (item.GridPositionList != null)
-                    continue;
-                else
-                {
-                    itemsToAdd.Add(baseItems[i]);
-                    continue;
-                }
-            }
-            */
-            
-            itemsToAdd.Add(baseItems[i]);              
-        }
-
-        itemsToAdd = InitItems(itemsToAdd);
-        RemoveAllItems();
-
-        foreach (var item in itemsToAdd)
-        {
-            AddItem(item, item.GridPositionList[0]);
-        }
-    }
-
-    public bool AddItem(BaseItem item, Vector2Int _cellXY)
-    {
-        var observedItemInCell = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem;
+        var observedItemInCell = inventoryCells[_targetPosit.x, _targetPosit.y].InventoryItem;
         if (observedItemInCell == null)
         {
-            item.ReculculatePositionList(_cellXY);
+            item.ReculculatePositionList(_targetPosit);
             PlaceItemToCells(item);
-            m_Collection.Add(item);
-            OnAddItem?.Invoke();
-            return true;
         }
         else
         {
             if (CanStack(item, observedItemInCell))
             {
-                return StackItems(item, observedItemInCell);
+                StackItems(item, observedItemInCell);
             }
 
             if (observedItemInCell.IsContainer)
             {
-                var invContainer = inventoryCells[_cellXY.x, _cellXY.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
-                invContainer.AddItem(item, item.GridPositionList[0]);
-                return true;
+                var invContainer = inventoryCells[_targetPosit.x, _targetPosit.y].InventoryItem.ItemContainer.GetComponent<GridInventory>();
+                invContainer.m_Collection.AddItem(item, item.GridPositionList[0]);
             }
         }
-
-        return false;
     }
+
 
     /// <summary>
     /// Checks if the item can be added to this container at any position. Free cells is required.
@@ -369,9 +324,9 @@ public class GridInventory : MonoBehaviour
 
     public bool IsContainedItem(BaseItem _inventoryItem)
     {
-        foreach(var item in m_Collection.Items)        
-            if (_inventoryItem.Id.Equals(item.Id)) return true;        
-        
+        foreach (var item in m_Collection.Items)
+            if (_inventoryItem.Id.Equals(item.Id)) return true;
+
         return false;
     }
 
@@ -386,7 +341,7 @@ public class GridInventory : MonoBehaviour
 
     public BaseItem GetInventoryItem(string ID)
     {
-        for(int i =0; i< m_Collection.Items.Count(); i++)
+        for (int i = 0; i < m_Collection.Items.Count(); i++)
         {
             if (m_Collection.Items[i].Id.Equals(ID)) return m_Collection.Items[i];
         }
@@ -394,19 +349,33 @@ public class GridInventory : MonoBehaviour
         return null;
     }
 
-    public virtual bool RemoveItem(BaseItem item)
+    public void RemoveAllItems()
     {
-        if (item == null || m_Collection.Contains(item) == false) { return false; }
+        for (int i = m_Collection.Items.Count - 1; i >= 0; i--)
+        {
+            if (m_Collection.Items[i].ItemTransform != null)
+            {
+                RemoveItemCompletely(m_Collection.Items[i]);
+            }
+        }
+
+        m_Collection.Items.Clear();
+    }
+
+    protected virtual void RemoveItem(BaseItem item)
+    {
+        if (item == null)
+            return;
 
         foreach (var cell in item.GridPositionList)
             inventoryCells[cell.x, cell.y].ClearCellData();
 
         //Remove item from the collection
-        this.m_Collection.Remove(item);
-
-        return true;
+        this.m_Collection.RemoveItem(item);
 
     }
+
+
 
     /// <summary>
     /// Removes the item from collection and destroy all references

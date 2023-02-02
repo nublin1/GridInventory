@@ -68,7 +68,7 @@ namespace GridInventorySystem
                 if (iteract_InventoryItem == null)
                     return;
 
-                activeItemCollection.RemoveItem(iteract_InventoryItem);
+                activeItemCollection.ItemCollection.RemoveItem(iteract_InventoryItem);               
 
                 savedItemCollection = activeItemCollection;
                 savedItem = iteract_InventoryItem;
@@ -118,11 +118,9 @@ namespace GridInventorySystem
                 iteract_InventoryItem.ItemNameText.enabled = true;
                 iteract_InventoryItem.ItemCountText.enabled = true;
 
-                var placed = activeItemCollection.AddItem(iteract_InventoryItem, cellXY);
-                if (placed)
-                    ClearIteract_InventoryItem();
-                else
-                    ReturnItemToInitialPosition();              
+
+                activeItemCollection.ItemCollection.AddItem(iteract_InventoryItem, cellXY);
+                ClearIteract_InventoryItem();                      
             }   
 
             if (Input.GetMouseButtonDown(1))
@@ -149,10 +147,10 @@ namespace GridInventorySystem
             savedItem.HighlightImage.enabled = true;
             savedItem.ItemNameText.enabled = true;
             savedItem.ItemCountText.enabled = true;
-            savedItemCollection.AddItem(savedItem, oldCell);
+            savedItemCollection.ItemCollection.AddItem(savedItem, oldCell);
+            
             ClearIteract_InventoryItem();
         }
-
 
         public void AddItemContainer(GridInventory itemsCollection)
         {

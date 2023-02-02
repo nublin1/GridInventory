@@ -343,6 +343,9 @@ public class BaseItem : ScriptableObject, IDataPersistence
         data.Add("Name", m_ItemName);
         data.Add("Stack", m_Stack);
         data.Add("Dir", Dir);
-        data.Add("Position", gridPositionList[0]);
+        if (gridPositionList != null)
+            data.Add("Position", gridPositionList[0]);
+        else
+            data.Add("Position", new Vector2Int(-1, -1));
     }
 }

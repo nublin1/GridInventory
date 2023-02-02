@@ -1,17 +1,14 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.Linq;
-using static UnityEditor.Progress;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
-using UnityEngine.UIElements;
+using UnityEngine;
 
 namespace GridInventorySystem
 {
     public class ItemCollection : MonoBehaviour, IEnumerable<BaseItem>, IDataPersistence
-    {       
+    {
         [BaseItemPicker(true)]
         [SerializeField]
         List<BaseItem> m_Items = new();
@@ -24,43 +21,51 @@ namespace GridInventorySystem
         [SerializeField]
         private bool m_saveable = false;
 
+        #region
+        public delegate void AAddItem(BaseItem item, Vector2Int _cellXY);
+        public event AAddItem OnAddItem;
+        public delegate void ARemoveItem(BaseItem item);
+        public event ARemoveItem OnRemoveItem;
+        #endregion
+
         private void Awake()
-        {           
-           
-        }
+        {
 
-        public void Initialize()
-        {           
-            m_Amounts.Clear();            
-            m_Items = CreateInstances(m_Items.ToArray()).ToList();
+        }       
 
-            for (int i = 0; i < this.m_Items.Count; i++)
+
+        public void AddItems(List<BaseItem> baseItems)
+        {
+            foreach (var _item in baseItems)
             {
-                this.m_Amounts.Add(m_Items[i].Stack);
+                this.m_Items.Add(_item);
+                int index = m_Items.IndexOf(_item);
+                this.m_Amounts.Insert(index, _item.Stack);
+
+                if (OnAddItem != null)
+                    OnAddItem.Invoke(_item, new Vector2Int(-1, -1));
             }
         }
 
-
-        public void Add(BaseItem item)
+        public void AddItem(BaseItem item, Vector2Int _cellXY)
         {
-            this.m_Items.Add(item);
+            m_Items.Add(item);
             int index = m_Items.IndexOf(item);
 
             this.m_Amounts.Insert(index, item.Stack);
-            //if (onChange != null)
-            //    onChange.Invoke();
-
+            if (OnAddItem != null)
+                OnAddItem.Invoke(item, _cellXY);
         }
 
-        public bool Remove(BaseItem item)
+        public bool RemoveItem(BaseItem item)
         {
             int index = m_Items.IndexOf(item);
             bool result = m_Items.Remove(item);
             if (result)
             {
                 this.m_Amounts.RemoveAt(index);
-                //if (onChange != null)
-                //    onChange.Invoke();
+                if (OnRemoveItem != null)
+                    OnRemoveItem.Invoke(item);
             }
             return result;
         }
@@ -100,7 +105,7 @@ namespace GridInventorySystem
         }
 
         public void LoadData(Dictionary<string, object> data)
-        {            
+        {
 
             if (!data.ContainsKey(transform.name))
             {
@@ -112,7 +117,13 @@ namespace GridInventorySystem
                 .ToList();
 
             var databases = Utilities.GetAllDatabases();
-            List<BaseItem> itemsToAdd= new List<BaseItem>();
+            List<BaseItem> itemsToAdd = new List<BaseItem>();
+            GridInventory inventory = null;
+            if (TryGetComponent(out GridInventory _inventory))
+            {
+                GetComponent<GridInventory>().InitInventory();
+                inventory = _inventory;
+            }
 
             foreach (object item in loaded_Items)
             {
@@ -134,27 +145,42 @@ namespace GridInventorySystem
                             BaseItem newitem = dbItem;
                             newitem = Instantiate(dbItem) as BaseItem;
                             newitem.Stack = itemData["Stack"].ConvertTo<int>();
-                            newitem.Init((Dir)itemData["Dir"].ConvertTo<int>());
-                            
+                            Dir dir = (Dir)itemData["Dir"].ConvertTo<int>();                           
+                            var pos_str = itemData["Position"];
+                            var posData = JsonConvert.DeserializeObject<Dictionary< string, object>> (pos_str.ToString());
 
-                            itemsToAdd.Add(newitem);
-                            break;
+                            Vector2Int pos = new Vector2Int(posData["x"].ConvertTo<int>(), posData["y"].ConvertTo<int>());
+                            
+                            if (inventory == null)
+                            {
+                                itemsToAdd.Add(newitem);
+                                continue;
+                            }
+
+                            newitem = transform.GetComponent<GridInventory>().InitItem(newitem, dir);
+                            if (pos == new Vector2Int(-1, -1))
+                            {
+                                itemsToAdd.Add(newitem);
+                                continue;
+                            }
+                            
+                            var canPlace = inventory.CanAddItem(newitem, pos);
+                            if (canPlace)
+                                newitem.ReculculatePositionList(pos);
+                            
+                            AddItem(newitem, pos);
                         }
                     }
                 }
-            }
+            }           
 
-            itemsToAdd = transform.GetComponent<GridInventory>().InitItems(itemsToAdd);            
-            transform.GetComponent<GridInventory>().AddItems(itemsToAdd);
-
-            //m_Items = III; 
-            // Initialize();
+            AddItems(itemsToAdd);
 
         }
 
         public void SaveData(ref Dictionary<string, object> data)
         {
-            if (m_Items.Count == 0 || m_saveable== false)
+            if (m_Items.Count == 0 || m_saveable == false)
             {
                 return;
             }
