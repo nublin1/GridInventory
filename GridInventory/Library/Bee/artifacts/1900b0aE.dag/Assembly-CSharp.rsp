@@ -326,6 +326,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/NaughtyAttributes.Core.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/NaughtyAttributes.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/NaughtyAttributes.Test.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/sc.utilities.screenshot.editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.2D.Sprite.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Performance.Profile-Analyzer.Editor.ref.dll"

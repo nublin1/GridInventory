@@ -81,7 +81,7 @@ public class GridInventory : MonoBehaviour
             if (TryGetComponent(out Scrollbar _scrollbar))
                 scrollbar = _scrollbar;
 
-        if (scrollbar == null)
+        if (m_Collection == null)
             if (TryGetComponent(out ItemCollection _itemCollection))
                 m_Collection = _itemCollection;
 

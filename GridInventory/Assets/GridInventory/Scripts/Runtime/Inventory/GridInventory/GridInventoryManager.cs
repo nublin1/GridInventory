@@ -51,7 +51,7 @@ namespace GridInventorySystem
         {
             ghostItem = GetComponentInChildren<Condition>();
             ghostItem.Collection = activeItemCollection;
-            //ghostItem.gameObject.SetActive(false);
+           
         }
 
         private void Update()
@@ -198,7 +198,6 @@ namespace GridInventorySystem
 
             activeItemCollection = null;
             ghostItem.Collection = null;
-
         }
 
         void ScrollActiveItemCollection()
