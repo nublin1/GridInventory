@@ -1,6 +1,7 @@
 # GridInventory
 
-My grid inventory project, that support multi inventories
+My grid inventory project, that support multi inventories.
+
 Items object can occupy several cells, as well as be located vertically 
 
 Easy create:
