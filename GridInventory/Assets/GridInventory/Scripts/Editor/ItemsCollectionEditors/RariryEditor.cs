@@ -91,7 +91,7 @@ public class RariryEditor : BaseCollectionEditor<Rarity>
             ScriptableObject.DestroyImmediate(editor);
 
         editor = Editor.CreateEditor(item);
-
+        
     }
 
     protected override bool MatchesSearch(Rarity item, string search)

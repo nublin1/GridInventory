@@ -117,6 +117,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a7724c56b330fa4b875b81fa9c0f2e1, type: 2}
   - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
   - {fileID: 2407911576337326899}
+  - {fileID: 7998860385565188970}
   rarities:
   - {fileID: -8202195673115845998}
   - {fileID: 8945672125769861896}
@@ -165,6 +166,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CategoryName: New Category
   m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+--- !u!114 &7998860385565188970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
+  m_Name: New item
+  m_EditorClassIdentifier: 
+  m_Id: 25e7dda1-a15f-4ccb-a493-590a031583e5
+  m_ItemName: New item
+  icon: {fileID: 21300000, guid: 9411272ddaed09a48bc25ddac0a6c56d, type: 3}
+  m_categoryBasedColor: 0
+  m_backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
+  m_width: 6
+  m_height: 1
+  m_prefab: {fileID: 0}
+  m_Description: 
+  isContainer: 0
+  pf_ItemContainer: {fileID: 0}
+  m_Stack: 1
+  m_maxStack: 0
+  m_showMaxStack: 0
+  rarity: {fileID: 0}
+  m_category: {fileID: 0}
 --- !u!114 &8945672125769861896
 MonoBehaviour:
   m_ObjectHideFlags: 1

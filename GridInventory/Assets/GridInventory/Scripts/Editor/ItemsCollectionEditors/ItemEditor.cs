@@ -35,6 +35,12 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
     {
         Select(m_Items[0]);
         GUI.FocusControl("");
+        
+    }
+
+    void Update()
+    {
+       
     }
 
     public override void OnDisable()
@@ -44,7 +50,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
     public override void OnDestroy()
     {
-
+       
     }
 
     public override void CreateGUI()
@@ -88,31 +94,34 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 25, s_rect.width, s_rect.height), m_ScrollPreviewPosition, new Rect(pos.x, pos.y, s_rect.x + scaled_Size.x, s_rect.y + scaled_Size.y));
 
         Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x/2, pos.y + scaled_Size.y/2);
-        Matrix4x4 matrixBackup = GUI.matrix;       
+        Matrix4x4 matrixBackup = GUI.matrix;
 
-        GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundImage);
-        var def_Color = GUI.color;
-        GUI.color = new Color(0, 0, 0, 0.6f);
-        GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundOutlineImage);
-        GUI.color = def_Color;
-        GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
-        if (icon != null)
-            GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), icon.texture);
-        
-        GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
-        GUI.matrix = matrixBackup;
+        if (scaled_Size.x > 0 && scaled_Size.y > 0)
+        {
 
-        // Draw text
-        GUI.skin.label.fontSize = (int)(fontSize * viewportScale);
-        GUI.skin.label.alignment = TextAnchor.UpperRight;
-        GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), m_Items[m_SelectedItemIndex].ItemName);
-        GUI.skin.label.alignment = TextAnchor.LowerRight;
-        var stack_str = m_Items[m_SelectedItemIndex].Stack.ToString();
-        if (m_Items[m_SelectedItemIndex].ShowMaxStack)
-            stack_str = stack_str + "/" + m_Items[m_SelectedItemIndex].MaxStack.ToString();
-        if (m_Items[m_SelectedItemIndex].Stack > 1)
-            GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), stack_str);
+            GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundImage);
+            var def_Color = GUI.color;
+            GUI.color = new Color(0, 0, 0, 0.6f);
+            GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundOutlineImage);
+            GUI.color = def_Color;
+            GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
+            if (icon != null)
+                GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), icon.texture);
 
+            GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
+            GUI.matrix = matrixBackup;
+
+            // Draw text
+            GUI.skin.label.fontSize = (int)(fontSize * viewportScale);
+            GUI.skin.label.alignment = TextAnchor.UpperRight;
+            GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), m_Items[m_SelectedItemIndex].ItemName);
+            GUI.skin.label.alignment = TextAnchor.LowerRight;
+            var stack_str = m_Items[m_SelectedItemIndex].Stack.ToString();
+            if (m_Items[m_SelectedItemIndex].ShowMaxStack)
+                stack_str = stack_str + "/" + m_Items[m_SelectedItemIndex].MaxStack.ToString();
+            if (m_Items[m_SelectedItemIndex].Stack > 1)
+                GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), stack_str);
+        }
         
         GUI.EndScrollView();
         GUILayout.EndArea();
@@ -128,7 +137,11 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         if (editor != null)
         {
             editor.OnInspectorGUI();
+            editor.Repaint();
+            RebuildPreviewImages();
         }
+
+        //if (GUI.changed) EditorUtility.SetDirty(m_Items[m_SelectedItemIndex]);
     }
 
     protected override void Create()

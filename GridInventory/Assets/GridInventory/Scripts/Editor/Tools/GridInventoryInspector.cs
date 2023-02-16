@@ -32,7 +32,7 @@ public class GridInventoryInspector : EditorWindow
             AssetDatabase.CreateAsset(windowInfo, "Assets/WindowInfo.asset");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Debug.Log("F");
+           
         }
     }
 
