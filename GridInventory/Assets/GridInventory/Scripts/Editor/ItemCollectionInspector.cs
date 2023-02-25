@@ -99,15 +99,26 @@ public class ItemCollectionInspector : EditorWindow
                 },
                 () =>
                 {
-                    //ItemDatabase db = GridInventorySystem.Utilities.CreateAsset<ItemDatabase>(true);
-                    //if (db != null)
-                    //{
-                    //    CreateDefaultCategory(db);
-                    //    this.m_Database = db;
-                    //    ResetChildEditors();
-                    //}
+                    ItemDatabase db = GridInventorySystem.Utilities.CreateAsset<ItemDatabase>(true);
+                    if (db != null)
+                    {
+                        CreateDefaultCategory(db);
+                        m_Database = db;
+                        UpdateChildEditors();
+                    }
                 });
         }
+    }
+    private void CreateDefaultCategory(ItemDatabase database)
+    {
+        Category category = ScriptableObject.CreateInstance<Category>();
+        category.Name = "None";
+        //category.hideFlags = HideFlags.HideInHierarchy;
+        AssetDatabase.AddObjectToAsset(category, database);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        database.categories.Add(category);
+        EditorUtility.SetDirty(database);
     }
 
     private void UpdateChildEditors()
