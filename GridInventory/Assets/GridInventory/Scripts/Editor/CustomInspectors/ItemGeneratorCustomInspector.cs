@@ -34,7 +34,7 @@ public class ItemGeneratorCustomInspector : Editor
             float verticalOffset = (rect.height - EditorGUIUtility.singleLineHeight) * 0.5f;
             rect.height = EditorGUIUtility.singleLineHeight;
             rect.y = rect.y + verticalOffset;
-            rect.width = rect.width - 52f;
+            rect.width = rect.width;
 
 
             SerializedProperty element = elements.GetArrayElementAtIndex(index);

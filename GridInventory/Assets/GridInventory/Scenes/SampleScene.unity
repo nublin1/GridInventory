@@ -1660,7 +1660,7 @@ GameObject:
   - component: {fileID: 1189306983}
   - component: {fileID: 1189306985}
   m_Layer: 0
-  m_Name: container_Test
+  m_Name: container2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1737,6 +1737,7 @@ MonoBehaviour:
   - {fileID: 2407911576337326899, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
   - {fileID: 7998860385565188970, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
   - {fileID: 4145826214861110434, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  - {fileID: -3106744769487377057, guid: a4b830e607cfc554c85d7a80e4e48a12, type: 2}
 --- !u!1 &1225973471
 GameObject:
   m_ObjectHideFlags: 0

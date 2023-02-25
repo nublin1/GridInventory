@@ -159,7 +159,7 @@ public class ObjectPickerWindow : EditorWindow
 
         }
 
-        if (selectableObjects.Count == 1)
+        if (selectableObjects.Count == 1 && m_Root == null)
         {
             m_Root = selectableObjects[0];
         }
