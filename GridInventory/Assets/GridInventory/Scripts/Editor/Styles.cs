@@ -15,10 +15,10 @@ public static class Styles
     static Styles()
     {
 
-        normalColor = EditorGUIUtility.isProSkin ? new Color(0.219f, 0.219f, 0.219f, 1f) : new Color(0.796f, 0.796f, 0.796f, 1f);
-        hoverColor = EditorGUIUtility.isProSkin ? new Color(0.266f, 0.266f, 0.266f, 1f) : new Color(0.69f, 0.69f, 0.69f, 1f);
-        activeColor = EditorGUIUtility.isProSkin ? new Color(0.172f, 0.364f, 0.529f, 1f) : new Color(0.243f, 0.459f, 0.761f, 1f);
-        elementButtonColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+        normalColor         = new Color(0.219f, 0.219f, 0.219f, 1f);
+        hoverColor          = new Color(0.266f, 0.266f, 0.266f, 1f);
+        activeColor         = new Color(0.172f, 0.364f, 0.529f, 1f);
+        elementButtonColor  = new Color(0.788f, 0.788f, 0.788f, 1f);
 
         selectButton = new GUIStyle("TransitionSelectHead")
         {
@@ -36,7 +36,7 @@ public static class Styles
             richText = true
         };
         selectButtonText.normal.background = null;
-        selectButtonText.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+        selectButtonText.normal.textColor = new Color(0.788f, 0.788f, 0.788f, 1f);
 
         elementButton = new GUIStyle("TransitionSelectHead")
         {

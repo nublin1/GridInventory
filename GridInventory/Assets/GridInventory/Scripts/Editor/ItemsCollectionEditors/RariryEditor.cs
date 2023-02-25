@@ -40,6 +40,7 @@ public class RariryEditor : BaseCollectionEditor<Rarity>
         DrawSidebar(new Rect(0, m_SidebarRect.y, m_SidebarRect.width, position.height));
         DrawContent(new Rect(m_SidebarRect.width, m_SidebarRect.y, 450, position.height));
 
+        if (m_Items.Count == 0) return;
         ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].Name);
     }
 

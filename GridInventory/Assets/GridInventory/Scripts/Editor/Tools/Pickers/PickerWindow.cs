@@ -156,13 +156,13 @@ public class PickerWindow : EditorWindow
             header.fontStyle = FontStyle.Bold;
             header.stretchWidth = true;
             header.margin = new RectOffset(1, 1, 0, 4);
-            header.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+            header.normal.textColor = new Color(0.788f, 0.788f, 0.788f, 1f);
             header.border = new RectOffset(1, 1, 1, 1);
 
             elementButton.alignment = TextAnchor.MiddleLeft;
             elementButton.padding.left = 22;
             elementButton.margin = new RectOffset(1, 1, 0, 0);
-            elementButton.normal.textColor = EditorGUIUtility.isProSkin ? new Color(0.788f, 0.788f, 0.788f, 1f) : new Color(0.047f, 0.047f, 0.047f, 1f);
+            elementButton.normal.textColor =  new Color(0.788f, 0.788f, 0.788f, 1f);
         }
     }
 

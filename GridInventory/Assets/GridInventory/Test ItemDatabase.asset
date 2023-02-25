@@ -81,9 +81,11 @@ MonoBehaviour:
   pf_ItemContainer: {fileID: 0}
   m_Stack: 1
   m_maxStack: 0
+  m_showName: 0
   m_showMaxStack: 0
   rarity: {fileID: 0}
   m_category: {fileID: 0}
+  m_databaseParent: {fileID: 0}
 --- !u!114 &-1808031206471417334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,13 +113,9 @@ MonoBehaviour:
   m_Name: Test ItemDatabase
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
-  - {fileID: 11400000, guid: df644d1eca1aa4340a2dc53d8f4c72b4, type: 2}
-  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
-  - {fileID: 11400000, guid: 0a7724c56b330fa4b875b81fa9c0f2e1, type: 2}
-  - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
   - {fileID: 2407911576337326899}
   - {fileID: 7998860385565188970}
+  - {fileID: 4145826214861110434}
   rarities:
   - {fileID: -8202195673115845998}
   - {fileID: 8945672125769861896}
@@ -148,10 +146,42 @@ MonoBehaviour:
   isContainer: 0
   pf_ItemContainer: {fileID: 0}
   m_Stack: 1
-  m_maxStack: 0
+  m_maxStack: 1
+  m_showName: 0
   m_showMaxStack: 0
-  rarity: {fileID: 0}
+  rarity: {fileID: -8202195673115845998}
   m_category: {fileID: -5835148667884528989}
+  m_databaseParent: {fileID: 11400000}
+--- !u!114 &4145826214861110434
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
+  m_Name: Box
+  m_EditorClassIdentifier: 
+  m_Id: 587aadb2-acf1-475c-b58c-5815b19b2f39
+  m_ItemName: Box
+  icon: {fileID: 21300000, guid: 8466da75e3d49fd448179a5e2422e2bd, type: 3}
+  m_categoryBasedColor: 0
+  m_backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
+  m_width: 2
+  m_height: 2
+  m_prefab: {fileID: 0}
+  m_Description: 
+  isContainer: 0
+  pf_ItemContainer: {fileID: 0}
+  m_Stack: 1
+  m_maxStack: 1
+  m_showName: 0
+  m_showMaxStack: 0
+  rarity: {fileID: -8202195673115845998}
+  m_category: {fileID: -5835148667884528989}
+  m_databaseParent: {fileID: 11400000}
 --- !u!114 &6814354685704331505
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,14 +206,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10c2598102aa13a45bda4f5525f8f3f9, type: 3}
-  m_Name: New item
+  m_Name: Pistol
   m_EditorClassIdentifier: 
   m_Id: 25e7dda1-a15f-4ccb-a493-590a031583e5
-  m_ItemName: New item
-  icon: {fileID: 21300000, guid: 9411272ddaed09a48bc25ddac0a6c56d, type: 3}
+  m_ItemName: Pistol
+  icon: {fileID: 21300000, guid: 1f8934c21d0cb18419f788a463d77b5d, type: 3}
   m_categoryBasedColor: 0
   m_backgroundColor: {r: 0, g: 0, b: 0, a: 0.15}
-  m_width: 6
+  m_width: 2
   m_height: 1
   m_prefab: {fileID: 0}
   m_Description: 
@@ -191,9 +221,11 @@ MonoBehaviour:
   pf_ItemContainer: {fileID: 0}
   m_Stack: 1
   m_maxStack: 0
+  m_showName: 1
   m_showMaxStack: 0
-  rarity: {fileID: 0}
-  m_category: {fileID: 0}
+  rarity: {fileID: -8202195673115845998}
+  m_category: {fileID: -5835148667884528989}
+  m_databaseParent: {fileID: 11400000}
 --- !u!114 &8945672125769861896
 MonoBehaviour:
   m_ObjectHideFlags: 1

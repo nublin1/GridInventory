@@ -1734,10 +1734,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Pools:
-  - {fileID: 11400000, guid: e7b1fd30009b5584e91f13e9750657e8, type: 2}
-  - {fileID: 11400000, guid: 44f58639da84fc34d9f3528d2f7a8b9f, type: 2}
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
-  - {fileID: 11400000, guid: ca82d1b908b87e247b77d954af681dee, type: 2}
+  - {fileID: 2407911576337326899, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  - {fileID: 7998860385565188970, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
+  - {fileID: 4145826214861110434, guid: 3ac9954edd051534abd5c5e977b87a13, type: 2}
 --- !u!1 &1225973471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2332,8 +2331,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1479387292}
   m_HandleRect: {fileID: 1479387291}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6250001
+  m_Value: 0.9999998
+  m_Size: 0.62500006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2488,8 +2487,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1500909773}
   m_HandleRect: {fileID: 1500909772}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6250001
+  m_Value: 0.9999998
+  m_Size: 0.62500006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

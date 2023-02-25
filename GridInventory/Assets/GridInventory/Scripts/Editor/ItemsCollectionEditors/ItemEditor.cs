@@ -28,19 +28,19 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         ToolbarName = title;
         m_Database = _database;
         m_Items = m_Database.items;
-    }  
+    }
 
 
     public override void OnEnable()
     {
         Select(m_Items[0]);
         GUI.FocusControl("");
-        
+
     }
 
     void Update()
     {
-       
+
     }
 
     public override void OnDisable()
@@ -50,7 +50,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
     public override void OnDestroy()
     {
-       
+
     }
 
     public override void CreateGUI()
@@ -65,11 +65,14 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         DrawPreview(new Rect(m_SidebarRect.width + 450, m_SidebarRect.y, position.width - CONTENT_WIDTH - m_SidebarRect.width - 5f, position.height - 50f));
 
+        if (m_Items.Count == 0) return;
         ObjectNames.SetNameSmart(m_Items[m_SelectedItemIndex], m_Items[m_SelectedItemIndex].ItemName);
     }
 
     void DrawPreview(Rect position)
     {
+        if (m_Items.Count == 0) return;
+
         GUILayout.BeginArea(position, "", EditorStyles.helpBox);
 
         GUILayout.BeginHorizontal();
@@ -79,7 +82,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         if (previewHorizontal)
             itemRot = 90;
 
-        GUILayout.EndHorizontal();   
+        GUILayout.EndHorizontal();
 
         Texture backgroundOutlineImage = new Texture2D((int)base_Size.x, (int)base_Size.y);
         backgroundOutlineImage = (Texture)AssetDatabase.LoadAssetAtPath("Assets/GridInventory/GUI/Square Outline.png", typeof(Texture));
@@ -93,7 +96,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         m_ScrollPreviewPosition = GUI.BeginScrollView(new Rect(10, 25, s_rect.width, s_rect.height), m_ScrollPreviewPosition, new Rect(pos.x, pos.y, s_rect.x + scaled_Size.x, s_rect.y + scaled_Size.y));
 
-        Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x/2, pos.y + scaled_Size.y/2);
+        Vector2 pivotPoint = new Vector2(pos.x + scaled_Size.x / 2, pos.y + scaled_Size.y / 2);
         Matrix4x4 matrixBackup = GUI.matrix;
 
         if (scaled_Size.x > 0 && scaled_Size.y > 0)
@@ -114,7 +117,8 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             // Draw text
             GUI.skin.label.fontSize = (int)(fontSize * viewportScale);
             GUI.skin.label.alignment = TextAnchor.UpperRight;
-            GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), m_Items[m_SelectedItemIndex].ItemName);
+            if (m_Items[m_SelectedItemIndex].ShowName)
+                GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), m_Items[m_SelectedItemIndex].ItemName);
             GUI.skin.label.alignment = TextAnchor.LowerRight;
             var stack_str = m_Items[m_SelectedItemIndex].Stack.ToString();
             if (m_Items[m_SelectedItemIndex].ShowMaxStack)
@@ -122,7 +126,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             if (m_Items[m_SelectedItemIndex].Stack > 1)
                 GUI.Label(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), stack_str);
         }
-        
+
         GUI.EndScrollView();
         GUILayout.EndArea();
     }
@@ -150,6 +154,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         item.name = item.ItemName;
         item.hideFlags = HideFlags.HideInHierarchy;
         item.Id = Utilities.GenerateID();
+        item.m_databaseParent = m_Database;
 
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
@@ -173,7 +178,9 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         }
 
         m_SelectedItemIndex = 0;
-        Select(m_Items[m_SelectedItemIndex]);
+
+        if (m_Items.Count > 0)
+            Select(m_Items[m_SelectedItemIndex]);
     }
 
     protected override void AddContextItem(GenericMenu menu)
@@ -229,10 +236,10 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             color = m_Items[m_SelectedItemIndex].Category.Color;
         else
             color = m_Items[m_SelectedItemIndex].BackgroundColor;
-         
+
         Color32[] colors = Enumerable.Repeat(color, (int)base_Size.x * (int)base_Size.y).ToArray();
         // Fill the texture with the desired color
-        backgroundImage.SetPixels32(colors,0);
+        backgroundImage.SetPixels32(colors, 0);
         backgroundImage.Apply();
     }
 }

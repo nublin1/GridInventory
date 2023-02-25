@@ -61,19 +61,31 @@ public class BaseItem : ScriptableObject, IDataPersistence
     [SerializeField]
     [Range(1, 999f)]
     private int m_maxStack;
+    #endregion
 
+    #region TextOverlayOptions
+    [BoxGroup("TextOptions")]
+    [SerializeField]
+    private bool m_showName;
+    public bool ShowName { get { return m_showName; } set { m_showName = value; } }
+
+    [BoxGroup("TextOptions")]
     [SerializeField]
     private bool m_showMaxStack;
+    public bool ShowMaxStack { get => m_showMaxStack; }
     #endregion
 
     #region Other
-    [RarityPicker(true)]
+    [RarityPicker(false)]
     [SerializeField]
     private Rarity rarity;
     [CategoryPicker(true)]
     [SerializeField]
     private Category m_category;
     #endregion
+
+    public ItemDatabase m_databaseParent= null;
+    public ItemDatabase DatabaseParent { get => m_databaseParent; set => m_databaseParent = value; }
     
     private List<Vector2Int> gridPositionList;
     private Dir m_dir;
@@ -103,8 +115,7 @@ public class BaseItem : ScriptableObject, IDataPersistence
     public GameObject Pf_ItemContainer { get => pf_ItemContainer; }
     public Transform ItemContainer { get => itemContainer; set => itemContainer = value; }
     public int Stack { get => m_Stack; set => m_Stack = value; }
-    public int MaxStack { get => m_maxStack; }
-    public bool ShowMaxStack { get => m_showMaxStack; }
+    public int MaxStack { get => m_maxStack; }   
     public Dir Dir { get => m_dir; }
     public Category Category { get => m_category; }
     public List<Vector2Int> GridPositionList { get => gridPositionList; set => gridPositionList = value; }
@@ -158,8 +169,11 @@ public class BaseItem : ScriptableObject, IDataPersistence
 
     }
 
-    public void UpdateDisplayItemCount()
+    public void UpdateDisplayItemText()
     {
+        if (ShowName)
+            ItemNameText.text = m_ItemName;
+
         if (m_maxStack <= 1)
             return;
 
@@ -252,6 +266,10 @@ public class BaseItem : ScriptableObject, IDataPersistence
 
         m_itemNameRect.sizeDelta = itemRect.sizeDelta;
         m_itemNameRect.anchoredPosition = new Vector2(0f, 0f);
+        if(!ShowName)
+            itemNameGO.SetActive(false);
+        else 
+            itemNameGO.SetActive(true);
 
         // ItemCount
         GameObject ItemCountGO = new("ItemCount");
@@ -269,7 +287,7 @@ public class BaseItem : ScriptableObject, IDataPersistence
         if (m_maxStack <= 1)
             m_ItemCountText.enabled = false;
 
-        UpdateDisplayItemCount();
+        UpdateDisplayItemText();
         m_itemTransform = itemObject.transform;
     }
 

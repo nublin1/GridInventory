@@ -263,7 +263,7 @@ public class GridInventory : MonoBehaviour
         if ((item.Stack + comparedItem.Stack) <= comparedItem.MaxStack)
         {
             comparedItem.Stack += item.Stack;
-            comparedItem.UpdateDisplayItemCount();
+            comparedItem.UpdateDisplayItemText();
             item.Stack = 0;
             RemoveItemCompletely(item);
             return true;
@@ -276,8 +276,8 @@ public class GridInventory : MonoBehaviour
                 var t_buffer = comparedItem.Stack;
                 item.Stack = t_buffer;
                 comparedItem.Stack = item.MaxStack;
-                comparedItem.UpdateDisplayItemCount();
-                item.UpdateDisplayItemCount();
+                comparedItem.UpdateDisplayItemText();
+                item.UpdateDisplayItemText();
                 m_Collection.UpdateAmounts();
 
                 return false;
@@ -286,8 +286,8 @@ public class GridInventory : MonoBehaviour
             var remainder = comparedItem.MaxStack - (item.Stack + comparedItem.Stack);
             comparedItem.Stack = comparedItem.MaxStack;
             item.Stack += remainder;
-            comparedItem.UpdateDisplayItemCount();
-            item.UpdateDisplayItemCount();
+            comparedItem.UpdateDisplayItemText();
+            item.UpdateDisplayItemText();
             m_Collection.UpdateAmounts();
             return false;
         }

@@ -82,99 +82,102 @@ public abstract class BaseCollectionEditor<T> : BaseEditor
         m_SidebarScrollPosition = GUILayout.BeginScrollView(m_SidebarScrollPosition);
 
         fields_Rects = new List<Rect>();
-        for (int i = 0; i < m_Items.Count; i++)
+        if (m_Items != null && m_Items.Count > 0)
         {
-            var currentItem = m_Items[i];
-
-            if (!MatchesSearch(currentItem, m_SearchString) && m_SearchStringShow == true)
+            for (int i = 0; i < m_Items.Count; i++)
             {
-                continue;
-            }
+                var currentItem = m_Items[i];
 
-            using (var h = new EditorGUILayout.HorizontalScope(Styles.selectButton, GUILayout.Height(25f)))
-            {
-                Color backgroundColor = GUI.backgroundColor;
-                Color textColor = Styles.selectButtonText.normal.textColor;
-                GUI.backgroundColor = Styles.normalColor;
-
-                if (selectedItem != null && selectedItem.Equals(currentItem))
+                if (!MatchesSearch(currentItem, m_SearchString) && m_SearchStringShow == true)
                 {
-                    GUI.backgroundColor = Styles.activeColor;
-                    Styles.selectButtonText.normal.textColor = Color.white;
-                    Styles.selectButtonText.fontStyle = FontStyle.Bold;
+                    continue;
                 }
-                else if (h.rect.Contains(Event.current.mousePosition))
+
+                using (var h = new EditorGUILayout.HorizontalScope(Styles.selectButton, GUILayout.Height(25f)))
                 {
-                    GUI.backgroundColor = Styles.hoverColor;
+                    Color backgroundColor = GUI.backgroundColor;
+                    Color textColor = Styles.selectButtonText.normal.textColor;
+                    GUI.backgroundColor = Styles.normalColor;
+
+                    if (selectedItem != null && selectedItem.Equals(currentItem))
+                    {
+                        GUI.backgroundColor = Styles.activeColor;
+                        Styles.selectButtonText.normal.textColor = Color.white;
+                        Styles.selectButtonText.fontStyle = FontStyle.Bold;
+                    }
+                    else if (h.rect.Contains(Event.current.mousePosition))
+                    {
+                        GUI.backgroundColor = Styles.hoverColor;
+                        Styles.selectButtonText.normal.textColor = textColor;
+                        Styles.selectButtonText.fontStyle = FontStyle.Normal;
+                    }
+
+                    GUI.Label(h.rect, GUIContent.none, Styles.selectButton);
+                    Rect rect = h.rect;
+                    rect.width -= LIST_RESIZE_WIDTH * 0.5f;
+                    if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                    {
+                        GUI.FocusControl("");
+                        Select(currentItem);
+                    }
+
+                    DrawItemLabel(i, currentItem);
+                    //string error = HasConfigurationErrors(currentItem);
+                    //if (!string.IsNullOrEmpty(error))
+                    //{
+                    //    GUI.backgroundColor = Styles.warningColor;
+                    //    Rect errorRect = new Rect(h.rect.width - 20f, h.rect.y + 4.5f, 16f, 16f);
+                    //    GUI.Label(errorRect, new GUIContent("", error), (GUIStyle)"CN EntryWarnIconSmall");
+                    //}
+
+                    GUI.backgroundColor = backgroundColor;
                     Styles.selectButtonText.normal.textColor = textColor;
                     Styles.selectButtonText.fontStyle = FontStyle.Normal;
+                    fields_Rects.Add(rect);
                 }
-
-                GUI.Label(h.rect, GUIContent.none, Styles.selectButton);
-                Rect rect = h.rect;
-                rect.width -= LIST_RESIZE_WIDTH * 0.5f;
-                if (rect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
-                {
-                    GUI.FocusControl("");
-                    Select(currentItem);
-                }
-
-                DrawItemLabel(i, currentItem);
-                //string error = HasConfigurationErrors(currentItem);
-                //if (!string.IsNullOrEmpty(error))
-                //{
-                //    GUI.backgroundColor = Styles.warningColor;
-                //    Rect errorRect = new Rect(h.rect.width - 20f, h.rect.y + 4.5f, 16f, 16f);
-                //    GUI.Label(errorRect, new GUIContent("", error), (GUIStyle)"CN EntryWarnIconSmall");
-                //}
-
-                GUI.backgroundColor = backgroundColor;
-                Styles.selectButtonText.normal.textColor = textColor;
-                Styles.selectButtonText.fontStyle = FontStyle.Normal;
-                fields_Rects.Add(rect);
             }
-        }
 
-        switch (Event.current.rawType)
-        {
-            case EventType.MouseDown:
-                if (Event.current.button == 1)
-                    for (int j = 0; j < fields_Rects.Count; j++)
-                    {
-                        if (fields_Rects[j].Contains(Event.current.mousePosition))
+            switch (Event.current.rawType)
+            {
+                case EventType.MouseDown:
+                    if (Event.current.button == 1)
+                        for (int j = 0; j < fields_Rects.Count; j++)
                         {
-                            ShowContextMenu(m_Items[j]);
-                            break;
+                            if (fields_Rects[j].Contains(Event.current.mousePosition))
+                            {
+                                ShowContextMenu(m_Items[j]);
+                                break;
+                            }
                         }
-                    }
-                break;
-        }
-
-        for (int j = 0; j < fields_Rects.Count; j++)
-        {
-
-            Rect rect = fields_Rects[j];
-            Rect rect1 = new Rect(rect.x, rect.y, rect.width, rect.height * 0.5f);
-            Rect rect2 = new Rect(rect.x, rect.y + rect.height * 0.5f, rect.width, rect.height * 0.5f);
-
-            if (rect1.Contains(Event.current.mousePosition))
-            {
-                m_DragRect = rect;
-                m_DragRect.y = rect.y + 10f - 25f;
-                m_DragRect.x = rect.x + 5f;
-                break;
+                    break;
             }
-            else if (rect2.Contains(Event.current.mousePosition))
-            {
-                m_DragRect = rect;
-                m_DragRect.y = rect.y + 10f;
-                m_DragRect.x = rect.x + 5f;
 
-                break;
-            }
-            else
+            for (int j = 0; j < fields_Rects.Count; j++)
             {
-                m_DragRect = Rect.zero;
+
+                Rect rect = fields_Rects[j];
+                Rect rect1 = new Rect(rect.x, rect.y, rect.width, rect.height * 0.5f);
+                Rect rect2 = new Rect(rect.x, rect.y + rect.height * 0.5f, rect.width, rect.height * 0.5f);
+
+                if (rect1.Contains(Event.current.mousePosition))
+                {
+                    m_DragRect = rect;
+                    m_DragRect.y = rect.y + 10f - 25f;
+                    m_DragRect.x = rect.x + 5f;
+                    break;
+                }
+                else if (rect2.Contains(Event.current.mousePosition))
+                {
+                    m_DragRect = rect;
+                    m_DragRect.y = rect.y + 10f;
+                    m_DragRect.x = rect.x + 5f;
+
+                    break;
+                }
+                else
+                {
+                    m_DragRect = Rect.zero;
+                }
             }
         }
 

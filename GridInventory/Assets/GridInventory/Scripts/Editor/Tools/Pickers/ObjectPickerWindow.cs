@@ -40,7 +40,7 @@ public class ObjectPickerWindow : EditorWindow
         window.onCreateCallback = createCallback;
         window.m_AcceptNull = acceptNull;
         window.ShowAsDropDown(buttonRect, new Vector2(buttonRect.width, 200f));
-    }
+    }    
 
     private void Update()
     {
@@ -69,8 +69,9 @@ public class ObjectPickerWindow : EditorWindow
     }
 
     private void DrawSelectableObjects()
-    {
-        List<UnityEngine.Object> selectableObjects = m_Root == null ? m_SelectableObjects.Keys.ToList() : m_SelectableObjects[m_Root];
+    {       
+
+        List<UnityEngine.Object> selectableObjects = m_Root == null ? m_SelectableObjects.Keys.ToList() : m_SelectableObjects[m_Root];        
 
         m_ScrollPosition = EditorGUILayout.BeginScrollView(this.m_ScrollPosition);
         foreach (UnityEngine.Object obj in selectableObjects)
@@ -156,6 +157,11 @@ public class ObjectPickerWindow : EditorWindow
             GUI.Label(new Rect(rect1.x, rect1.y, 20f, 20f), EditorGUIUtility.LoadRequired("d_ScriptableObject On Icon") as Texture2D);
 
 
+        }
+
+        if (selectableObjects.Count == 1)
+        {
+            m_Root = selectableObjects[0];
         }
         EditorGUILayout.EndScrollView();
     }

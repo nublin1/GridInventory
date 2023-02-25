@@ -7,7 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(ItemCollection))]
 public class ItemGenerator : MonoBehaviour
 {
-    [SerializeField] List<BaseItem> m_Pools;
+    [BaseItemPicker(true)]
+    [SerializeField]
+    List<BaseItem> m_Pools;
 
     void Start()
     {

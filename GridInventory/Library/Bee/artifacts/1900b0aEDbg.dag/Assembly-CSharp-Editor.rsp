@@ -371,6 +371,7 @@
 "Assets/GridInventory/Scripts/Editor/BaseCollectionEditor.cs"
 "Assets/GridInventory/Scripts/Editor/BaseEditor.cs"
 "Assets/GridInventory/Scripts/Editor/CustomInspectors/ItemCollectionCustomInspector.cs"
+"Assets/GridInventory/Scripts/Editor/CustomInspectors/ItemGeneratorCustomInspector.cs"
 "Assets/GridInventory/Scripts/Editor/ItemCollectionInspector.cs"
 "Assets/GridInventory/Scripts/Editor/ItemsCollectionEditors/CategoryEditor.cs"
 "Assets/GridInventory/Scripts/Editor/ItemsCollectionEditors/ItemEditor.cs"

@@ -110,14 +110,11 @@ public class ItemCollectionInspector : EditorWindow
         }
     }
     private void CreateDefaultCategory(ItemDatabase database)
-    {
-        Category category = ScriptableObject.CreateInstance<Category>();
-        category.Name = "None";
+    {  
         //category.hideFlags = HideFlags.HideInHierarchy;
-        AssetDatabase.AddObjectToAsset(category, database);
+        //AssetDatabase.AddObjectToAsset(category, database);
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-        database.categories.Add(category);
+        AssetDatabase.Refresh();        
         EditorUtility.SetDirty(database);
     }
 

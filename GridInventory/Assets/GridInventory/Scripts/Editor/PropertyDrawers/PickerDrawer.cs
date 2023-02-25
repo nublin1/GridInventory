@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using Unity.VisualScripting.YamlDotNet.Serialization;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,7 +29,14 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
         GUIContent buttonContent = new GUIContent(current != null ? current.name : "Null");
         if (GUI.Button(buttonRect, buttonContent, buttonStyle))
         {
-            ObjectPickerWindow.ShowWindow(buttonRect, typeof(ItemDatabase), BuildSelectableObjects(),
+            var target = property.serializedObject.targetObject as BaseItem;
+            Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new();
+            if (target != null)
+                selectableObjects = BuildSelectableObjects(property.serializedObject);
+            else
+                selectableObjects = BuildSelectableObjects();
+
+            ObjectPickerWindow.ShowWindow(buttonRect, typeof(ItemDatabase), selectableObjects,
                      (UnityEngine.Object obj) => {
                          property.serializedObject.Update();
                          property.objectReferenceValue = obj;
@@ -53,7 +61,17 @@ public abstract class PickerDrawer <T> : PropertyDrawer where T : ScriptableObje
             
             selectableObjects.Add(obj, items);
         }
+        return selectableObjects;
+    }
 
+    private Dictionary<UnityEngine.Object, List<UnityEngine.Object>> BuildSelectableObjects(SerializedObject so)
+    {
+        Dictionary<UnityEngine.Object, List<UnityEngine.Object>> selectableObjects = new();
+        var target = so.targetObject as BaseItem;
+
+        var db = target.DatabaseParent;
+        List<UnityEngine.Object> items = GetItems(db).Cast<UnityEngine.Object>().ToList();
+        selectableObjects.Add(db, items);
         return selectableObjects;
     }
 
