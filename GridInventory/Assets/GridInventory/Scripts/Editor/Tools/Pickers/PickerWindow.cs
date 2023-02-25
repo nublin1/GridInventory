@@ -121,6 +121,8 @@ public class PickerWindow : EditorWindow
 
             if (GUI.Button(rect1, createContent, style.elementButton))
             {
+                onCreateCallback?.Invoke();
+                Close();
             }
         }
 

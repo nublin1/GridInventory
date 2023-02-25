@@ -51,6 +51,43 @@ namespace GridInventorySystem
             }
         }
 
+
+        /// <summary>
+		/// Creates a custom asset
+		/// </summary>
+		/// <returns>The asset</returns>		
+		/// <typeparam name="T">The type parameter</typeparam>
+		public static T CreateAsset<T>(bool displayFilePanel) where T : ScriptableObject
+        {
+            return (T)CreateAsset(typeof(T));
+        }
+
+        /// <summary>
+        /// Creates a custom asset
+        /// </summary>
+        /// <returns>The asset</returns>
+        /// <param name="type">Type</param>
+        public static ScriptableObject CreateAsset(Type type)
+        {
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            if (path == "")            
+                path = "Assets";
+            
+            else if (System.IO.Path.GetExtension(path) != "")            
+                path = path.Replace(System.IO.Path.GetFileName(AssetDatabase.GetAssetPath(Selection.activeObject)), "");
+           
+            string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/New " + type.Name + ".asset");
+            if (string.IsNullOrEmpty(assetPathAndName))
+            {
+                return null;
+            }
+            ScriptableObject data = ScriptableObject.CreateInstance(type);
+            AssetDatabase.CreateAsset(data, path);
+            AssetDatabase.SaveAssets();
+            return data;
+        }
+
+
         public static List<ItemDatabase> GetAllDatabases()
         {           
             List<ItemDatabase> databases = new List<ItemDatabase>();

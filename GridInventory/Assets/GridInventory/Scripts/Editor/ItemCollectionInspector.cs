@@ -99,7 +99,7 @@ public class ItemCollectionInspector : EditorWindow
                 },
                 () =>
                 {
-                    //ItemDatabase db = EditorTools.CreateAsset<ItemDatabase>(true);
+                    //ItemDatabase db = GridInventorySystem.Utilities.CreateAsset<ItemDatabase>(true);
                     //if (db != null)
                     //{
                     //    CreateDefaultCategory(db);
