@@ -60,7 +60,7 @@ public class BaseItem : ScriptableObject, IDataPersistence
 
     [SerializeField]
     [Range(1, 999f)]
-    private int m_maxStack;
+    private int m_maxStack = 1;
     #endregion
 
     #region TextOverlayOptions
@@ -84,7 +84,8 @@ public class BaseItem : ScriptableObject, IDataPersistence
     private Category m_category;
     #endregion
 
-    public ItemDatabase m_databaseParent= null;
+    
+    private ItemDatabase m_databaseParent= null;    
     public ItemDatabase DatabaseParent { get => m_databaseParent; set => m_databaseParent = value; }
     
     private List<Vector2Int> gridPositionList;

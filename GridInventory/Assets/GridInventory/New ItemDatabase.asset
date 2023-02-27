@@ -57,7 +57,20 @@ MonoBehaviour:
   m_showMaxStack: 0
   rarity: {fileID: 635721141484652148}
   m_category: {fileID: -6947705441426709109}
-  m_databaseParent: {fileID: 11400000}
+--- !u!114 &-1330430130132282323
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73bc8c6627aea064b99c650cf9e4775a, type: 3}
+  m_Name: New Rarity
+  m_EditorClassIdentifier: 
+  m_RarityName: New Rarity
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,8 +85,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - {fileID: -3106744769487377057}
+  - {fileID: 0}
   rarities:
   - {fileID: 635721141484652148}
+  - {fileID: -1330430130132282323}
   categories:
   - {fileID: -6947705441426709109}
   - {fileID: -5845833815053678041}

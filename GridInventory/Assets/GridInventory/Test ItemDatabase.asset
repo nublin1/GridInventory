@@ -85,7 +85,6 @@ MonoBehaviour:
   m_showMaxStack: 0
   rarity: {fileID: 0}
   m_category: {fileID: 0}
-  m_databaseParent: {fileID: 0}
 --- !u!114 &-1808031206471417334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,7 +150,6 @@ MonoBehaviour:
   m_showMaxStack: 0
   rarity: {fileID: -8202195673115845998}
   m_category: {fileID: -5835148667884528989}
-  m_databaseParent: {fileID: 11400000}
 --- !u!114 &4145826214861110434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -173,15 +171,14 @@ MonoBehaviour:
   m_height: 2
   m_prefab: {fileID: 0}
   m_Description: 
-  isContainer: 0
-  pf_ItemContainer: {fileID: 0}
+  isContainer: 1
+  pf_ItemContainer: {fileID: 6244563587847233541, guid: e22fb6cd512496049a98e865e6d08bc6, type: 3}
   m_Stack: 1
   m_maxStack: 1
   m_showName: 0
   m_showMaxStack: 0
   rarity: {fileID: -8202195673115845998}
   m_category: {fileID: -5835148667884528989}
-  m_databaseParent: {fileID: 11400000}
 --- !u!114 &6814354685704331505
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -225,7 +222,6 @@ MonoBehaviour:
   m_showMaxStack: 0
   rarity: {fileID: -8202195673115845998}
   m_category: {fileID: -5835148667884528989}
-  m_databaseParent: {fileID: 11400000}
 --- !u!114 &8945672125769861896
 MonoBehaviour:
   m_ObjectHideFlags: 1

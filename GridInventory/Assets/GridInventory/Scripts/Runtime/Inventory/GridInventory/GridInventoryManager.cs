@@ -2,26 +2,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
+using NaughtyAttributes;
 
 namespace GridInventorySystem
 {
     public class GridInventoryManager : MonoBehaviour
-    {
-        [SerializeField]
-        private ItemDatabase m_Database = null;
-
+    {   
         [SerializeField] private List<GridInventory> availableCollections;
-        [SerializeField] private PointerEventData m_PointerEventData;
+        private PointerEventData m_PointerEventData;
 
 
         // Internal variables        
-        [SerializeField] private GridInventory activeItemCollection;
+        private GridInventory activeItemCollection;
         BaseItem iteract_InventoryItem;
         private Condition ghostItem;
 
 
         // prev Item Data
-        [SerializeField] GridInventory savedItemCollection;
+        GridInventory savedItemCollection;
         private BaseItem savedItem;
         private Vector2Int oldCell;
         Dir oldDir;

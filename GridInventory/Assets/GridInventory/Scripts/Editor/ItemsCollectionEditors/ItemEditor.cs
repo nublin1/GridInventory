@@ -77,10 +77,13 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
 
         GUILayout.BeginHorizontal();
         viewportScale = EditorGUILayout.Slider(viewportScale, 1, 10, GUILayout.MaxWidth(250));
-        previewHorizontal = EditorGUILayout.Toggle("Rotate Preview", previewHorizontal, GUILayout.MaxWidth(250));
-        float itemRot = 0;
-        if (previewHorizontal)
-            itemRot = 90;
+
+        // Rotate button
+        // TO DO - fix the bug with going beyond the window
+        //previewHorizontal = EditorGUILayout.Toggle("Rotate Preview", previewHorizontal, GUILayout.MaxWidth(250));
+        //float itemRot = 0;
+        //if (previewHorizontal)
+        //    itemRot = 90;
 
         GUILayout.EndHorizontal();
 
@@ -107,11 +110,11 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
             GUI.color = new Color(0, 0, 0, 0.6f);
             GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), backgroundOutlineImage);
             GUI.color = def_Color;
-            GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
+            //GUIUtility.RotateAroundPivot(itemRot, pivotPoint);
             if (icon != null)
                 GUI.DrawTexture(new Rect(pos.x, pos.y, scaled_Size.x, scaled_Size.y), icon.texture);
 
-            GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
+            //GUIUtility.RotateAroundPivot(-itemRot, pivotPoint);
             GUI.matrix = matrixBackup;
 
             // Draw text
@@ -154,7 +157,7 @@ public class ItemEditor : BaseCollectionEditor<BaseItem>
         item.name = item.ItemName;
         item.hideFlags = HideFlags.HideInHierarchy;
         item.Id = Utilities.GenerateID();
-        item.m_databaseParent = m_Database;
+        item.DatabaseParent = m_Database;
 
         AssetDatabase.AddObjectToAsset(item, m_Database);
         AssetDatabase.SaveAssets();
