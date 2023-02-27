@@ -3,6 +3,7 @@
 My grid inventory project, in which items can occupy several cells, as well as be containers containing other inventory. Items are contained in the item database, where there is an item editor to edit their properties
 
 Key features:
+
 • System for quickly adding inventory. The inventory can have vertical scrolling elements, as well as a header
 • Items can be containers and placed vertically or horizontally
 • Items may have inscriptions
